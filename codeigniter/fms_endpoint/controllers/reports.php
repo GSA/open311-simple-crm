@@ -165,10 +165,16 @@ class Reports extends CI_Controller {
 		}
 	}
 
-	function get_xml_report($report_id) {
+	function get_report($report_id, $format) {
 		$this->db->where('report_id', $report_id);
 		$data['query'] = $this->db->get('reports');
-		$this->load->view('reports_xml', $data);
+
+		if($format == 'xml') {
+			$this->load->view('reports_xml', $data);	
+		}
+		if($format == 'json') {
+			$this->load->view('reports_json', $data);	
+		}				
 	}
 
 	function get_xml_post_response($report_id) {

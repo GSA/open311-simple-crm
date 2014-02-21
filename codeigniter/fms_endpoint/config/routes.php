@@ -43,10 +43,10 @@
 $route['default_controller'] = "welcome";
 $route['scaffolding_trigger'] = "secretdb";
 
-$route['services/(:num).xml'] = "categories/get_xml_category/$1";
+$route['services/(:num).(:any)'] = "categories/get_category/$1/$2";
 $route['services.(:any)'] = "categories/get_feed/$1";
 
-$route['requests/(:num).xml'] = "reports/get_xml_report/$1";
+$route['requests/(:num).(:any)'] = "reports/get_report/$1/$2";
 $route['requests.(:any)'] = "reports/get_feed/$1";
 
 $route['servicerequestupdates.(:any)'] = "reports/service_request_updates/$1";

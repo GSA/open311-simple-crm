@@ -39,7 +39,8 @@ class Categories extends CI_Controller {
 		}
 	}
 
-	function get_xml_category($category_id) {
+
+	function get_category($category_id, $format) {
 		$category_lookup = $this->db->get_where('categories', array('category_id' => $category_id));
 		if ($category_lookup->num_rows()==0) {
 			show_error_xml("No service found with id \"$category_id\".", OPEN311_SERVICE_ID_NOT_FOUND);
@@ -48,7 +49,10 @@ class Categories extends CI_Controller {
 		$this->db->order_by("order", "asc");
 		$data['attributes'] = $this->db->get('category_attributes');
 		$data['category_id'] = $category_id;
-		$this->load->view('category_attributes_xml', $data);
+
+		if($format == 'xml') {
+			$this->load->view('category_attributes_xml', $data);	
+		}		
 	}
 }
 
