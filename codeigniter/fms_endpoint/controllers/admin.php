@@ -101,6 +101,36 @@ class Admin extends CI_Controller {
 
 		$this->_admin_output($output);
 	}
+
+	function category_attributes() {
+		$crud = new grocery_CRUD();
+
+		$crud->set_theme('flexigrid');
+		$crud->set_table('category_attributes');
+		$crud->unset_fields('attribute_id');
+		$crud->unset_texteditor('datatype_description','description', 'values');
+		$crud->field_type('variable','dropdown',
+            array('true' => 'True', 'false' => 'False'));
+		
+
+		//$crud->required_fields('category_id','category_name');
+		//$crud->set_rules('category_id', 'Category Identifier', 'trim|alpha_numeric');
+
+		if (!($this->ion_auth->is_admin() || is_config_true($this->config->item('can_edit_categories')))) {
+			$crud->unset_delete();
+			$crud->unset_add();
+			$crud->unset_edit();
+		} else {
+			$crud->callback_edit_field('keywords', array($this,'_text_keywords_field'));
+		}
+
+		$crud->set_subject('Open311 Service Definition');
+		$output = $crud->render();
+
+		$this->_admin_output($output);
+	}
+
+
 	
 	function request_updates() {
 		$crud = new grocery_CRUD();
