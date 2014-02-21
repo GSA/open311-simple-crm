@@ -50,7 +50,31 @@
 	$lang['update_error']			= 'O eroare a avut loc in timpul salvarii datelor.';
 	
 	/* Added in version 1.2.1 */
-	$lang['set_relation_title'] 	= 'Selecteaza {field_display_as}'; 
-	$lang['list_record']			= 'Record';
-	$lang['form_inactive']			= 'inactive';
-	$lang['form_active']			= 'active';
+	$lang['set_relation_title'] 	= 'Selecteaza {field_display_as}';
+	$lang['list_record']			= 'Inregistrare';
+	$lang['form_inactive']			= 'inactiv';
+	$lang['form_active']			= 'activ';
+	
+	/* Added in version 1.2.2 */
+	$lang['form_save_and_go_back']	= 'Salveaza si intoarce-te la lista';
+	$lang['form_update_and_go_back']= 'Actualizeaza si intoarce-te la lista';
+
+	/* Upload functionality */
+	$lang['string_delete_file'] 	= "Fisierul se sterge";
+	$lang['string_progress'] 		= "Progres: ";
+	$lang['error_on_uploading'] 	= "A avut loc o eroare la upload.";
+	$lang['message_prompt_delete_file'] 	= "Esti sigur ca doresti stergerea acestui fisier?";
+	
+	$lang['error_max_number_of_files'] 	= "Poti uploada un singur fisier odata.";
+	$lang['error_accept_file_types'] 	= "Acest tip de fisier nu este permis.";
+	$lang['error_max_file_size'] 		= "Dimensiunea fisierului depaseste dimensiunea maxima de: {max_file_size}.";
+	$lang['error_min_file_size'] 		= "Nu poti uploada un fisier gol.";
+
+	/* Added in version 1.3.1 */
+	$lang['list_export'] 	= "Export";
+	$lang['list_print'] 	= "Printare";
+	$lang['minimize_maximize'] = 'Minimizare/Maximizare';
+
+
+	/* Added in version 1.4 */
+	$lang['list_view'] = 'View';

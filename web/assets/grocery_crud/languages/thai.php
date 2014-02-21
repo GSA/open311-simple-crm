@@ -1,4 +1,4 @@
-<?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php  
 /* Translated by EThaiZone */
 	$lang['list_add'] 				= 'เพิ่ม';
 	$lang['list_actions'] 			= 'การกระทำ';
@@ -50,7 +50,30 @@
 	$lang['update_error']			= 'เกิดเหตุขัดข้องในระหว่างการบันทึกข้อมูล';
 	
 	/* Added in version 1.2.1 */
-	$lang['set_relation_title']		= 'Select {field_display_as}';	
-	$lang['list_record']			= 'Record';
-	$lang['form_inactive']			= 'inactive';
-	$lang['form_active']			= 'active';
+	$lang['set_relation_title']		= 'เลือก {field_display_as}';	
+	$lang['list_record']			= 'รายการ';
+	$lang['form_inactive']			= 'ไม่ทำงาน';
+	$lang['form_active']			= 'ทำงาน';
+	
+	/* Added in version 1.2.2 */
+	$lang['form_save_and_go_back']	= 'บันทึกและกลับไปยังรายการ';
+	$lang['form_update_and_go_back']= 'อัพเดตและกลับไปยังรายการ';
+
+	/* Upload functionality */
+	$lang['string_delete_file'] 	= "กำลังลบไฟล์";
+	$lang['string_progress'] 		= "ความคืบหน้า: ";
+	$lang['error_on_uploading'] 	= "เกิดเหตุขัดข้องขณะกำลังอัพโหลด";
+	$lang['message_prompt_delete_file'] 	= "คุณแน่ใจหรือเปล่าที่จะลบไฟล์นี้?";
+	
+	$lang['error_max_number_of_files'] 	= "คุณสามารถอัพโหลดได้ครั้งละหนึ่งไฟล์";
+	$lang['error_accept_file_types'] 	= "คุณไม่ได้รับอนุญาตให้อัพโหลดไฟล์ชนิดนี้";
+	$lang['error_max_file_size'] 		= "ไฟล์ที่คุณอัพโหลดมีขนาดมากกว่า {max_file_size} ที่ได้กำหนดไว้";
+	$lang['error_min_file_size'] 		= "คุณไม่สามารถอัพโหลดไฟล์ว่างได้";
+
+	/* Added in version 1.3.1 */
+	$lang['list_export'] 	= "ส่งออก";
+	$lang['list_print'] 	= "พิมพ์";
+	$lang['minimize_maximize'] = 'ย่อ/ขยาย';
+
+	/* Added in version 1.4 */
+	$lang['list_view'] = 'View';

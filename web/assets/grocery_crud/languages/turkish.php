@@ -1,4 +1,4 @@
-<?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php  
 /* Translated by Sinan Eldem - www.sinaneldem.com.tr */
 	$lang['list_add'] 				= 'Ekle';
 	$lang['list_actions'] 			= 'İşlemler';
@@ -54,3 +54,35 @@
 	$lang['list_record']			= 'Record';
 	$lang['form_inactive']			= 'inactive';
 	$lang['form_active']			= 'active';
+	
+        /* Translated by Murat Akdeniz - www.webfikirleri.com */
+	
+	/* Added in version 1.2.1 */
+	$lang['set_relation_title']		= 'Seç: {field_display_as}';	
+	$lang['list_record']			= 'Kayıt';
+	$lang['form_inactive']			= 'Pasif';
+	$lang['form_active']			= 'Aktif';
+	
+	/* Added in version 1.2.2 */
+	$lang['form_save_and_go_back']	= 'Kaydet ve Listeye Geri Dön';
+	$lang['form_update_and_go_back']= 'Güncelle ve Listeye Geri Dön';
+
+	/* Upload functionality */
+	$lang['string_delete_file'] 	= "Dosya Siliniyor";
+	$lang['string_progress'] 		= "İlerleme: ";
+	$lang['error_on_uploading'] 	= "Dosya yüklenirken bir hata oluştu.";
+	$lang['message_prompt_delete_file'] 	= "Bu dosyayı silmek istediğinize emin misiniz?";
+	
+	$lang['error_max_number_of_files'] 	= "Her seferinde sadece bir dosya yükleyebilirsiniz.";
+	$lang['error_accept_file_types'] 	= "Bu uzantıda dosya yüklemeye yetkiniz yoktur.";
+	$lang['error_max_file_size'] 		= "Yüklemeye çalıştığınız dosya maksimum dosya boyutu olan {max_file_size} üzerindedir.";
+	$lang['error_min_file_size'] 		= "Boş bir dosya yükleyemezsiniz.";
+
+	/* Added in version 1.3.1 */
+	$lang['list_export'] 	= "Dışarı Aktar";
+	$lang['list_print'] 	= "Yazdır";
+	$lang['minimize_maximize'] = 'Küçült/Büyüt';
+
+
+	/* Added in version 1.4 */
+	$lang['list_view'] = 'View';

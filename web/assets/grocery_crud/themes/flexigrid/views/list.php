@@ -1,5 +1,4 @@
-<?php  
-	if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php 
 
 	$column_width = (int)(80/count($columns));
 	
@@ -16,7 +15,7 @@
 					</div>
 				</th>
 				<?php }?>
-				<?php if(!$unset_delete || !$unset_edit || !empty($actions)){?>
+				<?php if(!$unset_delete || !$unset_edit || !$unset_read || !empty($actions)){?>
 				<th align="left" abbr="tools" axis="col1" class="" width='20%'>
 					<div class="text-right">
 						<?php echo $this->l('list_actions'); ?>
@@ -30,10 +29,10 @@
 		<tr  <?php if($num_row % 2 == 1){?>class="erow"<?php }?>>
 			<?php foreach($columns as $column){?>
 			<td width='<?php echo $column_width?>%' class='<?php if(isset($order_by[0]) &&  $column->field_name == $order_by[0]){?>sorted<?php }?>'>
-				<div style="width: 100%;" class='text-left'><?php echo $row->{$column->field_name}; ?></div>
+				<div class='text-left'><?php echo $row->{$column->field_name} != '' ? $row->{$column->field_name} : '&nbsp;' ; ?></div>
 			</td>
 			<?php }?>
-			<?php if(!$unset_delete || !$unset_edit || !empty($actions)){?>
+			<?php if(!$unset_delete || !$unset_edit || !$unset_read || !empty($actions)){?>
 			<td align="left" width='20%'>
 				<div class='tools'>				
 					<?php if(!$unset_delete){?>
@@ -42,7 +41,10 @@
                     	</a>
                     <?php }?>
                     <?php if(!$unset_edit){?>
-						<a href='<?php echo $row->edit_url?>' title='<?php echo $this->l('list_edit')?> <?php echo $subject?>'><span class='edit-icon'></span></a>
+						<a href='<?php echo $row->edit_url?>' title='<?php echo $this->l('list_edit')?> <?php echo $subject?>' class="edit_button"><span class='edit-icon'></span></a>
+					<?php }?>
+					<?php if(!$unset_read){?>
+						<a href='<?php echo $row->read_url?>' title='<?php echo $this->l('list_view')?> <?php echo $subject?>' class="edit_button"><span class='read-icon'></span></a>
 					<?php }?>
 					<?php 
 					if(!empty($row->action_urls)){

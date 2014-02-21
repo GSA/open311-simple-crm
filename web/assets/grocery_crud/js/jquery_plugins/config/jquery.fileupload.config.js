@@ -1,14 +1,3 @@
-var string_upload_file 	= 'Uploading file';
-var string_delete_file 	= 'Deleting file';
-var string_progress 			= 'Progress: ';
-var error_on_uploading 			= 'An error has occurred on uploading.';
-var message_promt_delete_file 	= 'Are you sure that you want to delete this file?';
-
-var error_max_number_of_files 	= 'You can only upload one file each time.';
-var error_accept_file_types 	= 'You are not allow to upload this kind of extension.';
-var error_max_file_size 		= 'The uploaded file exceeds the MAX_FILE_SIZE directive that was specified.';
-var error_min_file_size 		= 'Your cannot upload an empty file.';
-
 function show_upload_button(unique_id, uploader_element)
 {
 	$('#upload-state-message-'+unique_id).html('');
@@ -17,6 +6,17 @@ function show_upload_button(unique_id, uploader_element)
 	$('#upload-button-'+unique_id).slideDown('fast');
 	$("input[rel="+uploader_element.attr('name')+"]").val('');
 	$('#success_'+unique_id).slideUp('fast');	
+}
+
+function load_fancybox(elem)
+{
+	elem.fancybox({
+		'transitionIn'	:	'elastic',
+		'transitionOut'	:	'elastic',
+		'speedIn'		:	600, 
+		'speedOut'		:	200, 
+		'overlayShow'	:	false
+	});		
 }
 
 $(function(){
@@ -76,10 +76,29 @@ $(function(){
 		            	$('#upload-state-message-'+unique_id).html('');
 		            	$("input[rel="+uploader_element.attr('name')+"]").val(file.name);
 		            	var file_name = file.name;
-						$('#file_'+unique_id).html(file_name);
+						
+		            	var is_image = (file_name.substr(-4) == '.jpg'  
+		            						|| file_name.substr(-4) == '.png' 
+		            						|| file_name.substr(-5) == '.jpeg' 
+		            						|| file_name.substr(-4) == '.gif' 
+		            						|| file_name.substr(-5) == '.tiff')
+							? true : false;
+		            	if(is_image)
+		            	{
+		            		$('#file_'+unique_id).addClass('image-thumbnail');
+		            		load_fancybox($('#file_'+unique_id));
+		            		$('#file_'+unique_id).html('<img src="'+file.url+'" height="50" />');
+		            	}
+		            	else
+		            	{
+		            		$('#file_'+unique_id).removeClass('image-thumbnail');
+		            		$('#file_'+unique_id).unbind("click");
+		            		$('#file_'+unique_id).html(file_name);
+		            	}
+		            	
 						$('#file_'+unique_id).attr('href',file.url);
 						$('#hidden_'+unique_id).val(file_name);
-						//$('#'+uploader_id).hide();
+
 						$('#success_'+unique_id).fadeIn('slow');
 						$('#delete_url_'+unique_id).attr('rel',file_name);
 						$('#upload-button-'+unique_id).slideUp('fast');
@@ -115,7 +134,7 @@ $(function(){
             }	        
 	    });
 		$('#delete_'+unique_id).click(function(){
-			if( confirm(message_promt_delete_file) )
+			if( confirm(message_prompt_delete_file) )
 			{
 				var file_name = $('#delete_url_'+unique_id).attr('rel');
 				$.ajax({
