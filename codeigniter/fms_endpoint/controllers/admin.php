@@ -107,14 +107,25 @@ class Admin extends CI_Controller {
 
 		$crud->set_theme('flexigrid');
 		$crud->set_table('category_attributes');
-		$crud->unset_fields('attribute_id');
-		$crud->unset_texteditor('datatype_description','description', 'values');
-		$crud->field_type('variable','dropdown',
-            array('true' => 'True', 'false' => 'False'));
-		
+		$crud->set_primary_key('category_id', 'attribute_id');
 
-		//$crud->required_fields('category_id','category_name');
-		//$crud->set_rules('category_id', 'Category Identifier', 'trim|alpha_numeric');
+
+		$crud->set_relation('category_id','categories','category_name',null,'category_name ASC');
+		$crud->display_as ( 'category_id' , "Category");
+
+		$crud->unset_texteditor('datatype_description','description', 'values');	
+
+		$crud->field_type('order','integer');	
+		$crud->field_type('variable','dropdown',
+            array('true' => 'True', 'false' => 'False'));		
+		$crud->field_type('datatype','dropdown',
+            array('number' => 'Number', 'datetime' => 'Date-time', 'text' => 'Text', 'singlevaluelist' => 'Dropdown Menu', 'multivaluelist' => 'Multi-select List'));
+		$crud->field_type('required','dropdown',
+            array('true' => 'True', 'false' => 'False'));
+
+
+		$crud->required_fields('category_id', 'attribute_id','variable', 'datatype', 'required', 'description', 'order', 'description');
+
 
 		if (!($this->ion_auth->is_admin() || is_config_true($this->config->item('can_edit_categories')))) {
 			$crud->unset_delete();

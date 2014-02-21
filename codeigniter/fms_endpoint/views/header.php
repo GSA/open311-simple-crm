@@ -33,6 +33,7 @@
           <li><a href='<?php echo site_url('admin/reports_csv')?>'>Export CSV</a></li>
           <li><a href='<?php echo site_url('admin/request_updates')?>'>Updates</a></li>
           <li><a href='<?php echo site_url('admin/categories')?>'>Categories</a></li>
+          <li><a href='<?php echo site_url('admin/category_attributes')?>'>Category Definitions</a></li>          
           <?php if ($auth->is_admin()) { ?>
             <li><a class="admin-link" href='<?php echo site_url('admin/statuses')?>'>Statuses</a></li>
             <li><a class="admin-link" href='<?php echo site_url('admin/settings')?>'>Settings</a></li>

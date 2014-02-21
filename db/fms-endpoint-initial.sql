@@ -37,7 +37,7 @@ INSERT INTO `categories` VALUES('002', 'Streetlight', 'Broken streetlight.', 'St
 -- Attributes allow additional information to be provided for services (e.g., the depth of a pothole)
 -- Not used in current FMS-endpoint
 
-CREATE TABLE `category_attributes` (
+CREATE TABLE IF NOT EXISTS `category_attributes` (
   `category_id` varchar(255) NOT NULL,
   `attribute_id` varchar(255) NOT NULL,
   `variable` varchar(255) NOT NULL,
@@ -46,8 +46,9 @@ CREATE TABLE `category_attributes` (
   `datatype_description` text NOT NULL,
   `order` int(10) NOT NULL,
   `description` text NOT NULL,
-  `values` text NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+  `values` text,
+  PRIMARY KEY (`category_id`,`attribute_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `category_attributes`
