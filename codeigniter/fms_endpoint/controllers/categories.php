@@ -52,7 +52,10 @@ class Categories extends CI_Controller {
 
 		if($format == 'xml') {
 			$this->load->view('category_attributes_xml', $data);	
-		}		
+		} 
+		if($format == 'json') {
+			$this->load->view('category_attributes_json', $data);	
+		}  		
 	}
 }
 

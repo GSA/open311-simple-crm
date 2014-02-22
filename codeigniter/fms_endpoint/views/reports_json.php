@@ -1,7 +1,7 @@
 <?php 
 
 function dateformat($datetime) {
-	$datetime = ($datetime == '0000-00-00 00:00:00') ? '' : date("Y-m-d\TH:i:s\Z",strtotime($datetime));
+	$datetime = (($datetime == '0000-00-00 00:00:00') || ($datetime == null)) ? null : date("Y-m-d\TH:i:s\Z",strtotime($datetime));
 	return $datetime;
 }
 
