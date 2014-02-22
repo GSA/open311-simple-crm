@@ -16,7 +16,7 @@ class Reports extends CI_Controller {
 		$this->load->view('reports_xml', $data);
 	}
 
-	function post_report($format) {
+	function post_report($format = 'json') {
 		$source_client = config_item('default_client');
 
 		$api_key = (!empty($_POST['api_key'])) ? $_POST['api_key'] : null;
@@ -122,10 +122,8 @@ class Reports extends CI_Controller {
 
 	}
 
-	function get_feed($format) {
-		if (empty($format)) {
-			$format = 'json';
-		}
+	function get_feed($format = 'json') {
+
 		if(array_key_exists('service_code', $_POST)) { // if we're receiving a POST report call.
 			return $this->post_report($format);
 		}
@@ -157,24 +155,30 @@ class Reports extends CI_Controller {
 			case "json":
 				$this->load->view('reports_json', $data);
 				break;
-			default: 
-				$this->load->view('reports_json', $data);
 		}
 	}
 
-	function get_report($report_id, $format) {
+	function get_report($report_id, $format = 'json') {
 		$this->db->where('report_id', $report_id);
 		$data['query'] = $this->db->get('reports');
 
-		if($format == 'xml') {
-			$this->load->view('reports_xml', $data);	
+ 		switch ($format) {
+			case "xml":
+				$this->load->view('reports_xml', $data);	
+				break;
+			case "json":
+				$this->load->view('reports_json', $data);	
+				break;
+			default:
+				$this->load->view('reports_json', $data);	
+				break;				
 		}
-		if($format == 'json') {
-			$this->load->view('reports_json', $data);	
-		}				
+
+
+
 	}
 
-	function get_post_response($report_id, $format) {
+	function get_post_response($report_id, $format = 'json') {
 		$this->db->where('report_id', $report_id);
 		$data['query'] = $this->db->get('reports');
 
@@ -186,15 +190,13 @@ class Reports extends CI_Controller {
 			case "json":
 				$this->load->view('reports_post_response_json', $data);
 				break;
-			default: 
-				$this->load->view('reports_post_response_json', $data);
 		}
 
 
 		
 	}
 	
-	function service_request_updates($format) {
+	function service_request_updates($format = 'json') {
 		switch ($_SERVER['REQUEST_METHOD']) {
 			case "GET":
 				$this->get_service_request_updates($format);
@@ -207,7 +209,7 @@ class Reports extends CI_Controller {
 		}
 	}
 	
-	function get_service_request_updates($format) {
+	function get_service_request_updates($format = 'json') {
 		if (!empty($_GET['jurisdiction_id'])) {
 			// TODO, currently ignoring jurisdiction
 		}
@@ -235,8 +237,6 @@ class Reports extends CI_Controller {
 			case "json":
 				$this->load->view('request_updates_json', $data);
 				break;
-			default: 
-				$this->load->view('request_updates_json', $data);
 		}
 	}
 

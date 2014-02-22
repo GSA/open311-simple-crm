@@ -18,7 +18,7 @@ class Categories extends CI_Controller {
 		$this->load->view('categories_xml', $data);
 	}
 
-	function get_feed($format) {
+	function get_feed($format = 'json') {
 		$url = parse_url($_SERVER['REQUEST_URI']);
 		if (array_key_exists('query', $url)) { 
 			parse_str($url['query'], $params);
@@ -40,7 +40,7 @@ class Categories extends CI_Controller {
 	}
 
 
-	function get_category($category_id, $format) {
+	function get_category($category_id, $format = 'json') {
 		$category_lookup = $this->db->get_where('categories', array('category_id' => $category_id));
 		if ($category_lookup->num_rows()==0) {
 			show_error_xml("No service found with id \"$category_id\".", OPEN311_SERVICE_ID_NOT_FOUND);
@@ -48,14 +48,19 @@ class Categories extends CI_Controller {
 		$this->db->where('category_id', $category_id);
 		$this->db->order_by("order", "asc");
 		$data['attributes'] = $this->db->get('category_attributes');
-		$data['category_id'] = $category_id;
+		$data['category_id'] = $category_id;  	
 
-		if($format == 'xml') {
-			$this->load->view('category_attributes_xml', $data);	
-		} 
-		if($format == 'json') {
-			$this->load->view('category_attributes_json', $data);	
-		}  		
+ 		switch ($format) {
+			case "xml":
+				$this->load->view('category_attributes_xml', $data);	
+				break;
+			case "json":
+				$this->load->view('category_attributes_json', $data);	
+				break;
+		}
+
+
+
 	}
 }
 
