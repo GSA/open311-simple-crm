@@ -118,18 +118,13 @@ class Reports extends CI_Controller {
 
 		$report_id = $this->db->insert_id();
 
-		// TODO: json
-		if ($format == 'xml') {
-			return $this->get_xml_post_response($report_id);
-		} else {
-			// just use xml as the default
-			return $this->get_xml_post_response($report_id);
-		}
+		return $this->get_post_response($report_id, $format);
+
 	}
 
 	function get_feed($format) {
 		if (empty($format)) {
-			$format = 'xml';
+			$format = 'json';
 		}
 		if(array_key_exists('service_code', $_POST)) { // if we're receiving a POST report call.
 			return $this->post_report($format);
@@ -162,6 +157,8 @@ class Reports extends CI_Controller {
 			case "json":
 				$this->load->view('reports_json', $data);
 				break;
+			default: 
+				$this->load->view('reports_json', $data);
 		}
 	}
 
@@ -177,10 +174,24 @@ class Reports extends CI_Controller {
 		}				
 	}
 
-	function get_xml_post_response($report_id) {
+	function get_post_response($report_id, $format) {
 		$this->db->where('report_id', $report_id);
 		$data['query'] = $this->db->get('reports');
-		$this->load->view('reports_post_response_xml', $data);
+
+
+ 		switch ($format) {
+			case "xml":
+				$this->load->view('reports_post_response_xml', $data);
+				break;
+			case "json":
+				$this->load->view('reports_post_response_json', $data);
+				break;
+			default: 
+				$this->load->view('reports_post_response_json', $data);
+		}
+
+
+		
 	}
 	
 	function service_request_updates($format) {
@@ -224,6 +235,8 @@ class Reports extends CI_Controller {
 			case "json":
 				$this->load->view('request_updates_json', $data);
 				break;
+			default: 
+				$this->load->view('request_updates_json', $data);
 		}
 	}
 
