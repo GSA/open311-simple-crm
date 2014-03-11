@@ -75,6 +75,8 @@ class Reports extends CI_Controller {
 		$phone = (!empty($_POST['phone'])) ? $_POST['phone'] : '';
 		$media_url = (!empty($_POST['media_url'])) ? $_POST['media_url'] : '';
 
+		$attribute = (!empty($_POST['attribute'])) ? $_POST['attribute'] : null;
+
 		$status = (!empty($_POST['status'])) ? $_POST['status'] : REPORT_DEFAULT_STATUS;
 		$status_lookup = $this->db->get_where('statuses', array('status_name' => trim(strtolower($status))), 1);
 		if ($status_lookup->num_rows()==1) {
@@ -113,6 +115,10 @@ class Reports extends CI_Controller {
 		if (isset($status_notes)) {
 			$data['status_notes'] = $status_notes;
 		}
+
+		if (!empty($attribute)) {
+			$data['attribute'] = $this->sanitize_attributes($service_code, $attribute);
+		}		
 
 		$this->db->insert('reports', $data);
 
@@ -344,6 +350,40 @@ class Reports extends CI_Controller {
 				$this->load->view('request_update_post_response_xml', $view_data);
 				break;
 		}
+	}
+
+
+	function sanitize_attributes($service_code, $attributes) {
+
+		$this->db->where('category_id', $service_code);
+		$this->db->order_by("order", "asc");
+		$clean_attributes = $this->db->get('category_attributes');
+
+		$attribute_output = array();
+
+		if ($clean_attributes->num_rows() > 0) {
+
+			foreach ($clean_attributes->result() as $clean_attribute) {
+
+				$attribute_id = $clean_attribute->attribute_id;
+
+				if(!empty($attributes[$attribute_id])) {
+
+					$output = array();
+
+					$output['attribute_code'] = $attribute_id;
+					$output['attribute_description'] = $clean_attribute->description;
+					
+					$output['value']		= $attributes[$attribute_id];
+
+					$attribute_output[] = $output; 
+
+				}
+			}
+
+		}		
+
+		return json_encode($attribute_output);
 	}
 
 	
