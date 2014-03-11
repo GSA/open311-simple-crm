@@ -17,6 +17,9 @@ foreach($attributes->result() as $row) {
 		$attributes->description 				= $row->description;
 		$attributes->values 					= $row->values;	
 
+		if(!empty($row->hidden) && $row->hidden == 'true') {
+			$attributes->hidden = $row->hidden;		
+		}
 
 		$response->attributes[] = $attributes;
 }
