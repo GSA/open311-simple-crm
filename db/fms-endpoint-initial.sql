@@ -12,7 +12,7 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 -- if they're not numbers!
 -- "categories" are effectively what Open311 calls "services"
 
-CREATE TABLE `categories` (
+CREATE TABLE IF NOT EXISTS `categories` (
   `category_id` varchar(255) NOT NULL,
   `category_name` varchar(255) NOT NULL,
   `description` text NOT NULL,
@@ -22,6 +22,7 @@ CREATE TABLE `categories` (
   `type` varchar(255) NOT NULL,
   PRIMARY KEY (`category_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
 
 --
 -- Dumping data for table `categories`
@@ -38,6 +39,7 @@ INSERT INTO `categories` VALUES('002', 'Streetlight', 'Broken streetlight.', 'St
 -- Not used in current FMS-endpoint
 
 CREATE TABLE IF NOT EXISTS `category_attributes` (
+  `id` int(5) NOT NULL AUTO_INCREMENT,
   `category_id` varchar(255) NOT NULL,
   `attribute_id` varchar(255) NOT NULL,
   `variable` varchar(255) NOT NULL,
@@ -47,8 +49,11 @@ CREATE TABLE IF NOT EXISTS `category_attributes` (
   `order` int(10) NOT NULL,
   `description` text NOT NULL,
   `values` text,
-  PRIMARY KEY (`category_id`,`attribute_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1;
+  `hidden` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `id` (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1;
+
 
 --
 -- Dumping data for table `category_attributes`
@@ -295,7 +300,7 @@ CREATE TABLE `request_updates` (
 -- Table structure for table `reports`
 --
 
-CREATE TABLE `reports` (
+CREATE TABLE IF NOT EXISTS `reports` (
   `report_id` int(255) NOT NULL AUTO_INCREMENT,
   `status` int(11) DEFAULT '1',
   `status_notes` text,
@@ -323,6 +328,7 @@ CREATE TABLE `reports` (
   `phone` varchar(255) DEFAULT NULL,
   `media_url` text,
   `engineer` varchar(255) DEFAULT NULL,
+  `attribute` text,
   PRIMARY KEY (`report_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1000 ;
 
