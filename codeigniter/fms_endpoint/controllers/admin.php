@@ -82,6 +82,8 @@ class Admin extends CI_Controller {
 		$crud = new grocery_CRUD();
 
 		$crud->set_theme('flexigrid');
+		// $crud->set_theme('twitter-bootstrap');
+		
 		$crud->set_table('categories');
 		$crud->unset_texteditor('description'); # maybe don't unset this one
 		$crud->unset_texteditor('status_notes','keywords');
@@ -107,22 +109,30 @@ class Admin extends CI_Controller {
 
 		$crud->set_theme('flexigrid');
 		$crud->set_table('category_attributes');
-		$crud->set_primary_key('category_id', 'attribute_id');
-
-
+		//$crud->set_model('attributes_join');
 		$crud->set_relation('category_id','categories','category_name',null,'category_name ASC');
 		$crud->display_as ( 'category_id' , "Category");
 
 		$crud->unset_texteditor('datatype_description','description', 'values');	
 
 		$crud->field_type('order','integer');	
+		$crud->field_type('description','string');	
+		$crud->field_type('datatype_description','string');			
+		
 		$crud->field_type('variable','dropdown',
             array('true' => 'True', 'false' => 'False'));		
-		$crud->field_type('datatype','dropdown',
-            array('number' => 'Number', 'datetime' => 'Date-time', 'text' => 'Text', 'singlevaluelist' => 'Dropdown Menu', 'multivaluelist' => 'Multi-select List'));
 		$crud->field_type('required','dropdown',
             array('true' => 'True', 'false' => 'False'));
 
+
+		$crud->field_type('datatype','dropdown',
+            array(	'string' => 'Text',
+            		'text' => 'Textbox', 	
+            		'number' => 'Number', 
+            		'datetime' => 'Date Picker',             		
+            		'singlevaluelist' => 'Dropdown Menu', 
+            		'multivaluelist' => 'Multi-select List'));
+		
 
 		$crud->required_fields('category_id', 'attribute_id','variable', 'datatype', 'required', 'description', 'order', 'description');
 
