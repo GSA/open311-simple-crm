@@ -15,7 +15,7 @@ foreach($attributes->result() as $row) {
 		$attributes->datatype_description		= $row->datatype_description; 
 		$attributes->order 				 		= $row->order;					         						
 		$attributes->description 				= $row->description;
-		$attributes->values 					= $row->values;	
+		$attributes->values 					= json_decode($row->values);	
 
 		if(!empty($row->hidden) && $row->hidden == 'true') {
 			$attributes->hidden = $row->hidden;		
