@@ -1,4 +1,4 @@
-FMS-endpoint installation instructions
+Open311 Simple CRM installation instructions
 ======================================
 
 Overview
@@ -9,19 +9,19 @@ Apache and mySQL works fine, but if your system is different you should be OK
 to change it -- see the configuration details further down in this file.
 
 __Note:__ because of a dependency in GroceryCRUD, it now seems that
-FMS-Endpoint will __only__ work nicely with mySQL and mySQLite databases.
+Open311 Simple CRM will __only__ work nicely with mySQL and mySQLite databases.
 Ouch. We'll try to sort this out in future updates.
 
 Install the files
 -----------------
 
-FMS-endpoint is a PHP CodeIgniter project.
+Open311 Simple CRM is a PHP CodeIgniter project.
 
 Place the contents of this git repository somewhere where your webserver will
 have access to it. Ideally, only the contents of the `web/` directory (that
 is, `index.php` and `assets/`) should be placed under your webserver's server root:
 
-* if you intend to run FMS-endpoint as the *only* service for that webserver,
+* if you intend to run Open311 Simple CRM as the *only* service for that webserver,
   you can deploy directly into the server root (or simply set your server
   root to be `web/`)
 
@@ -51,17 +51,17 @@ of course), make sure this setting has the correct path _from this index.php_
 You can use an absolute or relative path here.
 
 
-Edit the fms-endpoint base_url setting
+Edit the Open311 Simple CRM base_url setting
 --------------------------------------
 
 You can skip this step if you have placed `index.php` in the server-root of
 your webserver, not in a subdirectory (that is, if `http://YOUR_DOMAIN/`
 should hit the `index.php` already).
 
-Otherwise, make sure that fms-endpoint's core CodeIgniter config knows the URL
+Otherwise, make sure that Open311 Simple CRM's core CodeIgniter config knows the URL
 to the root page:
 
-Edit `codeigniter/fms-endpoint/config/config.php` and set
+Edit `codeigniter/Open311 Simple CRM/config/config.php` and set
 
     $config['base_url']= 'http://example.com/your-path/';
 
@@ -69,7 +69,7 @@ Edit `codeigniter/fms-endpoint/config/config.php` and set
 Check the root page
 -------------------
 
-You should already be able to see the FMS-endpoint root page in your browser
+You should already be able to see the Open311 Simple CRM root page in your browser
 (it will be reporting that you haven't set up the database yet). If you don't 
 see such a page, double-check the setting for `$system_folder` -- if you're
 not  sure, use an absolute path.
@@ -86,13 +86,13 @@ Set up the database
 -------------------
 
 Although CodeIgniter supports mySQL, MySQLi, Postgre SQL, ODBC, and MS SQL,
-FMS-endpoint probably will __only__ work with mySQL and mySQLi. This is
+Open311 Simple CRM probably will __only__ work with mySQL and mySQLi. This is
 because of a dependency in the GroceryCRUD plugin. We'll look into removing
 this dependency in the future.
 
 Populate that database with the initial values by importing
 
-    db/fms-endpoint-initial.sql
+    db/Open311 Simple CRM-initial.sql
 
 The SQL in that file is in mySQL dialect. You may need to translate it
 slightly if you're running with a different flavour of SQL.
@@ -104,11 +104,11 @@ Edit the database configuration
 The instructions here assume you are going to edit configuration settings
 within `codeigniter/fms_endpoint/config/` which is the usual place for
 CodeIgniter application config. This is probably the simplest way to get
-FMS-endpoint up and running.
+Open311 Simple CRM up and running.
 
 > However, be aware that these files are within the git repository.
 > This means you *may* run into problems in future releases of the
-> FMS-endpoint code. We provide an alternative mechanism (because it fits the
+> Open311 Simple CRM code. We provide an alternative mechanism (because it fits the
 > way we deploy our own servers at mySociety) which is described here:
 > `documentation/ALTERNATIVE_CONFIG.md`
 
@@ -120,7 +120,7 @@ You probably only need to set values for the following:
     $db['default']['hostname'] = "localhost:8889";
     $db['default']['username'] = "dbuser";
     $db['default']['password'] = "the-password";
-    $db['default']['database'] = "fms-endpoint";
+    $db['default']['database'] = "Open311 Simple CRM";
     $db['default']['dbdriver'] = "mysql";
 
 The values shown here are for a mySQL database running on port 8889 on the
@@ -130,7 +130,7 @@ same machine as the webserver. Change the values to match your own situation.
 Check the root page again
 -------------------------
 
-The root page shows what's not working yet. If FMS-endpoint is not complaining
+The root page shows what's not working yet. If Open311 Simple CRM is not complaining
 about the database connection, then it's working :-)
 
    * if you're getting a completely blank (empty) page, check that you didn't
@@ -147,11 +147,11 @@ about the database connection, then it's working :-)
 Configure URL rewriting
 -----------------------
 
-FMS-endpoint generates URLs assuming that you've set up the webserver to
+Open311 Simple CRM generates URLs assuming that you've set up the webserver to
 rewrite its URLs. The recommended rewrite rules for the Apache webserver can
 be found in `/conf/httpd.conf`.
 
-If you're running FMS-endpoint under Apache, copy the contents of
+If you're running Open311 Simple CRM under Apache, copy the contents of
 `/conf/httpd.conf` into your main `httpd.conf` file.
 
 (Alternatively, you can try use a `.htaccess` file instead. This part of the
@@ -175,7 +175,7 @@ Final Things
 ------------
 
 When everything is running, you can click on the __Main site__ link on the
-FMS-endpoint root page that's now running in your webserver.
+Open311 Simple CRM root page that's now running in your webserver.
 
 You'll see from the homepage that there are a couple of things that you *must*
 change away from the defaults before your configuration is truly finished.
@@ -191,8 +191,8 @@ address, for example with:
 
 ### Change the administrator password
 
-Log into FMS-endpoint by clicking on __Main site__. You can't access the
-FMS-endpoint (except the root page) unless you're logged in, so you'll be
+Log into Open311 Simple CRM by clicking on __Main site__. You can't access the
+Open311 Simple CRM (except the root page) unless you're logged in, so you'll be
 redirected to the login page. Login as admin:
 
   * username: `admin@example.com` (unless you've just changed it as above!)
@@ -249,9 +249,9 @@ see the entries in __Settings__ for details.
 
 ### Delete example data
 
-Your FMS-endpoint contains some example records. When you're ready to go live,
+Your Open311 Simple CRM contains some example records. When you're ready to go live,
 you can delete these either from within your database directly, or by
-navigating to the pages in FMS-endpoint and clicking on the delete icon to the
+navigating to the pages in Open311 Simple CRM and clicking on the delete icon to the
 right of each item's listing.
 
 
@@ -265,7 +265,7 @@ admin user,	 click on __Settings__, and use these values:
   * `open311_use_external_id` set to `always`
   * `open311_use_external_name` set to `external_id`
 
-This forces your FMS-endpoint to only accept FMS reports which provide the ID
+This forces your Open311 Simple CRM to only accept FMS reports which provide the ID
 or ref from the client system that is reporting them. FixMyStreet clients can
 be configured to behave in this way.
 
@@ -295,7 +295,7 @@ end:
 Keep in touch
 -------------
 
-Finally, if you're running FMS-endpoint, do let us know! 
+Finally, if you're running Open311 Simple CRM, do let us know! 
 
 We maintain a site especially for helping people running FixMyStreet and
 related projects at [diy.mysociety.org](http://diy.mysociety.org)
