@@ -47,11 +47,11 @@ $this->set_js($this->default_theme_path.'/twitter-bootstrap/js/jquery.functions.
 	<div id="message-box" class="span12"></div>
 	<div id="main-table-box span12">
 		<?php
-		echo form_open( $insert_url, 'method="post" id="crudForm" class="form-div span12" autocomplete="off" enctype="multipart/form-data"');
+		echo form_open( $insert_url, 'method="post" id="crudForm" class="form-div span12" autocomplete="off" role="form" enctype="multipart/form-data"');
 			foreach($fields as $field)
 			{
 				?>
-				<div class="form-field-box" id="<?php echo $field->field_name; ?>_field_box">
+				<div class="form-group" id="<?php echo $field->field_name; ?>_field_box">
 					<div class="form-display-as-box" id="<?php echo $field->field_name; ?>_display_as_box">
 						<?php echo $input_fields[$field->field_name]->display_as; ?><?php echo ($input_fields[$field->field_name]->required)? '<span class="required">*</span>' : ""; ?> :
 					</div>

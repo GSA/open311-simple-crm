@@ -1,6 +1,6 @@
 # settings here to let codeigniter URLs work
 RewriteEngine on
-RewriteCond $1 !^/?(index\.php|assets|fcgi|robots\.txt)
+RewriteCond $1 !^/?(index\.php|assets|fcgi|robots\.txt|favicon\.ico)
 RewriteRule ^(.*)$ /index.php/$1 [L]
 
 DirectoryIndex index.php

@@ -81,8 +81,7 @@ class Admin extends CI_Controller {
 	function categories() {
 		$crud = new grocery_CRUD();
 
-		$crud->set_theme('flexigrid');
-		// $crud->set_theme('twitter-bootstrap');
+		$crud->set_theme('twitter-bootstrap');
 		
 		$crud->set_table('categories');
 		$crud->unset_texteditor('description'); # maybe don't unset this one
@@ -107,7 +106,7 @@ class Admin extends CI_Controller {
 	function category_attributes() {
 		$crud = new grocery_CRUD();
 
-		$crud->set_theme('flexigrid');
+		$crud->set_theme('twitter-bootstrap');
 		$crud->set_table('category_attributes');
 		//$crud->set_model('attributes_join');
 		$crud->set_relation('category_id','categories','category_name',null,'category_name ASC');
@@ -155,7 +154,7 @@ class Admin extends CI_Controller {
 	
 	function request_updates() {
 		$crud = new grocery_CRUD();
-		$crud->set_theme('flexigrid');
+		$crud->set_theme('twitter-bootstrap');
 		$crud->set_table('request_updates');
 		$crud->unset_texteditor('update_desc');
 		if (!($this->ion_auth->is_admin())) {
@@ -187,7 +186,7 @@ class Admin extends CI_Controller {
 			redirect('admin/');
 		} else {
 			$crud = new grocery_CRUD();
-			$crud->set_theme('datatables'); /* text wraps for the long descriptions in databables, not flexigrid */
+			$crud->set_theme('twitter-bootstrap'); /* text wraps for the long descriptions in databables, not flexigrid */
 			$crud->set_table('config_settings');
 			$crud->display_as('desc', 'Explanation');
 			$crud->callback_column('desc', array($this, '_full_description'));
@@ -197,6 +196,7 @@ class Admin extends CI_Controller {
 			$crud->callback_edit_field('name', array($this,'_read_only_name_field'));  // read-only during edit
 			$crud->callback_edit_field('desc', array($this,'_read_only_desc_field'));  // read-only during edit
 			$crud->set_subject("configuration setting");
+			//$crud->unset_jquery();
 			$output = $crud->render();
 			$this->_admin_output($output);
 		}
@@ -207,7 +207,7 @@ class Admin extends CI_Controller {
 			redirect('admin/');
 		} else {
 			$crud = new grocery_CRUD();
-			$crud->set_theme('flexigrid'); 
+			$crud->set_theme('twitter-bootstrap'); 
 			$crud->set_table('statuses');
 			$crud->set_subject("problem status");
 			$crud->unset_texteditor('description');
@@ -221,7 +221,7 @@ class Admin extends CI_Controller {
 			redirect('admin/');
 		} else {
 			$crud = new grocery_CRUD();
-			$crud->set_theme('flexigrid'); 
+			$crud->set_theme('twitter-bootstrap'); 
 			$crud->set_table('api_keys');
 			$crud->set_subject("API key");
 			$crud->set_relation('client_id','open311_clients', 
@@ -238,7 +238,7 @@ class Admin extends CI_Controller {
 			redirect('admin/');
 		} else {
 			$crud = new grocery_CRUD();
-			$crud->set_theme('flexigrid'); 
+			$crud->set_theme('twitter-bootstrap'); 
 			$crud->set_table('open311_clients');
 			$crud->set_subject("Open311 client");
 			$crud->unset_texteditor('notes','client_url');
@@ -280,7 +280,7 @@ class Admin extends CI_Controller {
 		}
 		$crud->columns($columns);
 		$crud->edit_fields($default_columns);
-		$crud->set_theme('flexigrid');
+		$crud->set_theme('twitter-bootstrap');
 		$crud->set_table('reports');
 		$crud->set_subject('Problem report');
 		$crud->set_relation('category_id','categories','category_name',null,'category_name ASC');

@@ -59,31 +59,31 @@
 			<?php
 			if(!$unset_add || !$unset_export || !$unset_print){?>
 				<?php if(!$unset_add){?>
-					<a href="<?php echo $add_url?>" title="<?php echo $this->l('list_add'); ?> <?php echo $subject?>" class="add-anchor btn">
-						<i class="icon-plus"></i>
+					<a href="<?php echo $add_url?>" title="<?php echo $this->l('list_add'); ?> <?php echo $subject?>" class="add-anchor btn btn-success">
+						<i class="glyphicon glyphicon-plus"></i>
 						<?php echo $this->l('list_add'); ?> <?php echo $subject?>
 					</a>
 	 			<?php
 	 			}
 	 			if(!$unset_export) { ?>
 		 			<a class="export-anchor btn" data-url="<?php echo $export_url; ?>" rel="external">
-		 				<i class="icon-download"></i>
+		 				<i class="glyphicon glyphicon-download"></i>
 		 				<?php echo $this->l('list_export');?>
 		 			</a>
 	 			<?php
 	 			}
 	 			if(!$unset_print) { ?>
 		 			<a class="print-anchor btn" data-url="<?php echo $print_url; ?>">
-		 				<i class="icon-print"></i>
+		 				<i class="glyphicon glyphicon-print"></i>
 		 				<?php echo $this->l('list_print');?>
 		 			</a>
 	 			<?php
 	 			}
 	 		} ?>
- 			<a class="btn" data-toggle="modal" href="#filtering-form-search" >
- 				<i class="icon-search"></i>
+ 			<button class="btn" data-toggle="modal" data-target="#filtering-form-search" >
+ 				<i class="glyphicon glyphicon-search"></i>
  				<?php echo $this->l('list_search');?>
- 			</a>
+ 			</button>
  		</div>
 		<br/>
 
@@ -134,40 +134,47 @@
 </div>
 
 
-<div class="modal hide" id="filtering-form-search">
-    <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">✕</button>
-        <h3><?php echo $this->l('list_search') . ' ' . $subject; ?></h3>
-    </div>
-        <div class="modal-body" style="text-align:center;">
-        <div class="row-fluid">
-            <div class="span10 offset1">
-                <div id="modalTab">
-                    <div class="tab-content">
-						<?php echo form_open( $ajax_list_url, 'method="post" id="filtering_form" autocomplete = "off"'); ?>
-						<div class="sDiv" id="quickSearchBox">
-							<div class="sDiv2">
-								<input type="hidden" name="page" value="1" size="4" id="crud_page">
-								<input type="hidden" name="per_page" id="per_page" value="<?php echo $default_per_page; ?>" />
-								<input type="hidden" name="order_by[0]" id="hidden-sorting" value="<?php if(!empty($order_by[0])){?><?php echo $order_by[0]?><?php }?>" />
-								<input type="hidden" name="order_by[1]" id="hidden-ordering"  value="<?php if(!empty($order_by[1])){?><?php echo $order_by[1]?><?php }?>"/>
+<div class="modal fade" id="filtering-form-search">
+	<div class="modal-dialog">
+		 <div class="modal-content">
 
-								<?php echo $this->l('list_search');?>: <input type="text" class="qsbsearch_fieldox" name="search_text" size="30" id="search_text">
-								<select name="search_field" id="search_field">
-									<option value=""><?php echo $this->l('list_search_all');?></option>
-									<?php foreach($columns as $column){?>
-										<option value="<?php echo $column->field_name?>"><?php echo $column->display_as; ?></option>
-									<?php }?>
-								</select>
+		    <div class="modal-header">
+		        <button type="button" class="close" data-dismiss="modal">✕</button>
+		        <h3><?php echo $this->l('list_search') . ' ' . $subject; ?></h3>
+		    </div>
 
-								<input type="button" class="btn btn-primary" data-dismiss="modal" value="<?php echo $this->l('list_search');?>" id="crud_search">
-								<input type="button" class="btn btn-inverse" data-dismiss="modal" value="<?php echo $this->l('list_clear_filtering');?>" id="search_clear">
-							</div>
-						</div>
-						<?php echo form_close(); ?>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+	        <div class="modal-body" style="text-align:center;">
+		        <div class="row-fluid">
+		            <div class="span10 offset1">
+		                <div id="modalTab">
+		                    <div class="tab-content">
+								<?php echo form_open( $ajax_list_url, 'method="post" id="filtering_form" autocomplete = "off"'); ?>
+								<div class="sDiv" id="quickSearchBox">
+									<div class="sDiv2">
+										<input type="hidden" name="page" value="1" size="4" id="crud_page">
+										<input type="hidden" name="per_page" id="per_page" value="<?php echo $default_per_page; ?>" />
+										<input type="hidden" name="order_by[0]" id="hidden-sorting" value="<?php if(!empty($order_by[0])){?><?php echo $order_by[0]?><?php }?>" />
+										<input type="hidden" name="order_by[1]" id="hidden-ordering"  value="<?php if(!empty($order_by[1])){?><?php echo $order_by[1]?><?php }?>"/>
+
+										<?php echo $this->l('list_search');?>: <input type="text" class="qsbsearch_fieldox" name="search_text" size="30" id="search_text">
+										<select name="search_field" id="search_field">
+											<option value=""><?php echo $this->l('list_search_all');?></option>
+											<?php foreach($columns as $column){?>
+												<option value="<?php echo $column->field_name?>"><?php echo $column->display_as; ?></option>
+											<?php }?>
+										</select>
+
+										<input type="button" class="btn btn-primary" data-dismiss="modal" value="<?php echo $this->l('list_search');?>" id="crud_search">
+										<input type="button" class="btn btn-inverse" data-dismiss="modal" value="<?php echo $this->l('list_clear_filtering');?>" id="search_clear">
+									</div>
+								</div>
+								<?php echo form_close(); ?>
+		                    </div>
+		                </div>
+		            </div>
+		        </div>
+	    	</div>
+
+	    </div> <!-- /modal-content -->
+	</div> <!-- /modal-dialog -->
 </div>

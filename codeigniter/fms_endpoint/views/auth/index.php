@@ -5,7 +5,7 @@
 	
 	<div id="infoMessage"><?php echo $message;?></div>
 	
-	<table class="user_table">
+	<table class="table table-bordered tablesorter table-striped">
 		<tr>
 			<th>First Name</th>
 			<th>Last Name</th>
@@ -30,7 +30,7 @@
 		<?php endforeach;?>
 	</table>
 	
-	<p><a href="<?php echo site_url('auth/create_user');?>">Create a new user</a></p>
+	<p><a class="add-anchor btn btn-success" href="<?php echo site_url('auth/create_user');?>"><i class="glyphicon glyphicon-plus"></i> Create a new user</a></p>
 	
 </div>
 <?php $this->load->view('footer');?>

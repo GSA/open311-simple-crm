@@ -31,11 +31,10 @@ if(!empty($list)){ ?>
 				<td align="left">
 					<div class="tools">
 						<div class="btn-group">
-							<button class="btn"><?php echo $this->l('list_actions'); ?></button>
-							<button class="btn dropdown-toggle" data-toggle="dropdown">
-								<span class="caret"></span>
-							</button>
-							<ul class="dropdown-menu">
+						    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+						      <?php echo $this->l('list_actions'); ?> <span class="caret"></span>
+						    </button>							
+							<ul class="dropdown-menu" role="menu">
 								<?php
 								if(!$unset_edit){?>
 									<li>
