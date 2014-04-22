@@ -54,7 +54,7 @@
         <!--[if lt IE 7]>
             <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
         <![endif]-->
-    <div class="navbar navbar-inverse navbar-fixed-top">
+    <nav role="navigation" class="navbar navbar-inverse navbar-fixed-top">
       <div class="container">
         <div class="navbar-header">
           <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -62,7 +62,7 @@
             <span class="glyphicon glyphicon-bar"></span>
             <span class="glyphicon glyphicon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#"><?php echo config_item('organisation_name'); ?></a>
+          <a class="navbar-brand" href="<?php echo site_url()?>"><?php echo config_item('organisation_name'); ?></a>
         </div>
 
        
@@ -146,8 +146,9 @@
         </div><!--/.navbar-collapse -->
       
       </div>
-    </div>
+    </nav>
 
+    <div class="main">
 
     <div class="container">
       <!-- Example row of columns -->
