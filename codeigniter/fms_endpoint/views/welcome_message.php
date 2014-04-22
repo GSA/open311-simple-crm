@@ -35,10 +35,10 @@
             <?php if (! $is_open311_enabled) { echo('attempts to use it will be rejected.'); } else { ?>
               requests to the following URLs will be serviced.
               <span class="code open311api_hints">
-              <br/>services/<i>&lt;service-id&gt;</i>.xml 
-              <br/>services.xml
-              <br/>requests/<i>&lt;report-id&gt;</i>;.xml
-              <br/>requests.xml
+              <br/>/open311/v2/services/<i>&lt;service-id&gt;</i>.<i>&lt;format&gt;</i> 
+              <br/>/open311/v2/services.<i>&lt;format&gt;</i>
+              <br/>/open311/v2/requests/<i>&lt;report-id&gt;</i>.<i>&lt;format&gt;</i>
+              <br/>/open311/v2/requests.<i>&lt;format&gt;</i>
               </span>
             <?php } ?>
           </p>
