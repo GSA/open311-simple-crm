@@ -24,7 +24,7 @@
 	        <?php if(is_config_true(config_item('enable_open311_server'))) { echo('on');} else {echo('off');} ?>
 	      </a>
 	    </div>
-	    <?php if ($auth->logged_in()) { ?>
+	    <?php if (isset($auth) && $auth->logged_in()) { ?>
 	      <a href='<?php echo site_url('admin/about')?>' class="fmse-mysoc">about</a>
 	    <?php } ?>
 

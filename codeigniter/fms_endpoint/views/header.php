@@ -70,7 +70,7 @@
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
 
-                <?php if ($auth->logged_in()) : ?>
+                <?php if (isset($auth) && $auth->logged_in()) : ?>
                     <li><a href='<?php echo site_url('admin/')?>'>Home</a></li> 
                     <li><a href='<?php echo site_url('admin/reports')?>'>Reports detail</a></li>
                     <li><a href='<?php echo site_url('admin/request_updates')?>'>Updates</a></li>
@@ -96,7 +96,7 @@
 
                 <?php else: ?>
             
-                    <?php if ($this->uri->uri_string() != '/auth/login' ) : ?>
+                    <?php if (function_exists($this->uri->uri_string()) && $this->uri->uri_string() != '/auth/login' ) : ?>
                         <li style="float:right;"><a href='<?php echo site_url('auth/login')?>'>Login</a></li>
                     <?php endif; ?>        
         
@@ -106,7 +106,7 @@
 
             <div class="pull-right">
 
-                <?php if ($auth->logged_in()) : ?>
+                <?php if (isset($auth) && $auth->logged_in()) : ?>
 
                     <div class="btn-group">
                         <button type="button" class="btn btn-inverse">
@@ -154,7 +154,7 @@
       <div class="row">    
 
 
-        <?php if ($auth->logged_in() && config_item('announcement_html')) { ?>
+        <?php if (isset($auth) && $auth->logged_in() && config_item('announcement_html')) { ?>
             <div class="fmse-announcement">
                 <?php echo config_item('announcement_html'); ?>
             </div>
