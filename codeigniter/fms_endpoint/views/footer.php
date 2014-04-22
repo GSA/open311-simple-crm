@@ -1,5 +1,8 @@
  	  </div> <!-- /row --> 
+ 	  </div> <!-- /container -->  
+
       <footer>
+	 	  <div class="container">
 
 		<?php 
 			$org_url = config_item('organisation_url');
@@ -25,13 +28,17 @@
 	      </a>
 	    </div>
 	    <?php if (isset($auth) && $auth->logged_in()) { ?>
-	      <a href='<?php echo site_url('admin/about')?>' class="fmse-mysoc">about</a>
+	    <nav role="navigation">
+	    	<ul id="menu-footer-navigation" class="nav">
+	    		<li><a href='<?php echo site_url('admin/about')?>' class="fmse-mysoc">about</a></li>
+	    	</ul>
+	    </nav>
 	    <?php } ?>
+		
+		</div> <!-- /container -->    
 
       </footer>
-    </div> <!-- /container -->    
-
-
+    
 
 <script>window.jQuery || document.write('<script src="/assets/fms-endpoint/js/vendor/jquery-1.10.1.min.js"><\/script>')</script>
 

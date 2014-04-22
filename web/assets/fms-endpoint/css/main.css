@@ -6,14 +6,17 @@
 
 body {
     padding-top: 70px;
-    padding-bottom: 20px;
 }
 
 .navbar .btn-group {
 	padding : 10px 0 0 0;
 }
 
-
+footer {
+	padding : 1em 0;
+	background-color: #EEEEEE;
+	margin-top : 2em;
+}
 
 
 
