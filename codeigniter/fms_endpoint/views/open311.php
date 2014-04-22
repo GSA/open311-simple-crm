@@ -74,11 +74,11 @@
 		</li>
 		<li> Example URLs:
              <span class="code open311api_hints">
-              <br/><?php echo(config_item('base_url')); ?>/services/<i>&lt;service-id&gt;</i>.xml 
-              <br/><?php echo(config_item('base_url')); ?>/services.xml
-              <br/><?php echo(config_item('base_url')); ?>/requests/<i>&lt;report-id&gt;</i>.xml
-              <br/><?php echo(config_item('base_url')); ?>/requests.xml
-              <br/><?php echo(config_item('base_url')); ?>/servicerequestupdates.xml
+              <br/><?php echo(config_item('base_url')); ?>/open311/v2/services/<i>&lt;service-id&gt;</i>.<i>&lt;format&gt;</i>
+              <br/><?php echo(config_item('base_url')); ?>/open311/v2/services.<i>&lt;format&gt;</i>
+              <br/><?php echo(config_item('base_url')); ?>/open311/v2/requests/<i>&lt;report-id&gt;</i>.<i>&lt;format&gt;</i>
+              <br/><?php echo(config_item('base_url')); ?>/open311/v2/requests.<i>&lt;format&gt;</i>
+              <br/><?php echo(config_item('base_url')); ?>/open311/v2/servicerequestupdates.<i>&lt;format&gt;</i>
              </span>
 		</li>
 	</ul>

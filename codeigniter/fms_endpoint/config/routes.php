@@ -43,18 +43,18 @@
 $route['default_controller'] = "welcome";
 $route['scaffolding_trigger'] = "secretdb";
 
-$route['services/(:num)'] = "categories/get_category/$1";
-$route['services/(:num).(:any)'] = "categories/get_category/$1/$2";
-$route['services.(:any)'] = "categories/get_feed/$1";
-$route['services'] = "categories/get_feed";
+$route['open311/v2/services/(:num)'] = "categories/get_category/$1";
+$route['open311/v2/services/(:num).(:any)'] = "categories/get_category/$1/$2";
+$route['open311/v2/services.(:any)'] = "categories/get_feed/$1";
+$route['open311/v2/services'] = "categories/get_feed";
 
-$route['requests/(:num)'] = "reports/get_report/$1";
-$route['requests/(:num).(:any)'] = "reports/get_report/$1/$2";
-$route['requests.(:any)'] = "reports/get_feed/$1";
-$route['requests'] = "reports/get_feed";
+$route['open311/v2/requests/(:num)'] = "reports/get_report/$1";
+$route['open311/v2/requests/(:num).(:any)'] = "reports/get_report/$1/$2";
+$route['open311/v2/requests.(:any)'] = "reports/get_feed/$1";
+$route['open311/v2/requests'] = "reports/get_feed";
 
 
-$route['servicerequestupdates.(:any)'] = "reports/service_request_updates/$1";
+$route['api/v2/servicerequestupdates.(:any)'] = "reports/service_request_updates/$1";
 
 /* End of file routes.php */
 /* Location: ./system/application/config/routes.php */
