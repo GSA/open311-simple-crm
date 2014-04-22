@@ -125,18 +125,18 @@
      
                     </div>
 
-                <?php else:  ?>
+                <?php else:  ?>  
 
-                    <form class="navbar-form navbar-right">                        
+                    <?php echo form_open("auth/login", array('class' => 'navbar-form navbar-right'));?>
                         <div class="form-group">
-                            <input type="text" placeholder="Email" class="form-control">
+                            <input type="text" placeholder="Email" class="form-control" name="identity">
                         </div>
     
                         <div class="form-group">
-                            <input type="password" placeholder="Password" class="form-control">
+                            <input type="password" placeholder="Password" class="form-control" name="password">
                         </div>
-    
-                        <button type="submit" class="btn btn-success">Sign in</button>
+                        <?php // echo form_checkbox('remember', '1', FALSE, 'id="remember"');?>
+                        <input type="submit" name="submit" value="Login" class="btn btn-success">
                     </form>                        
 
                 <?php endif; ?>

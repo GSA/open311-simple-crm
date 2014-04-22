@@ -12,6 +12,9 @@ class Welcome extends CI_Controller {
 	
 	function Welcome() {
 		parent::__construct();
+		$this->load->library('Ion_auth');
+		$this->load->helper('url');
+
 	}
 
 	function index() {
@@ -132,8 +135,10 @@ END_OF_HTML;
 				'problems' => $problems,
 				'details'  => $details,
 				'title'	   => $title,
-				'is_open311_enabled' => $is_open311_enabled
+				'is_open311_enabled' => $is_open311_enabled, 
+				'auth' => $this->ion_auth
 			);	  
+			$this->load->helper('form');
 			$this->load->view('welcome_message', $data);
 		}
 	}
