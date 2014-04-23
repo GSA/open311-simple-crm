@@ -29,13 +29,17 @@ class Welcome extends CI_Controller {
 			array_push($details, 'Edit the <span class="code">$config[\'base_url\']</span> setting on line 14 of <span class="code">codeigniter/fms_endpoint/config/config.php</span>.');
 		}
 	
-		$this->load->database();
-		$err_no = $this->db->_error_number();
-		
-		if ($err_no != 0) { //=====================[ failed to connect to database ]=====================//
+		$this->load->database('', TRUE);
+		$connected 		= $this->db->initialize();
+
+		$err_no 		= ($connected) ? $this->db->_error_number() : null;
+
+
+		if (!$connected && $err_no !== 0) { //=====================[ failed to connect to database ]=====================//
 			
 			log_message('debug', '$load database yields error no.: ' . $err_no);
 			$msg =<<<END_OF_HTML
+
 	Check that: 
 	<ol>
 	  <li> you've created the database</li>
@@ -43,6 +47,7 @@ class Welcome extends CI_Controller {
 	  <li> you've updated <span class='code'>codeigniter/fms_endpoint/config/database.php</span> with the correct values</li>
 	</ol>
 END_OF_HTML;
+
 			array_push($problems, "Can't connect to database: make sure your database configuration is correct");
 			array_push($details, $msg);	
  		} else {
