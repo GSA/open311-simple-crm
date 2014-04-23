@@ -3,7 +3,7 @@
 
   <div class="fmse-content">
     <h2>
-      FMS-endpoint is running 
+      Open311 Simple CRM is running 
       <?php if (count($problems) > 0) { ?>
         &mdash; but with problems 
         <i class="glyphicon glyphicon-exclamation-sign"></i>
@@ -17,7 +17,7 @@
       <ul class="success_messages">
         <li>
           <p>
-            This is the FMS-endpoint root page.
+            This is the Open311 Simple CRM root page.
           </p>
           <div class="details">
               You can leave this page as it is, or:

@@ -20,7 +20,7 @@ class Welcome extends CI_Controller {
 	function index() {
 		$problems  = array();
 		$details = array();
-		$title = 'FMS-endpoint';
+		$title = 'Open311 Simple CRM';
 		$is_open311_enabled =  false;
 		$this->load->helper('fms_endpoint');
 
