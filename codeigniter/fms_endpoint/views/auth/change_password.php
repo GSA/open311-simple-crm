@@ -5,20 +5,38 @@
 
 <?php echo form_open("auth/change_password");?>
 
-      <p>Old Password:<br />
-      <?php echo form_input($old_password);?>
-      </p>
+<div class="form-group">
+      <label for="">Old Password:</label>
+      <?php 
+            $old_password['class'] = 'form-control'; 
+            echo form_input($old_password);
+      ?>
+</div>
       
-      <p>New Password (at least <?php echo $min_password_length;?> characters long):<br />
-      <?php echo form_input($new_password);?>
-      </p>
+<div class="form-group">      
+      <label for="">New Password (at least <?php echo $min_password_length;?> characters long):</label>
+      <?php 
+            $new_password['class'] = 'form-control'; 
+            echo form_input($new_password);
+      ?>            
+</div>
       
-      <p>Confirm New Password:<br />
-      <?php echo form_input($new_password_confirm);?>
-      </p>
+<div class="form-group">      
+      <label for="">Confirm New Password:</label>
+      <?php 
+            $new_password_confirm['class'] = 'form-control'; 
+            echo form_input($new_password_confirm);
+      ?>            
+</div>
       
-      <?php echo form_input($user_id);?>
-      <p><?php echo form_submit('submit', 'Change');?></p>
+<div class="form-group">      
+      <?php 
+            $user_id['class'] = 'form-control'; 
+            echo form_input($user_id);
+      ?>      
+
+      <?php echo form_submit('submit', 'Change');?>
+</div>
       
 <?php echo form_close();?>
 <?php $this->load->view('footer');?>
