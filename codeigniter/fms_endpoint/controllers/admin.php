@@ -24,7 +24,14 @@ class Admin extends CI_Controller {
 
 	function index() {
 		try{
-			$crud = $this->_set_common_report_crud(array('report_id','status', 'requested_datetime','priority','category_id','external_id','media_url','description','address'));
+			
+			if($this->config->item('default_report_columns')){
+				$default_columns = explode(',', $this->config->item('default_report_columns'));
+			} else {
+				$default_columns = array('report_id','status', 'requested_datetime','priority','category_id','external_id','media_url','description','address');
+			}
+
+			$crud = $this->_set_common_report_crud($default_columns);
 			$output = $crud->render();
 			$this->_admin_output($output);
 		} catch(Exception $e) {
@@ -282,7 +289,7 @@ class Admin extends CI_Controller {
 		$crud->edit_fields($default_columns);
 		$crud->set_theme('twitter-bootstrap');
 		$crud->set_table('reports');
-		$crud->set_subject('Problem report');
+		$crud->set_subject('Report');
 		$crud->set_relation('category_id','categories','category_name',null,'category_name ASC');
 		$crud->set_relation('priority','priorities',
 			'<span class="fmse-prio fmse-prio{prio_value}">{prio_name}</span>',null,'prio_value ASC');
