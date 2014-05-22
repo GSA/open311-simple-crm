@@ -22,7 +22,7 @@
 			</div>
 		<?php } ?>
 	    <div class="open311-status">
-	      <a href="/admin/open311" 
+	      <a href="<?php echo base_url() ?>/admin/open311" 
 	        class="open311-status-<?php if(is_config_true(config_item('enable_open311_server'))) { echo('on');} else {echo('off');} ?>">
 	        Open311 server is
 	        <?php if(is_config_true(config_item('enable_open311_server'))) { echo('on');} else {echo('off');} ?>
@@ -41,9 +41,9 @@
       </footer>
     
 
-<script>window.jQuery || document.write('<script src="/assets/fms-endpoint/js/vendor/jquery-1.10.1.min.js"><\/script>')</script>
+<script>window.jQuery || document.write('<script src="<?php echo base_url() ?>/assets/fms-endpoint/js/vendor/jquery-1.10.1.min.js"><\/script>')</script>
 
-<script src="/assets/fms-endpoint/js/vendor/bootstrap.min.js"></script>
+<script src="<?php echo base_url() ?>/assets/fms-endpoint/js/vendor/bootstrap.min.js"></script>
 
 
 <?php if (config_item('google_analytics_id')): ?>

@@ -10,10 +10,10 @@
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width">
 
-        <link rel="stylesheet" href="/assets/fms-endpoint/css/bootstrap.min.css">
-        <link rel="stylesheet" href="/assets/fms-endpoint/css/bootstrap-theme.min.css">
+        <link rel="stylesheet" href="<?php echo base_url() ?>/assets/fms-endpoint/css/bootstrap.min.css">
+        <link rel="stylesheet" href="<?php echo base_url() ?>/assets/fms-endpoint/css/bootstrap-theme.min.css">
         
-        <link rel="stylesheet" href="/assets/fms-endpoint/css/main.css">
+        <link rel="stylesheet" href="<?php echo base_url() ?>/assets/fms-endpoint/css/main.css">
 
         <?php 
         if (isset($css_files)) :
@@ -36,15 +36,15 @@
             <?php endforeach;
         endif; ?>
 
-      <link rel="stylesheet" type="text/css" href="/assets/fms-endpoint/css/fms-endpoint.css" />
-      <link rel="stylesheet" type="text/css" href="/assets/fms-endpoint/css/print.css" media="print" />
+      <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>/assets/fms-endpoint/css/fms-endpoint.css" />
+      <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>/assets/fms-endpoint/css/print.css" media="print" />
 
       <?php if (config_item('cobrand_name')) { ?>
-        <link rel="stylesheet" type="text/css" href="/assets/cobrands/<?php echo config_item('cobrand_name'); ?>/style.css" />
+        <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>/assets/cobrands/<?php echo config_item('cobrand_name'); ?>/style.css" />
       <?php } ?>
 
 
-        <script src="/assets/fms-endpoint/js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script>
+        <script src="<?php echo base_url() ?>/assets/fms-endpoint/js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script>
     </head>
 
 
