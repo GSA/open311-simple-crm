@@ -213,8 +213,8 @@ $(function(){
 	}
 
 	$('.delete-row').live('click', function() {
-		confirmationModalDialog('Confirmation', message_alert_delete);
-		$('.ok-confirmation').data('target-url', $(this).data('target-url'));
+		confirmationModalDialog('Confirmation', message_alert_delete, $(this).data('target-url'));
+		//$('.ok-confirmation').data('target-url', $(this).data('target-url'));
 		return false;
 	});
 
@@ -286,22 +286,22 @@ function displaying_and_pages()
 }
 
 //	Chama o método para excluir o registro de informação do BD
-function confirmationModalDialog(title_modal, message_text){
+function confirmationModalDialog(title_modal, message_text, target_url){
 
 	if ($('#dialog_modal_message')[0]){
 		$('#dialog_modal_message').remove();
 	}
 
-	var modal_content = '<div id="dialog_modal_message" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="dialog_modal_message_label" aria-hidden="true"><div class="modal-header">	<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>	<h3 id="dialog_modal_message_label">' + title_modal + '</h3></div><div class="modal-body">	<p>'+ message_text + '</p></div><div class="modal-footer">	<button class="btn cancel-confirmation" data-dismiss="modal" aria-hidden="true">Cancel</button>	<button class="btn btn-primary ok-confirmation">Ok</button></div></div>';
+	var modal_content = '<div id="dialog_modal_message" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="dialog_modal_message_label" aria-hidden="true"> <div class="modal-dialog"> <div class="modal-content"><div class="modal-header">	<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>	<h3 id="dialog_modal_message_label">' + title_modal + '</h3></div><div class="modal-body">	<p>'+ message_text + '</p></div><div class="modal-footer">	<button class="btn cancel-confirmation" data-dismiss="modal" aria-hidden="true">Cancel</button>	<button class="btn btn-primary ok-confirmation">Ok</button></div></div></div></div>';
 	$('#ajax_list').after(modal_content);
 
 	$('#dialog_modal_message')
-		.modal({ keyboard: false })
-		.on('shown', function(){
+		.modal({ "show": true })
+		.on('shown.bs.modal', function(){
 			$(this).find('button.cancel-confirmation').click(function(){
 				$('button.close').trigger('click');
-			}).end().find('button.ok-confirmation').click(function(){
-				deteleGroceryCrudInformation($(this).data('target-url'));
+			}).end().find('.ok-confirmation').click(function(){
+				deteleGroceryCrudInformation(target_url);
 				$('button.close').trigger('click');
 			});
 		});
