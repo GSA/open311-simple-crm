@@ -336,5 +336,4 @@ CREATE TABLE IF NOT EXISTS `reports` (
 -- Dumping data for table `reports`
 --
 
-INSERT INTO `reports` VALUES(1000, 1, NULL, 0, '001', 'Hole in the road', NULL, NULL, NULL, 1, '99', '2012-05-01 12:00:00', NULL, '2012-05-02 13:00:00', 'Intersection of 22nd St and San Bruna Ave', NULL, NULL, 37.756954, -122.40473, 'a_user@example.com', NULL, NULL, 'Anne', 'Example', NULL, 'http://farm3.static.flickr.com/2002/2212426634_5ed477a060.jpg', null);
-
+INSERT INTO `reports` VALUES(1000, 1, NULL, 0, '001', 'Hole in the road', NULL, NULL, NULL, 1, '99', '2012-05-01 12:00:00', NULL, '2012-05-02 13:00:00', 'Intersection of 22nd St and San Bruna Ave', NULL, NULL, 37.756954, -122.40473, 'a_user@example.com', NULL, NULL, 'Anne', 'Example', NULL, 'http://farm3.static.flickr.com/2002/2212426634_5ed477a060.jpg', null, null);
