@@ -16,7 +16,8 @@
 
 $config['base_url'] = '';
 
-
+// Set local time zone 
+date_default_timezone_set('America/New_York');
 
 // if you've explictly set $config['base_url'] to a URL, you can delete the following
 // conditional, which autodetects the URL if it hasn't been set if you want.
