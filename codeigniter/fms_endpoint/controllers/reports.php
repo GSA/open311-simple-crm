@@ -61,19 +61,19 @@ class Reports extends CI_Controller {
 			}
 		}
 		
-		$description = (!empty($_POST['description'])) ? $_POST['description'] : '';
-		$lat = (!empty($_POST['lat'])) ? $_POST['lat'] : '';
-		$long = (!empty($_POST['long'])) ? $_POST['long'] : '';
+		$description = (!empty($_POST['description'])) ? $_POST['description'] : null;
+		$lat = (!empty($_POST['lat'])) ? $_POST['lat'] : null;
+		$long = (!empty($_POST['long'])) ? $_POST['long'] : null;
 		$requested_datetime = (!empty($_POST['requested_datetime'])) ? $_POST['requested_datetime'] : date("Y-m-d H:i:s",time());
-		$address_string = (!empty($_POST['address_string'])) ? $_POST['address_string'] : '';
-		$address_id = (!empty($_POST['address_id'])) ? $_POST['address_id'] : '';
-		$email = (!empty($_POST['email'])) ? $_POST['email'] : '';
-		$device_id = (!empty($_POST['device_id'])) ? $_POST['device_id'] : '';
-		$account_id = (!empty($_POST['account_id'])) ? $_POST['account_id'] : '';
-		$first_name = (!empty($_POST['first_name'])) ? $_POST['first_name'] : '';
-		$last_name = (!empty($_POST['last_name'])) ? $_POST['last_name'] : '';
-		$phone = (!empty($_POST['phone'])) ? $_POST['phone'] : '';
-		$media_url = (!empty($_POST['media_url'])) ? $_POST['media_url'] : '';
+		$address_string = (!empty($_POST['address_string'])) ? $_POST['address_string'] : null;
+		$address_id = (!empty($_POST['address_id'])) ? $_POST['address_id'] : null;
+		$email = (!empty($_POST['email'])) ? $_POST['email'] : null;
+		$device_id = (!empty($_POST['device_id'])) ? $_POST['device_id'] : null;
+		$account_id = (!empty($_POST['account_id'])) ? $_POST['account_id'] : null;
+		$first_name = (!empty($_POST['first_name'])) ? $_POST['first_name'] : null;
+		$last_name = (!empty($_POST['last_name'])) ? $_POST['last_name'] : null;
+		$phone = (!empty($_POST['phone'])) ? $_POST['phone'] : null;
+		$media_url = (!empty($_POST['media_url'])) ? $_POST['media_url'] : null;
 
 		$attribute = (!empty($_POST['attribute'])) ? $_POST['attribute'] : null;
 
@@ -85,7 +85,8 @@ class Reports extends CI_Controller {
 			$status_notes = "Received with unrecognised status: $status";
 			$status = REPORT_UNKNOWN_STATUS_ID;
 		}
-		
+
+
 		$data = array(
 			'status'				=> $status,
 			'category_id' 			=> $service_code      ,
