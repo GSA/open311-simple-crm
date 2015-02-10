@@ -131,6 +131,9 @@ class Reports extends CI_Controller {
 
 	function get_feed($format = 'json') {
 
+		$this->db->select('reports.*', FALSE);
+		$this->db->select('statuses.status_name, statuses.status_name AS status_name', FALSE);
+
 		if(array_key_exists('service_code', $_POST)) { // if we're receiving a POST report call.
 			return $this->post_report($format);
 		}
@@ -153,6 +156,8 @@ class Reports extends CI_Controller {
 			$this->db->where('requested_datetime <=', $end_date);
 		}
 
+		$this->db->join('statuses', 'reports.status = statuses.status_id');
+
 		$data['query'] = $this->db->get('reports', 1000);
 
  		switch ($format) {
@@ -167,6 +172,7 @@ class Reports extends CI_Controller {
 
 	function get_report($report_id, $format = 'json') {
 		$this->db->where('report_id', $report_id);
+		$this->db->join('statuses', 'request_updates.status_id = statuses.status_id');		
 		$data['query'] = $this->db->get('reports');
 
  		switch ($format) {

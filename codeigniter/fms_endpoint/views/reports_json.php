@@ -9,11 +9,10 @@ $response = array();
 
 foreach($query->result() as $row) {
 
-
 		$request = new stdClass();
 
 		$request->service_request_id			= $row->report_id;               
-		$request->status						= $row->status;            
+		$request->status						= $row->status_name;            
 		$request->status_notes					= $row->status_notes;           
 		$request->service_code					= $row->category_id;  
 		$request->description					= $row->description;  			          
