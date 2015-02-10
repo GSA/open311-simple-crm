@@ -171,8 +171,12 @@ class Reports extends CI_Controller {
 	}
 
 	function get_report($report_id, $format = 'json') {
+		
+		$this->db->select('reports.*', FALSE);
+		$this->db->select('statuses.status_name, statuses.status_name AS status_name', FALSE);
+
 		$this->db->where('report_id', $report_id);
-		$this->db->join('statuses', 'request_updates.status_id = statuses.status_id');		
+		$this->db->join('statuses', 'reports.status = statuses.status_id');
 		$data['query'] = $this->db->get('reports');
 
  		switch ($format) {
