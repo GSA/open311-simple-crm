@@ -131,12 +131,12 @@ class Reports extends CI_Controller {
 
 	function get_feed($format = 'json') {
 
-		$this->db->select('reports.*', FALSE);
-		$this->db->select('statuses.status_name, statuses.status_name AS status_name', FALSE);
-
 		if(array_key_exists('service_code', $_POST)) { // if we're receiving a POST report call.
 			return $this->post_report($format);
 		}
+
+		$this->db->select('reports.*', FALSE);
+		$this->db->select('statuses.status_name, statuses.status_name AS status_name', FALSE);
 
 		if (!empty($_GET['status'])) {
 			$this->db->where('status', $_GET['status']);
@@ -402,8 +402,8 @@ class Reports extends CI_Controller {
 		if (is_config_true(config_item('open311_use_api_keys'))) {
 			if (empty($api_key)) {
 				show_error_xml("You must provide an API key to submit reports to this server.", OPEN311_SERVICE_BAD_API_KEY);
-			} else {
-				$api_key_lookup = $this->db->get_where('api_keys', array('api_key' => $api_key));
+			} else {		
+				$api_key_lookup = $this->db->get_where('api_keys', array('api_key' => $api_key));				
 				if ($api_key_lookup->num_rows()==0) {
 					show_error_xml("The API key you provided (\"$api_key\") is not valid for this server.", OPEN311_SERVICE_BAD_API_KEY);
 				} else {
