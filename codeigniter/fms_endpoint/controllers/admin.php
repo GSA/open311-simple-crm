@@ -274,11 +274,31 @@ class Admin extends CI_Controller {
 	// on report_id breaks other field renders (such as actions) that contain report_id.
 	function _set_common_report_crud($columns) {
 		$crud = new grocery_CRUD();
+
 		// default columns excludes: token address_id simply because FMS/FMS-endpoint doesn't use them
-		$default_columns = array('report_id', 'status', 'requested_datetime', 'priority',  'category_id',
-			'external_id', 'media_url', 'status_notes', 'description', 'agency_responsible', 'service_notice',
-			'updated_datetime', 'expected_datetime', 'address', 'postal_code', 'lat', 'long',
-			'email', 'device_id', 'source_client', 'account_id', 'first_name', 'last_name', 'phone','engineer');
+		$default_columns = array('report_id', 
+								 'status', 
+								 'requested_datetime', 
+								 'updated_datetime', 
+								 'expected_datetime',
+								 'priority',  
+								 'category_id',
+								 'media_url', 
+								 'status_notes', 
+								 'description', 
+								 'agency_responsible', 
+								 'service_notice',
+								 'address', 
+								 'postal_code', 
+								 'lat', 'long',								 
+								 'device_id', 
+								 'source_client', 
+								 'account_id', 
+								 'first_name', 
+								 'last_name', 
+								 'email', 
+								 'phone',
+								 'engineer');
 		$columns = $columns? $columns : $default_columns;
 		foreach ($columns as &$colname) {
 			if ($colname == 'report_id') {
@@ -290,6 +310,7 @@ class Admin extends CI_Controller {
 		$crud->set_theme('twitter-bootstrap');
 		$crud->set_table('reports');
 		$crud->set_subject('Report');
+
 		$crud->set_relation('category_id','categories','category_name',null,'category_name ASC');
 		$crud->set_relation('priority','priorities',
 			'<span class="fmse-prio fmse-prio{prio_value}">{prio_name}</span>',null,'prio_value ASC');
@@ -297,29 +318,53 @@ class Admin extends CI_Controller {
 			'<span class="fmse-status-{is_closed}">{status_name}</span>',null,'status_name ASC');
 		$crud->set_relation('source_client','open311_clients', 
 			'<a href="/admin/open311_clients/{id}">{name}</a>', null,'name ASC');
+
 		$crud->display_as('client_id', 'Client');
 		$crud->callback_column('media_url',array($this,'_linkify'));
 		$crud->callback_column('external_id', array($this, '_get_external_url'));
 		$crud->callback_edit_field('media_url', array($this,'_text_media_url_field'));  
+
 		$crud->display_as('requested_datetime', 'Received')
-			->display_as('updated_datetime', 'Updated')
+			->display_as('updated_datetime', 'Last Updated')		
 			->display_as('expected_datetime', 'Expected')		
 			->display_as('category_id', 'Category')
 			->display_as('media_url', 'Media URL');
 		$external_id_col_name = config_item('external_id_col_name');
 		$crud->display_as('external_id', empty($external_id_col_name)?'External ID':$external_id_col_name);
-		$crud->unset_texteditor('address', 'status_notes', 'service_notice');
+		$crud->unset_texteditor('description', 'address', 'status_notes', 'service_notice');
 		$crud->add_action('View', '/assets/fms-endpoint/images/report.png', 'admin/report');
 		
 		$crud->callback_column('xxx_report_id', array($this, '_report_id_link_field'));
 		$crud->display_as('xxx_report_id', 'ID');
 		$crud->callback_edit_field('xxx_report_id', array($this, '_read_only_report_id_field'));
-		
+
+		//$crud->fields($default_columns);
+		//$crud->field_type('updated_datetime','invisible');
+		//$crud->callback_before_update(function($post_array){
+		//    $post_array['updated_datetime'] = date('Y-m-d H:i:s');
+		//    return $post_array;
+		//});
+
+		$crud->callback_field('updated_datetime',array($this, '_set_update_time'));
+		$crud->callback_field('requested_datetime',array($this, '_set_requested_datetime'));
+
+		$crud->field_type('report_id','readonly');
+
 		$crud->callback_before_update(array($this,'_fix_zero_prio_callback'));
 		$crud->callback_after_update(array($this, '_check_for_status_update_after'));
 		
 		return $crud;
 	}
+
+	function _set_update_time($value, $primary_key){    
+	    $timestamp_field = "<input id='updated_datetime' name='updated_datetime' type='hidden' value='".date('Y-m-d H:i:s')."' />" . date('l F j, Y \a\t g:i a', strtotime($value));;
+	    return $timestamp_field;
+	}
+
+	function _set_requested_datetime($value, $primary_key){    
+	    $timestamp_field = "<input id='$primary_key' name='$primary_key' type='hidden' value='$value' />" . date('l F j, Y \a\t g:i a', strtotime($value));;
+	    return $timestamp_field;
+	}	
 	
 	// force the default priority (0) since the groceryCRUD drop-down for priority doesn't
 	// seem to auto-select an option if it's zero... hence it's returned from the form as
@@ -351,6 +396,9 @@ class Admin extends CI_Controller {
 	}
 	function _read_only_name_field($value, $primary_key) { return $this->_read_only_field('name', $value); }
 	function _read_only_desc_field($value, $primary_key) { return $this->_read_only_field('desc', $value); }
+	function _read_only_updated_datetime($value, $primary_key) { return $this->_read_only_field('updated_datetime', $value); }
+	function _read_only_requested_datetime($value, $primary_key) { return $this->_read_only_field('requested_datetime', $value); }
+
 	function _read_only_field($name, $value) {
 		return '<input type="hidden" value="' . $value . '" name="' . $name . '"/>' . $value;
 	}
@@ -360,7 +408,7 @@ class Admin extends CI_Controller {
 	function _text_client_url_field($value, $primary_key) { return $this->_text_field('client_url', $value); }
 	function _text_keywords_field($value, $primary_key) { return $this->_text_field('keywords', $value); }
 	function _text_field($name, $value) {
-		return '<input type="text" value="' . $value . '" name="' . $name . '"/>';
+		return '<input class="form-control" type="text" value="' . $value . '" name="' . $name . '"/>';
 	}
 	function _yes_no_field($value, $primary_key) { return ($value? "yes" : "no"); }
 
