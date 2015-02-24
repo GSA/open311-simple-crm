@@ -15,7 +15,7 @@ foreach($query->result() as $row) {
 		$request->status						= $row->status_name;            
 		$request->status_notes					= $row->status_notes;           
 		$request->service_code					= $row->category_id;  
-		$request->description					= $row->description;  			          
+		$request->description					= stripslashes($row->description);  			          
 		$request->agency_responsible			= $row->agency_responsible; 						         						
 		$request->service_notice				= $row->service_notice; 
 		$request->requested_datetime			= dateformat($row->requested_datetime); 

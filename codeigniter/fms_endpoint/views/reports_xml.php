@@ -14,11 +14,11 @@ foreach($query->result() as $row) {
 	$request = xml_add_child($requests, 'request');
 	
 	xml_add_child($request, 'service_request_id', $row->report_id);
-	xml_add_child($request, 'status', $row->status);
+	xml_add_child($request, 'status', $row->status_name);
 	xml_add_child($request, 'status_notes', $row->status_notes);
 	//xml_add_child($request, 'service_name', $row->category_name);
 	xml_add_child($request, 'service_code', $row->category_id);
-	xml_add_child($request, 'description', $row->description);
+	xml_add_child($request, 'description', stripslashes($row->description));
 	xml_add_child($request, 'agency_responsible', $row->agency_responsible);
 	xml_add_child($request, 'service_notice', $row->service_notice);
 	xml_add_child($request, 'requested_datetime', dateformat($row->requested_datetime));
