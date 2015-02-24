@@ -158,6 +158,8 @@ class Reports extends CI_Controller {
 
 		$this->db->join('statuses', 'reports.status = statuses.status_id');
 
+		$this->db->order_by("requested_datetime", "desc");
+
 		$data['query'] = $this->db->get('reports', 1000);
 
  		switch ($format) {
