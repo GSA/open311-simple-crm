@@ -139,7 +139,7 @@ class Reports extends CI_Controller {
 		$this->db->select('statuses.status_name, statuses.status_name AS status_name', FALSE);
 
 		if (!empty($_REQUEST['status'])) {
-			$this->db->where('status', $_REQUEST['status']);
+			$this->db->where('status_name', $_REQUEST['status']);
 		} else {
 			$this->db->where("(status_name = 'open' OR status_name = 'closed')");
 		}
