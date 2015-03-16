@@ -138,21 +138,23 @@ class Reports extends CI_Controller {
 		$this->db->select('reports.*', FALSE);
 		$this->db->select('statuses.status_name, statuses.status_name AS status_name', FALSE);
 
-		if (!empty($_GET['status'])) {
-			$this->db->where('status', $_GET['status']);
+		if (!empty($_REQUEST['status'])) {
+			$this->db->where('status', $_REQUEST['status']);
+		} else {
+			$this->db->where("(status_name = 'open' OR status_name = 'closed')");
 		}
 
-		if (!empty($_GET['service_code'])) {
-			$this->db->where('category_id', $_GET['service_code']);
+		if (!empty($_REQUEST['service_code'])) {
+			$this->db->where('category_id', $_REQUEST['service_code']);
 		}
 
-		if (!empty($_GET['start_date'])) {
-			$start_date = date("Y-m-d H:i:s", strtotime($_GET['start_date']));
+		if (!empty($_REQUEST['start_date'])) {
+			$start_date = date("Y-m-d H:i:s", strtotime($_REQUEST['start_date']));
 			$this->db->where('requested_datetime >=', $start_date);
 		}
 
-		if (!empty($_GET['end_date'])) {
-			$end_date = date("Y-m-d H:i:s", strtotime($_GET['end_date']));
+		if (!empty($_REQUEST['end_date'])) {
+			$end_date = date("Y-m-d H:i:s", strtotime($_REQUEST['end_date']));
 			$this->db->where('requested_datetime <=', $end_date);
 		}
 
@@ -161,6 +163,7 @@ class Reports extends CI_Controller {
 		$this->db->order_by("requested_datetime", "desc");
 
 		$data['query'] = $this->db->get('reports', 1000);
+
 
  		switch ($format) {
 			case "xml":
