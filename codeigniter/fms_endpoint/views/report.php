@@ -3,7 +3,12 @@
 		<a href="<?php echo( $image_url ); ?>"><img class="image" src="<?php echo( $image_url ); ?>" alt=""/></a>
 	<?php } ?>
 	<div class="report-data">
-		<dl >
+
+
+
+		<a class="btn btn-default" href="<?php echo site_url('/admin/index/edit/' . $report->report_id) ?>">Edit this Report</a>
+
+		<dl style="margin-top : 3em;">
 			<dt>Report ID</dt>
 			<dd><span class="report-id"><?php echo($report->report_id) ?></span>
 			<?php if (!empty($report->source_client)) {
@@ -112,6 +117,20 @@
 			</dl>
 		</div>
 		
+		<?php if(!empty(($report->attribute)) && $attributes = json_decode($report->attribute)): ?>
+		<h3 style="margin-top : 5em">Custom Attributes</h3>
+		<div class="custom-attributes">
+			<?php foreach ($attributes as $attribute): ?>
+			<?php $attribute_title = (!empty($attribute->attribute_description)) ? $attribute->attribute_description : $attribute->attribute_code; ?>
+			<dl >
+				<dt><?php echo $attribute_title; ?></dt>
+				<dd><?php echo $attribute->value ?></dd>
+			</dl>
+			<?php endforeach; ?>
+		</div>
+		<?php endif; ?>
+
+		<h3 style="margin-top : 5em">Agency Delegation</h3>
 		<div class="other-data">
 			<dl >
 				<dt>Responsible</dt>
@@ -126,5 +145,10 @@
 				<dd><?php echo($report->engineer)?></dd>
 			</dl>
 		</div>
+
+
+
 	</div>
 </div>
+
+
