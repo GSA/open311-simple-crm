@@ -323,7 +323,7 @@ class Admin extends CI_Controller {
 		$crud->set_relation('status','statuses','status_name',null,'status_name ASC');
 
 		$crud->set_relation('source_client','open311_clients', 
-			'<a href="/admin/open311_clients/{id}">{name}</a>', null,'name ASC');
+			'<a href="admin/open311_clients/{id}">{name}</a>', null,'name ASC');
 
 		$crud->display_as('client_id', 'Client');
 		$crud->callback_column('media_url',array($this,'_linkify'));
@@ -338,7 +338,7 @@ class Admin extends CI_Controller {
 		$external_id_col_name = config_item('external_id_col_name');
 		$crud->display_as('external_id', empty($external_id_col_name)?'External ID':$external_id_col_name);
 		$crud->unset_texteditor('description', 'address', 'status_notes', 'service_notice');
-		$crud->add_action('View', '/assets/fms-endpoint/images/report.png', 'admin/report');
+		$crud->add_action('View', 'assets/fms-endpoint/images/report.png', 'admin/report');
 		
 		$crud->callback_column('xxx_report_id', array($this, '_report_id_link_field'));
 		$crud->callback_column('requested_datetime', array($this, '_report_datetime_field'));
@@ -434,7 +434,7 @@ class Admin extends CI_Controller {
 	// make the ID a link to the report
 	function _report_id_link_field($value, $row) {
 		$rid = $row->report_id;
-		return '<a href="' . config_item('base_url') . "/admin/report/$rid" . '" class="report-id-link">' . $rid . "</a>";
+		return '<a href="' . site_url("admin/report/$rid" ) . '" class="report-id-link">' . $rid . "</a>";
 	}
 
 	// change date format
