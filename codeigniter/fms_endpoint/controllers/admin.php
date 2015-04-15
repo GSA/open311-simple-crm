@@ -441,7 +441,7 @@ class Admin extends CI_Controller {
 	function _report_datetime_field($value, $row) {
 		$datetime = $value;
 		if(!empty($value)) {
-			return date('F d, Y g:i:s a', strtotime($value));	
+			return date('F d, Y g:i a', strtotime($value));	
 		} else {
 			return '';
 		}
