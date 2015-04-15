@@ -420,9 +420,9 @@ class Admin extends CI_Controller {
 	// category type
 	function _report_category_button($value, $row) {
 		
-		if ($value == "Suggest Data") {
+		if ($value == "New Data Request") {
 			$class = "btn-info";
-		} else if ($value == "Dataset Issue") {
+		} else if ($value == "New Data Issue") {
 			$class = "btn-warning";
 		} else {
 			$class = "btn-default";
