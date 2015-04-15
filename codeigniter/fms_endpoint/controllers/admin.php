@@ -424,7 +424,7 @@ class Admin extends CI_Controller {
 			$class = "btn-info";
 		} else if ($value == "Dataset Issue") {
 			$class = "btn-warning";
-		} else if ($value == "closed") {
+		} else {
 			$class = "btn-default";
 		}
 
