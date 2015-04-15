@@ -338,7 +338,7 @@ class Admin extends CI_Controller {
 		$external_id_col_name = config_item('external_id_col_name');
 		$crud->display_as('external_id', empty($external_id_col_name)?'External ID':$external_id_col_name);
 		$crud->unset_texteditor('description', 'address', 'status_notes', 'service_notice');
-		$crud->add_action('View', 'assets/fms-endpoint/images/report.png', 'admin/report');
+		$crud->add_action('View', site_url('assets/fms-endpoint/images/report.png'), 'admin/report');
 		
 		$crud->callback_column('xxx_report_id', array($this, '_report_id_link_field'));
 		$crud->callback_column('requested_datetime', array($this, '_report_datetime_field'));
