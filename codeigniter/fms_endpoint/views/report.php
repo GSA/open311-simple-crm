@@ -117,7 +117,7 @@
 			</dl>
 		</div>
 		
-		<?php if(!empty(($report->attribute)) && $attributes = json_decode($report->attribute)): ?>
+		<?php if( !empty($report->attribute) && $attributes = json_decode($report->attribute) ): ?>
 		<h3 style="margin-top : 5em">Custom Attributes</h3>
 		<div class="custom-attributes">
 			<?php foreach ($attributes as $attribute): ?>
