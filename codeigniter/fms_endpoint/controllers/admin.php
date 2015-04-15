@@ -28,7 +28,7 @@ class Admin extends CI_Controller {
 			if($this->config->item('default_report_columns')){
 				$default_columns = explode(',', $this->config->item('default_report_columns'));
 			} else {
-				$default_columns = array('report_id','status', 'requested_datetime','priority','category_id','external_id','media_url','description','address');
+				$default_columns = array('report_id','status', 'requested_datetime','priority','category_id','description','updated_datetime');
 			}
 
 			$crud = $this->_set_common_report_crud($default_columns);
@@ -39,11 +39,17 @@ class Admin extends CI_Controller {
 		}
 	}
 
-	function reports() {
+	function reports() {		
 		// explicitly list all fields (was missing out report-id)
 		$crud = $this->_set_common_report_crud(array());
+		//$crud->callback_before_update(array($this,'_set_modified_time'));
 		$output = $crud->render();
 		$this->_admin_output($output);
+	}
+
+	// show a single report (anticipate this is for printing)
+	function _set_modified_time($post_array, $primary_key) {
+		
 	}
 
 	// show a single report (anticipate this is for printing)
@@ -306,16 +312,16 @@ class Admin extends CI_Controller {
 			}
 		}
 		$crud->columns($columns);
+		$crud->order_by('requested_datetime','desc');
 		$crud->edit_fields($default_columns);
 		$crud->set_theme('twitter-bootstrap');
 		$crud->set_table('reports');
 		$crud->set_subject('Report');
 
 		$crud->set_relation('category_id','categories','category_name',null,'category_name ASC');
-		$crud->set_relation('priority','priorities',
-			'<span class="fmse-prio fmse-prio{prio_value}">{prio_name}</span>',null,'prio_value ASC');
-		$crud->set_relation('status','statuses',
-			'<span class="fmse-status-{is_closed}">{status_name}</span>',null,'status_name ASC');
+		$crud->set_relation('priority','priorities','prio_name',null,'prio_value ASC');
+		$crud->set_relation('status','statuses','status_name',null,'status_name ASC');
+
 		$crud->set_relation('source_client','open311_clients', 
 			'<a href="/admin/open311_clients/{id}">{name}</a>', null,'name ASC');
 
@@ -335,6 +341,11 @@ class Admin extends CI_Controller {
 		$crud->add_action('View', '/assets/fms-endpoint/images/report.png', 'admin/report');
 		
 		$crud->callback_column('xxx_report_id', array($this, '_report_id_link_field'));
+		$crud->callback_column('requested_datetime', array($this, '_report_datetime_field'));
+		$crud->callback_column('updated_datetime', array($this, '_report_datetime_field'));
+		$crud->callback_column($this->unique_field_name('status'), array($this, '_report_status_button'));
+		$crud->callback_column($this->unique_field_name('category_id'), array($this, '_report_category_button'));
+
 		$crud->display_as('xxx_report_id', 'ID');
 		$crud->callback_edit_field('xxx_report_id', array($this, '_read_only_report_id_field'));
 
@@ -356,13 +367,18 @@ class Admin extends CI_Controller {
 		return $crud;
 	}
 
+
+    function unique_field_name($field_name) {
+	    return 's'.substr(md5($field_name),0,8); //This s is because is better for a string to begin with a letter and not with a number
+    }
+
 	function _set_update_time($value, $primary_key){    
 	    $timestamp_field = "<input id='updated_datetime' name='updated_datetime' type='hidden' value='".date('Y-m-d H:i:s')."' />" . date('l F j, Y \a\t g:i a', strtotime($value));;
 	    return $timestamp_field;
 	}
 
 	function _set_requested_datetime($value, $primary_key){    
-	    $timestamp_field = "<input id='$primary_key' name='$primary_key' type='hidden' value='$value' />" . date('l F j, Y \a\t g:i a', strtotime($value));;
+	    $timestamp_field = "<input id='$primary_key' name='$primary_key' type='hidden' value='$value' />" . date('l F j, Y \a\t g:i a', strtotime($value));
 	    return $timestamp_field;
 	}	
 	
@@ -385,14 +401,55 @@ class Admin extends CI_Controller {
 		$this->load->view('admin_view.php', $output);
 	}
 
-	// make the ID a link to the 
+	// field button
+	function _report_status_button($value, $row) {
+		
+		if ($value == "new") {
+			$class = "btn-danger";
+		} else if ($value == "open") {
+			$class = "btn-primary";
+		} else if ($value == "closed") {
+			$class = "btn-success";
+		} else {
+			$class = "btn-default";
+		}
+
+		return '<span class="btn ' . $class . '">' . $value . '</span>';
+	}
+
+	// category type
+	function _report_category_button($value, $row) {
+		
+		if ($value == "Suggest Data") {
+			$class = "btn-info";
+		} else if ($value == "Dataset Issue") {
+			$class = "btn-warning";
+		} else if ($value == "closed") {
+			$class = "btn-default";
+		}
+
+		return '<span class="btn ' . $class . '">' . $value . '</span>';
+	}	
+
+	// make the ID a link to the report
 	function _report_id_link_field($value, $row) {
 		$rid = $row->report_id;
-		return "<a href='" . config_item('base_url') . "/admin/report/$rid' class='report-id-link'>$rid</a>";
+		return '<a href="' . config_item('base_url') . "/admin/report/$rid" . '" class="report-id-link">' . $rid . "</a>";
 	}
+
+	// change date format
+	function _report_datetime_field($value, $row) {
+		$datetime = $value;
+		if(!empty($value)) {
+			return date('F d, Y g:i:s a', strtotime($value));	
+		} else {
+			return '';
+		}
+		
+	}	
 	
 	function _read_only_report_id_field($value, $primary_key) { 
-		return "<input type='hidden' value='$value' name='$primary_key'/>$value";
+		return '<input type="hidden" value="' . $value . '" ' . ' name="' . $primary_key . '"/>' . $value;
 	}
 	function _read_only_name_field($value, $primary_key) { return $this->_read_only_field('name', $value); }
 	function _read_only_desc_field($value, $primary_key) { return $this->_read_only_field('desc', $value); }
