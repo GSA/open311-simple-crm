@@ -17,6 +17,7 @@ class Reports extends CI_Controller {
 	}
 
 	function post_report($format = 'json') {
+
 		$source_client = config_item('default_client');
 
 		$api_key = (!empty($_POST['api_key'])) ? $_POST['api_key'] : null;
@@ -119,12 +120,29 @@ class Reports extends CI_Controller {
 
 		if (!empty($attribute)) {
 			$data['attribute'] = $this->sanitize_attributes($service_code, $attribute);
-		}		
+		}
+
+		// Check for spam
+		if(!empty($this->config->item('akismet_key'))) {
+
+			$this->load->file('../codeigniter/fms_endpoint/libraries/Akismet.php');
+			$wordPressAPIKey = $this->config->item('akismet_key');
+			$blogURL = $this->config->item('akismet_siteurl');
+			
+			$akismet = new Akismet($blogURL ,$wordPressAPIKey);
+			$akismet->setCommentAuthor($data['first_name'] . ' ' . $data['last_name']);
+			$akismet->setCommentAuthorEmail($data['email']);
+			$akismet->setCommentContent($data['description']);
+			
+			if($akismet->isCommentSpam()) {
+				$error['code'] = '422';
+				$error['description'] = 'This request was rejected as spam';
+				return $this->load->view('error_xml', $error);
+			} 
+		} 
 
 		$this->db->insert('reports', $data);
-
 		$report_id = $this->db->insert_id();
-
 		return $this->get_post_response($report_id, $format);
 
 	}
