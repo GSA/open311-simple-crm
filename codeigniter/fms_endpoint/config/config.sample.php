@@ -16,6 +16,9 @@
 
 $config['base_url'] = '';
 
+$config['akismet_key'] = ''; // see https://akismet.com/development/
+$config['akismet_siteurl'] = '';
+
 // Set local time zone 
 date_default_timezone_set('America/New_York');
 
