@@ -123,7 +123,7 @@ class Reports extends CI_Controller {
 		}
 
 		// Check for spam
-		if(!empty($this->config->item('akismet_key'))) {
+		if($this->config->item('akismet_key')) {
 
 			$this->load->file('../codeigniter/fms_endpoint/libraries/Akismet.php');
 			$wordPressAPIKey = $this->config->item('akismet_key');
