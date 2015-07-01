@@ -91,6 +91,26 @@ class Admin extends CI_Controller {
 		query_to_csv($query, TRUE, $filename);
 	}
 
+	function agencies() {
+		$crud = new grocery_CRUD();
+
+		$crud->set_theme('twitter-bootstrap');
+		
+		$crud->set_table('agencies');
+		$crud->required_fields('name');
+
+		if (!($this->ion_auth->is_admin() || is_config_true($this->config->item('can_edit_agencies')))) {
+			$crud->unset_delete();
+			$crud->unset_add();
+			$crud->unset_edit();
+		} 
+
+		$crud->set_subject('Agency');
+		$output = $crud->render();
+
+		$this->_admin_output($output);
+	}	
+
 	function categories() {
 		$crud = new grocery_CRUD();
 
@@ -322,6 +342,9 @@ class Admin extends CI_Controller {
 		$crud->set_relation('priority','priorities','prio_name',null,'prio_value ASC');
 		$crud->set_relation('status','statuses','status_name',null,'status_name ASC');
 
+		$crud->set_primary_key('url_slug','agencies');
+		$crud->set_relation('agency_responsible','agencies','name',null,'name ASC');
+
 		$crud->set_relation('source_client','open311_clients', 
 			'<a href="admin/open311_clients/{id}">{name}</a>', null,'name ASC');
 
@@ -372,8 +395,9 @@ class Admin extends CI_Controller {
 	    return 's'.substr(md5($field_name),0,8); //This s is because is better for a string to begin with a letter and not with a number
     }
 
-	function _set_update_time($value, $primary_key){    
-	    $timestamp_field = "<input id='updated_datetime' name='updated_datetime' type='hidden' value='".date('Y-m-d H:i:s')."' />" . date('l F j, Y \a\t g:i a', strtotime($value));;
+	function _set_update_time($value, $primary_key){  
+		$current_value	 = (!empty($value)) ? date('l F j, Y \a\t g:i a', strtotime($value)) : 'No updates yet';
+	    $timestamp_field = "<input id='updated_datetime' name='updated_datetime' type='hidden' value='".date('Y-m-d H:i:s')."' />" . $current_value;
 	    return $timestamp_field;
 	}
 

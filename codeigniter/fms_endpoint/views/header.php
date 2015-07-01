@@ -88,6 +88,7 @@
                                 <li><a href='<?php echo site_url('admin/settings')?>'>Server Settings</a></li>
                                 <li><a href='<?php echo site_url('admin/api_keys')?>'>API keys</a></li>
                                 <li><a href='<?php echo site_url('admin/open311_clients')?>'>Clients</a></li>
+                                <li><a href='<?php echo site_url('admin/agencies')?>'>Agencies</a></li>
                                 <li><a href='<?php echo site_url('auth/')?>'>Users</a></li>
                             </ul>
                         </li>
