@@ -166,6 +166,10 @@ class Reports extends CI_Controller {
 			$this->db->where('category_id', $_REQUEST['service_code']);
 		}
 
+		if (!empty($_REQUEST['agency_responsible'])) {
+			$this->db->where('agency_responsible', $_REQUEST['agency_responsible']);
+		}		
+
 		if (!empty($_REQUEST['start_date'])) {
 			$start_date = date("Y-m-d H:i:s", strtotime($_REQUEST['start_date']));
 			$this->db->where('requested_datetime >=', $start_date);

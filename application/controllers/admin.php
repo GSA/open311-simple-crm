@@ -29,7 +29,7 @@ class Admin extends CI_Controller {
 			if($this->config->item('default_report_columns')){
 				$default_columns = explode(',', $this->config->item('default_report_columns'));
 			} else {
-				$default_columns = array('report_id','status', 'requested_datetime','priority','category_id','description','updated_datetime');
+				$default_columns = array('report_id','status', 'requested_datetime','agency_responsible','category_id','description','updated_datetime');
 			}
 
 			$crud = $this->_set_common_report_crud($default_columns);
