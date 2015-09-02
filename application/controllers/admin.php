@@ -55,6 +55,11 @@ class Admin extends CI_Controller {
 
 	// show a single report (anticipate this is for printing)
 	function report($id) {
+
+		if(!$this->ion_auth->is_admin()) {
+			$where_group = $this->filter_query_permissions();			
+		}
+
 		$this->db->select('reports.*,
 			statuses.is_closed, statuses.status_name,
 			priorities.prio_name,
@@ -66,8 +71,13 @@ class Admin extends CI_Controller {
 		$this->db->join('categories', 'reports.category_id = categories.category_id');
 		$this->db->join('statuses', 'reports.status = statuses.status_id');
 		$this->db->join('open311_clients', 'reports.source_client = open311_clients.id', 'left outer');
+		$this->db->where('agency_responsible', 'gsa');
 		$this->db->where('report_id', $id);
 
+		if (!empty($where_group)) {
+			$this->db->where('agency_responsible', $where_group[0]);
+		}
+		
 		$query = $this->db->get();
 		if ($query->num_rows()==1) {
 			$image_url = $query->row()->media_url;
@@ -414,9 +424,37 @@ class Admin extends CI_Controller {
 		$crud->callback_before_update(array($this,'_fix_zero_prio_callback'));
 		$crud->callback_after_update(array($this, '_check_for_status_update_after'));
 		
-		return $crud;
+		if (!$this->ion_auth->is_admin()) {
+			$crud->unset_delete();
+		}
+
+		// If we're not an admin restrict list to reports we have permissions for
+		if(!$this->ion_auth->is_admin()) {
+			return $this->filter_query_permissions($crud);
+		} else {
+			return $crud;
+		}
+
 	}
 
+	function filter_query_permissions($crud = null) {
+		$user_groups = $this->ion_auth->get_users_groups()->result();
+		$where_group = array();
+		foreach ($user_groups as $user_group) {
+			if ($user_group->name !== 'members') {
+				$where_group[] = $user_group->name;
+			}
+		}
+		if (!empty($where_group)) {
+			if(!empty($crud)) {
+				$crud->where('agency_responsible', $where_group[0]);
+				return $crud;
+			} else {				
+				return $where_group;
+			}
+			
+		}
+	}
 
     function unique_field_name($field_name) {
 	    return 's'.substr(md5($field_name),0,8); //This s is because is better for a string to begin with a letter and not with a number
