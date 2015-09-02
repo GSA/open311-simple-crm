@@ -5,7 +5,7 @@
       
       <div id="infoMessage"><?php if(!empty($message)) echo $message;?></div>
       
-    <?php echo form_open('auth/' . $action . '_user');?>
+    <?php echo form_open('auth/manage_user');?>
 
       <div class="form-group">
             <label>First Name:</label>
@@ -38,8 +38,35 @@
                   <?php echo form_input($password_confirm, $password_confirm, ' class="form-control"');?>
             </div>
       <?php endif; ?>
+
+      <?php if ($action == 'edit' && !empty($all_groups)): ?>
+            <div class="form-group">
+                  <h4>Groups</h4>
+            <?php foreach ($all_groups as $group): ?>
+
+                  <?php                         
+                        $checked = '';
+                        foreach ($user_groups as $user_group) {
+                              if ($user_group->id == $group->id) {
+                                    $checked = ' checked';
+                              }
+                        }
+                        reset($user_groups);
+                  ?>
+
+                  <div class="checkbox">
+                    <label>
+                      <input type="checkbox" name="groups[<?php echo $group->id ?>]" <?php echo $checked ?>>
+                      <?php echo $group->description ?>
+                    </label>
+                  </div>                  
+            <?php endforeach; ?>
+            </div>
+            <input type="hidden" name="user_id" value="<?php echo $id['value']?>">
+            <input type="hidden" name="action" value="update">
+      <?php endif; ?>
                        
-      <div class="form-group">
+      <div class="form-group">            
             <?php echo form_submit('submit', $title);?>
       </div>
 
