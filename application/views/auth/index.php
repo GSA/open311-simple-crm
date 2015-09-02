@@ -7,16 +7,15 @@
 	
 	<table class="table table-bordered tablesorter table-striped">
 		<tr>
-			<th>First Name</th>
-			<th>Last Name</th>
+			<th>Name</th>
 			<th>Email</th>
 			<th>Groups</th>
 			<th>Status</th>
+			<th>Manage</th>
 		</tr>
 		<?php foreach ($users as $user):?>
 			<tr class="<?php if (! $user->active) { echo 'inactive';} ?>">
-				<td><?php echo $user->first_name;?></td>
-				<td><?php echo $user->last_name;?></td>
+				<td><?php echo $user->first_name . ' ' . $user->last_name;?></td>
 				<td><?php echo $user->email;?></td>
 				<td>
 					<?php foreach ($user->groups as $group):?>
@@ -25,7 +24,8 @@
 						</span>
 					<?php endforeach?>
 				</td>
-				<td><?php echo ($user->active) ? anchor("auth/deactivate/".$user->id, 'Active') : anchor("auth/activate/". $user->id, 'Inactive');?></td>
+				<td><?php echo ($user->active) ? 'Active' : 'Inactive';?></td>
+				<td><a class="btn btn-default" href="<?php echo site_url('auth/edit_user/'.$user->id);?>">Manage</a></td>
 			</tr>
 		<?php endforeach;?>
 	</table>

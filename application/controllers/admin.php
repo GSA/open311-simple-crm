@@ -112,6 +112,32 @@ class Admin extends CI_Controller {
 		$this->_admin_output($output);
 	}	
 
+
+	function groups() {
+
+		if (!$this->ion_auth->is_admin()) {
+			redirect('admin/');
+		}
+
+		$crud = new grocery_CRUD();
+
+		$crud->set_theme('twitter-bootstrap');
+		
+		$crud->set_table('groups');
+		$crud->required_fields('name');
+
+		if (!($this->ion_auth->is_admin() || is_config_true($this->config->item('can_edit_groups')))) {
+			$crud->unset_delete();
+			$crud->unset_add();
+			$crud->unset_edit();
+		} 
+
+		$crud->set_subject('Group');
+		$output = $crud->render();
+
+		$this->_admin_output($output);
+	}	
+
 	function categories() {
 		$crud = new grocery_CRUD();
 

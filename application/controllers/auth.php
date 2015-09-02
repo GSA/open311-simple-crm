@@ -341,13 +341,30 @@ class Auth extends CI_Controller {
 	}
 
 	//create a new user
-	function create_user()
-	{
-		$this->data['title'] = "Create User";
+	function edit_user($id = null) {
+		return $this->manage_user('edit', $id);
+	}
+
+	//create a new user
+	function create_user() {
+		return $this->manage_user('create');
+	}
+
+	//create a new user
+	function manage_user($action = 'create', $id = null) {
+
+		$this->data['action'] = $action;
+		$this->data['title'] = ucfirst($action) . ' User';
 
 		if (!$this->ion_auth->logged_in() || !$this->ion_auth->is_admin())
 		{
 			redirect('auth', 'refresh');
+		}
+
+		if ($action == 'edit' && (!empty($id) OR $id == '0')) {			
+			$user = (array) $this->ion_auth->user($id)->row();
+			$this->data = array_merge($this->data, $user);
+			return $this->load->view('auth/manage_user', $this->data);
 		}
 
 		//validate form input
@@ -406,7 +423,7 @@ class Auth extends CI_Controller {
 				'id' => 'company',
 				'type' => 'text',
 				'value' => $this->form_validation->set_value('company'),
-			);
+			);		
 			$this->data['phone1'] = array('name' => 'phone1',
 				'id' => 'phone1',
 				'type' => 'text',
@@ -432,7 +449,7 @@ class Auth extends CI_Controller {
 				'type' => 'password',
 				'value' => $this->form_validation->set_value('password_confirm'),
 			);
-			$this->load->view('auth/create_user', $this->data);
+			$this->load->view('auth/manage_user', $this->data);
 		}
 	}
 
