@@ -71,7 +71,6 @@ class Admin extends CI_Controller {
 		$this->db->join('categories', 'reports.category_id = categories.category_id');
 		$this->db->join('statuses', 'reports.status = statuses.status_id');
 		$this->db->join('open311_clients', 'reports.source_client = open311_clients.id', 'left outer');
-		$this->db->where('agency_responsible', 'gsa');
 		$this->db->where('report_id', $id);
 
 		if (!empty($where_group)) {
