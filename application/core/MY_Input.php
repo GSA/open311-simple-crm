@@ -19,7 +19,7 @@ class MY_Input extends CI_Input {
      * @return  string
      */
     function _clean_input_keys($str) {
-        if (!preg_match("/^[a-z0-9:_\/\.\[\]-]+$/i", $str)) {
+        if (!preg_match("/^[~a-z0-9:_\/\.\[\]-]+$/i", $str)) {
             /**
              * Check for Development enviroment - Non-descriptive 
              * error so show me the string that caused the problem 
