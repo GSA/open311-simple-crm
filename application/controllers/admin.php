@@ -96,7 +96,18 @@ class Admin extends CI_Controller {
 
 	function reports_csv() {
 		$this->load->helper('csv');
+		
+		if(!$this->ion_auth->is_admin()) {
+			$where_group = $this->filter_query_permissions();	
+
+			if (!empty($where_group)) {
+				$this->db->where('agency_responsible', $where_group[0]);
+			}
+					
+		}
+
 		$query = $this->db->get('reports');
+
 		$filename = date('Y-m-d_Hi') . '_reports.csv';
 		query_to_csv($query, TRUE, $filename);
 	}
@@ -222,6 +233,12 @@ class Admin extends CI_Controller {
 
 	
 	function request_updates() {
+
+		if (!$this->ion_auth->is_admin()) {
+			//redirect them to the home page because they must be an administrator to view this
+			redirect($this->config->item('base_url'), 'refresh');
+		}
+
 		$crud = new grocery_CRUD();
 		$crud->set_theme('twitter-bootstrap');
 		$crud->set_table('request_updates');
@@ -229,7 +246,9 @@ class Admin extends CI_Controller {
 		if (!($this->ion_auth->is_admin())) {
 			$crud->unset_delete();
 			$crud->unset_edit();
-		} 
+			$where_group = $this->filter_query_permissions();			
+		} 			
+
 		$crud->unset_add(); // disabled: should only be created by editing a report
 		$crud->columns('id', 'report_id', 'is_outbound', 'status_id', 'updated_at','update_desc', 'old_status_id', 'external_update_id');
 		$crud->set_subject('Service request updates');

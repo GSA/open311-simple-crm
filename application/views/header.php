@@ -73,7 +73,11 @@
                 <?php if (isset($auth) && $auth->logged_in()) : ?>
                     <li><a href='<?php echo site_url('admin/')?>'>Home</a></li> 
                     <li><a href='<?php echo site_url('admin/reports')?>'>Reports detail</a></li>
-                    <li><a href='<?php echo site_url('admin/request_updates')?>'>Updates</a></li>
+        
+                    <?php if ($auth->is_admin()) : ?>
+                        <li><a href='<?php echo site_url('admin/request_updates')?>'>Updates</a></li>
+                    <?php endif; ?>
+                    
                     <li><a href='<?php echo site_url('admin/reports_csv')?>'>Export CSV</a></li> 
                     <li><a href='<?php echo site_url('admin/help')?>' class="fmse-mysoc">Help</a></li>           
         
