@@ -80,7 +80,7 @@
 	 			<?php
 	 			}
 	 		} ?>
- 			<button class="btn" data-toggle="modal" data-target="#filtering-form-search" >
+ 			<button style="display:none" class="btn" data-toggle="modal" data-target="#filtering-form-search" >
  				<i class="glyphicon glyphicon-search"></i>
  				<?php echo $this->l('list_search');?>
  			</button>
