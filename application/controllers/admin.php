@@ -83,9 +83,13 @@ class Admin extends CI_Controller {
 			if (! preg_match('/\.(gif|jpe?g|png)$/', $image_url)) {
 				$image_url = false;
 			}
+
+			$report_record = $query->row();
+			$report_record->description = stripcslashes($report_record->description);
+
 			$this->load->vars(array(
-				'report' => $query->row(), 
-				'external_link' => $this->_get_external_url(null, $query->row()),
+				'report' => $report_record, 
+				'external_link' => $this->_get_external_url(null, $report_record),
 				'image_url' => $image_url));
 			$output = array('output' => $this->load->view('report', '', true));
 			$this->_admin_output($output);
@@ -421,6 +425,7 @@ class Admin extends CI_Controller {
 		$crud->callback_column('xxx_report_id', array($this, '_report_id_link_field'));
 		$crud->callback_column('requested_datetime', array($this, '_report_datetime_field'));
 		$crud->callback_column('updated_datetime', array($this, '_report_datetime_field'));
+		$crud->callback_column('description', array($this, '_report_description_field'));
 		$crud->callback_column($this->unique_field_name('status'), array($this, '_report_status_button'));
 		$crud->callback_column($this->unique_field_name('category_id'), array($this, '_report_category_button'));
 
@@ -548,12 +553,23 @@ class Admin extends CI_Controller {
 	function _report_datetime_field($value, $row) {
 		$datetime = $value;
 		if(!empty($value)) {
-			return date('F d, Y g:i a', strtotime($value));	
+			return date('M j - g:ia', strtotime($value));	
 		} else {
 			return '';
 		}
 		
 	}	
+
+	// format description field
+	function _report_description_field($value, $row) {
+		if(!empty($value)) {
+			return stripcslashes($value);
+		} else {
+			return '';
+		}
+		
+	}
+
 	
 	function _read_only_report_id_field($value, $primary_key) { 
 		return '<input type="hidden" value="' . $value . '" ' . ' name="' . $primary_key . '"/>' . $value;

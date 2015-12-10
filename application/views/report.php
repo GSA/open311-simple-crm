@@ -76,7 +76,7 @@
 			</dd>
 		</dl>
 
-		<div class="location-data">
+		<div class="location-data" style="display:none">
 			<dl >
 				<dt>Address</dt>
 				<dd><?php echo($report->address)?></dd>
@@ -121,7 +121,15 @@
 		<h3 style="margin-top : 5em">Custom Attributes</h3>
 		<div class="custom-attributes">
 			<?php foreach ($attributes as $attribute): ?>
-			<?php $attribute_title = (!empty($attribute->attribute_description)) ? $attribute->attribute_description : $attribute->attribute_code; ?>
+			<?php 
+				// Set attribute title
+				$attribute_title = (!empty($attribute->attribute_description)) ? $attribute->attribute_description : $attribute->attribute_code; 
+
+				// Check if value is a URL, make it a link if it is
+				if (!filter_var($attribute->value, FILTER_VALIDATE_URL) === false) {
+				    $attribute->value = '<a href="' . $attribute->value . '">' . $attribute->value . '</a>';
+				} 
+			?>
 			<dl >
 				<dt><?php echo $attribute_title; ?></dt>
 				<dd><?php echo $attribute->value ?></dd>
