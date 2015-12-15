@@ -474,8 +474,12 @@ class Admin extends CI_Controller {
 				return $crud;
 			} else {				
 				return $where_group;
+			}						
+		} else {
+			if(!empty($crud)) {
+				$crud->where('agency_responsible', '');	
+				return $crud;
 			}
-			
 		}
 	}
 
