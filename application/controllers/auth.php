@@ -61,13 +61,13 @@ class Auth extends CI_Controller {
 			{ //if the login is successful
 				//redirect them back to the home page
 				$this->session->set_flashdata('message', $this->ion_auth->messages());
-				redirect($this->config->item('base_url'), 'refresh');
+				redirect('admin', 'location');
 			}
 			else
 			{ //if the login was un-successful
 				//redirect them back to the login page
 				$this->session->set_flashdata('message', $this->ion_auth->errors());
-				redirect('auth/login', 'refresh'); //use redirects instead of loading views for compatibility with MY_Controller libraries
+				redirect('auth/login', 'location'); //use redirects instead of loading views for compatibility with MY_Controller libraries
 			}
 		}
 		else
