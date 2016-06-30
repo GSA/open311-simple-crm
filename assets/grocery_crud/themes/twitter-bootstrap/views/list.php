@@ -1,9 +1,46 @@
+<?php if ($subject == 'Report'): ?>
+
+<script type="text/javascript">
+$(function () {
+	//CHECK ALL BOXES
+	$('.checkall').click(function () {
+		$(this).parents('table:eq(0)').find(':checkbox').attr('checked', this.checked);
+	});
+	//ADD DELETE BUTTON
+	if($('#ajax_list .delete_all_button').length == 0) { //check if element already exists (for ajax refresh purposes)
+		$('#ajax_list').append('<input type="button" value="Delete Selected" class="delete_all_button" onclick="delete_selected();">');
+	}
+});
+
+function delete_selected()
+{
+	var list = "";
+	$('input[type=checkbox]').each(function() {     
+		if (this.checked) {
+			//remove selection rows
+			$('#custom_tr_'+this.value).remove();
+			//create list of values that will be parsed to controller
+			list += this.value + '|';
+		}
+	});
+	//send data to delete
+	$.post(base_url + '/admin/delete_selection', { selection: list }, function(data) {
+		var count = list.split("|").length - 1;
+		alert('Deleted ' + count + ' records' + list);
+	});
+}
+</script>
+
+<?php endif; ?>
+
 <?php
 if(!empty($list)){ ?>
 <div class="span12" >
+
 	<table class="table table-bordered tablesorter table-striped">
 		<thead>
 			<tr>
+				<?php if ($subject == 'Report'): ?><th><input type="checkbox" class="checkall" /></th><?php endif; ?>
 				<?php foreach($columns as $column){?>
 				<th>
 					<div class="text-left field-sorting <?php if(isset($order_by[0]) &&  $column->field_name == $order_by[0]){?><?php echo $order_by[1]?><?php }?>"
@@ -21,7 +58,18 @@ if(!empty($list)){ ?>
 		</thead>
 		<tbody>
 			<?php foreach($list as $num_row => $row){ ?>
+
+			<?php
+			if ($subject == 'Report') {
+				$temp_string = $row->delete_url;
+				$temp_string = explode("/", $temp_string);
+				$row_num     = sizeof($temp_string)-1;
+				$rowID       = $temp_string[$row_num];
+			}
+			?>
+
 			<tr class="<?php echo ($num_row % 2 == 1) ? 'erow' : ''; ?>">
+				<?php if ($subject == 'Report'): ?><td><input type="checkbox" name="custom_delete" value="<?=$rowID?>" /></td><?php endif; ?>
 				<?php foreach($columns as $column){?>
 					<td class="<?php if(isset($order_by[0]) &&  $column->field_name == $order_by[0]){?>sorted<?php }?>">
 						<div class="text-left"><?php echo ($row->{$column->field_name} != '') ? $row->{$column->field_name} : '&nbsp;' ; ?></div>
@@ -31,9 +79,9 @@ if(!empty($list)){ ?>
 				<td align="left">
 					<div class="tools">
 						<div class="btn-group">
-						    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-						      <?php echo $this->l('list_actions'); ?> <span class="caret"></span>
-						    </button>							
+							<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+							  <?php echo $this->l('list_actions'); ?> <span class="caret"></span>
+							</button>                           
 							<ul class="dropdown-menu" role="menu">
 								<?php
 								if(!$unset_edit){?>

@@ -6,7 +6,7 @@ class Admin extends CI_Controller {
 
 		parent::__construct();
 
-        $this->config->load('fms_endpoint', FALSE, TRUE);
+		$this->config->load('fms_endpoint', FALSE, TRUE);
 		/* Standard Libraries */
 		$this->load->database();
 		
@@ -40,7 +40,7 @@ class Admin extends CI_Controller {
 		}
 	}
 
-	function reports() {		
+	function reports() {        
 		// explicitly list all fields (was missing out report-id)
 		$crud = $this->_set_common_report_crud(array());
 		//$crud->callback_before_update(array($this,'_set_modified_time'));
@@ -57,7 +57,7 @@ class Admin extends CI_Controller {
 	function report($id) {
 
 		if(!$this->ion_auth->is_admin()) {
-			$where_group = $this->filter_query_permissions();			
+			$where_group = $this->filter_query_permissions();           
 		}
 
 		$this->db->select('reports.*,
@@ -102,7 +102,7 @@ class Admin extends CI_Controller {
 		$this->load->helper('csv');
 		
 		if(!$this->ion_auth->is_admin()) {
-			$where_group = $this->filter_query_permissions();	
+			$where_group = $this->filter_query_permissions();   
 
 			if (!empty($where_group)) {
 				$this->db->where('agency_responsible', $where_group[0]);
@@ -134,7 +134,7 @@ class Admin extends CI_Controller {
 		$output = $crud->render();
 
 		$this->_admin_output($output);
-	}	
+	}   
 
 
 	function groups() {
@@ -160,7 +160,7 @@ class Admin extends CI_Controller {
 		$output = $crud->render();
 
 		$this->_admin_output($output);
-	}	
+	}   
 
 	function categories() {
 		$crud = new grocery_CRUD();
@@ -196,25 +196,25 @@ class Admin extends CI_Controller {
 		$crud->set_relation('category_id','categories','category_name',null,'category_name ASC');
 		$crud->display_as ( 'category_id' , "Category");
 
-		$crud->unset_texteditor('datatype_description','description', 'values');	
+		$crud->unset_texteditor('datatype_description','description', 'values');    
 
-		$crud->field_type('order','integer');	
-		$crud->field_type('description','string');	
-		$crud->field_type('datatype_description','string');			
+		$crud->field_type('order','integer');   
+		$crud->field_type('description','string');  
+		$crud->field_type('datatype_description','string');         
 		
 		$crud->field_type('variable','dropdown',
-            array('true' => 'True', 'false' => 'False'));		
+			array('true' => 'True', 'false' => 'False'));       
 		$crud->field_type('required','dropdown',
-            array('true' => 'True', 'false' => 'False'));
+			array('true' => 'True', 'false' => 'False'));
 
 
 		$crud->field_type('datatype','dropdown',
-            array(	'string' => 'Text',
-            		'text' => 'Textbox', 	
-            		'number' => 'Number', 
-            		'datetime' => 'Date Picker',             		
-            		'singlevaluelist' => 'Dropdown Menu', 
-            		'multivaluelist' => 'Multi-select List'));
+			array(  'string' => 'Text',
+					'text' => 'Textbox',    
+					'number' => 'Number', 
+					'datetime' => 'Date Picker',                    
+					'singlevaluelist' => 'Dropdown Menu', 
+					'multivaluelist' => 'Multi-select List'));
 		
 
 		$crud->required_fields('category_id', 'attribute_id','variable', 'datatype', 'required', 'description', 'order', 'description');
@@ -250,8 +250,8 @@ class Admin extends CI_Controller {
 		if (!($this->ion_auth->is_admin())) {
 			$crud->unset_delete();
 			$crud->unset_edit();
-			$where_group = $this->filter_query_permissions();			
-		} 			
+			$where_group = $this->filter_query_permissions();           
+		}           
 
 		$crud->unset_add(); // disabled: should only be created by editing a report
 		$crud->columns('id', 'report_id', 'is_outbound', 'status_id', 'updated_at','update_desc', 'old_status_id', 'external_update_id');
@@ -267,7 +267,7 @@ class Admin extends CI_Controller {
 		$crud->display_as('update_desc', 'Description of update');
 		$crud->display_as('is_outbound', 'Outbound?');
 		$crud->display_as('remote_update_id', 'Remote<br/>update id');
-	    
+		
 		$output = $crud->render();
 
 		$this->_admin_output($output);
@@ -375,7 +375,7 @@ class Admin extends CI_Controller {
 								 'service_notice',
 								 'address', 
 								 'postal_code', 
-								 'lat', 'long',								 
+								 'lat', 'long',                              
 								 'device_id', 
 								 'source_client', 
 								 'account_id', 
@@ -413,8 +413,8 @@ class Admin extends CI_Controller {
 		$crud->callback_edit_field('media_url', array($this,'_text_media_url_field'));  
 
 		$crud->display_as('requested_datetime', 'Received')
-			->display_as('updated_datetime', 'Last Updated')		
-			->display_as('expected_datetime', 'Expected')		
+			->display_as('updated_datetime', 'Last Updated')        
+			->display_as('expected_datetime', 'Expected')       
 			->display_as('category_id', 'Category')
 			->display_as('media_url', 'Media URL');
 		$external_id_col_name = config_item('external_id_col_name');
@@ -472,31 +472,44 @@ class Admin extends CI_Controller {
 			if(!empty($crud)) {
 				$crud->where('agency_responsible', $where_group[0]);
 				return $crud;
-			} else {				
+			} else {                
 				return $where_group;
-			}						
+			}                       
 		} else {
 			if(!empty($crud)) {
-				$crud->where('agency_responsible', '');	
+				$crud->where('agency_responsible', ''); 
 				return $crud;
 			}
 		}
 	}
 
-    function unique_field_name($field_name) {
-	    return 's'.substr(md5($field_name),0,8); //This s is because is better for a string to begin with a letter and not with a number
-    }
+	function delete_selection() {
+	   $id_array = array();
+	   $selection = $this->input->post("selection", TRUE);
+	   $id_array = explode("|", $selection);
+
+	   foreach($id_array as $item) {
+		  if($item != '') {
+			$this->db->where('report_id', $item);
+			$this->db->delete('reports');   
+		  }
+	   }
+	}
+
+	function unique_field_name($field_name) {
+		return 's'.substr(md5($field_name),0,8); //This s is because is better for a string to begin with a letter and not with a number
+	}
 
 	function _set_update_time($value, $primary_key){  
-		$current_value	 = (!empty($value)) ? date('l F j, Y \a\t g:i a', strtotime($value)) : 'No updates yet';
-	    $timestamp_field = "<input id='updated_datetime' name='updated_datetime' type='hidden' value='".date('Y-m-d H:i:s')."' />" . $current_value;
-	    return $timestamp_field;
+		$current_value   = (!empty($value)) ? date('l F j, Y \a\t g:i a', strtotime($value)) : 'No updates yet';
+		$timestamp_field = "<input id='updated_datetime' name='updated_datetime' type='hidden' value='".date('Y-m-d H:i:s')."' />" . $current_value;
+		return $timestamp_field;
 	}
 
 	function _set_requested_datetime($value, $primary_key){    
-	    $timestamp_field = "<input id='$primary_key' name='$primary_key' type='hidden' value='$value' />" . date('l F j, Y \a\t g:i a', strtotime($value));
-	    return $timestamp_field;
-	}	
+		$timestamp_field = "<input id='$primary_key' name='$primary_key' type='hidden' value='$value' />" . date('l F j, Y \a\t g:i a', strtotime($value));
+		return $timestamp_field;
+	}   
 	
 	// force the default priority (0) since the groceryCRUD drop-down for priority doesn't
 	// seem to auto-select an option if it's zero... hence it's returned from the form as
@@ -545,7 +558,7 @@ class Admin extends CI_Controller {
 		}
 
 		return '<span class="btn ' . $class . '">' . $value . '</span>';
-	}	
+	}   
 
 	// make the ID a link to the report
 	function _report_id_link_field($value, $row) {
@@ -557,12 +570,12 @@ class Admin extends CI_Controller {
 	function _report_datetime_field($value, $row) {
 		$datetime = $value;
 		if(!empty($value)) {
-			return date('M j - g:ia', strtotime($value));	
+			return date('M j - g:ia', strtotime($value));   
 		} else {
 			return '';
 		}
 		
-	}	
+	}   
 
 	// format description field
 	function _report_description_field($value, $row) {
@@ -611,7 +624,7 @@ class Admin extends CI_Controller {
 		return $value = wordwrap($row->desc, strlen($row->desc), "<br>", true);
 	}
 
-    function _get_external_url($value, $row) {
+	function _get_external_url($value, $row) {
 		$client_lookup = $this->db->get_where("open311_clients", array('id' => $row->source_client));
 		$url = '';
 		if ($client_lookup->num_rows()==0) {
