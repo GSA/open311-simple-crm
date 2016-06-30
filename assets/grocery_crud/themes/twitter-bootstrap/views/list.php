@@ -26,7 +26,7 @@ function delete_selected()
 	//send data to delete
 	$.post(base_url + '/admin/delete_selection', { selection: list }, function(data) {
 		var count = list.split("|").length - 1;
-		alert('Deleted ' + count + ' records' + list);
+		alert('Deleted ' + count + ' records');
 	});
 }
 </script>
@@ -68,8 +68,8 @@ if(!empty($list)){ ?>
 			}
 			?>
 
-			<tr class="<?php echo ($num_row % 2 == 1) ? 'erow' : ''; ?>">
-				<?php if ($subject == 'Report'): ?><td><input type="checkbox" name="custom_delete" value="<?=$rowID?>" /></td><?php endif; ?>
+			<tr class="<?php echo ($num_row % 2 == 1) ? 'erow' : ''; ?>" id="custom_tr_<?php echo $rowID ?>">
+				<?php if ($subject == 'Report'): ?><td><input type="checkbox" name="custom_delete" value="<?php echo $rowID ?>" /></td><?php endif; ?>
 				<?php foreach($columns as $column){?>
 					<td class="<?php if(isset($order_by[0]) &&  $column->field_name == $order_by[0]){?>sorted<?php }?>">
 						<div class="text-left"><?php echo ($row->{$column->field_name} != '') ? $row->{$column->field_name} : '&nbsp;' ; ?></div>
