@@ -340,6 +340,57 @@ class Admin extends CI_Controller {
 		}
 	}
 
+	function spam() {
+
+		if (!$this->ion_auth->is_admin()) {
+			redirect('admin/');
+		} else {
+			$this->load->file('./application/libraries/Akismet.php');
+			$selection = $this->input->post("bulk_spam_filter", TRUE);
+			$output = array();
+
+
+			if($selection == 'mark_all_new_as_spam') {
+
+				$count = 0;
+
+				$this->db->select('reports.*', FALSE);
+				$this->db->select('statuses.status_name, statuses.status_name AS status_name', FALSE);
+
+				$this->db->where('status_name', 'new');
+				$this->db->join('statuses', 'reports.status = statuses.status_id');
+
+				$query = $this->db->get('reports');	
+
+				foreach ($query->result() as $result) {
+
+					// Mark as spam
+					if($this->config->item('akismet_key')) {
+						
+						$wordPressAPIKey = $this->config->item('akismet_key');
+						$blogURL = $this->config->item('akismet_siteurl');
+						
+						$akismet = new Akismet($blogURL ,$wordPressAPIKey);
+						$akismet->setCommentAuthor($result->first_name . ' ' . $result->last_name);
+						$akismet->setCommentAuthorEmail($result->email);
+						$akismet->setCommentContent($result->description);
+						
+						$akismet->submitSpam(); 
+					}
+
+					// Delete the report
+					$this->db->delete('reports', array('report_id' => $result->report_id));
+					$count++;
+				}			
+
+				$output['count'] = $count;
+				$output['notice'] = $count . " new messages have been marked as spam";
+			} 
+			
+			$this->load->view('spam.php', $output);
+		}
+	} 		
+
 	function about() {
 		$output = array('output' => $this->load->view('about', '', true));
 		$this->load->view('admin_view.php', $output);
