@@ -15,7 +15,7 @@ class Welcome extends CI_Controller {
      */
     function __construct() {
 		parent::__construct();
-		$this->load->library('Ion_auth');
+		$this->load->library('saml_auth');
 		$this->load->helper('url');
 
 	}
@@ -32,7 +32,7 @@ class Welcome extends CI_Controller {
 			array_push($details, 'Edit the <span class="code">$config[\'base_url\']</span> setting on line 14 of <span class="code">codeigniter/fms_endpoint/config/config.php</span>.');
 		}
 	
-		$this->load->database('', TRUE);
+		$this->load->database();
 		$connected 		= $this->db->initialize();
 
 		$err_no 		= ($connected) ? $this->db->_error_number() : null;
@@ -144,7 +144,7 @@ END_OF_HTML;
 				'details'  => $details,
 				'title'	   => $title,
 				'is_open311_enabled' => $is_open311_enabled, 
-				'auth' => $this->ion_auth
+				'auth' => $this->saml_auth
 			);	  
 			$this->load->helper('form');
 			$this->load->view('welcome_message', $data);

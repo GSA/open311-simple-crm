@@ -125,14 +125,19 @@
                             <span class="sr-only">Toggle Dropdown</span>
                         </button>
                          <ul class="dropdown-menu" role="menu">
-                            <li><a href="<?php echo site_url('/auth/change_password')?>"><i class="glyphicon glyphicon-pencil"></i> Change Password</a></li>
-                            <li class="divider"></li>
+<!--                            <li><a href="--><?php //echo site_url('/auth/change_password')?><!--"><i class="glyphicon glyphicon-pencil"></i> Change Password</a></li>-->
+<!--                            <li class="divider"></li>-->
                             <li><a href="<?php echo site_url('auth/logout')?>"><i class="glyphicon glyphicon-remove"></i> Logout</a></li>
                         </ul>
      
                     </div>
 
-                <?php else:  ?>  
+                <?php else:  ?>
+                    <div class="navbar-form navbar-right">
+                        <a class="btn btn-default btn-auth" href="<?php echo site_url('auth/login')?>">Sign in with <b>MAX</b></a>
+                    </div>
+                <?php endif;?>
+                <?php if(false): ?>
 
                     <?php echo form_open("auth/login", array('class' => 'navbar-form navbar-right'));?>
                         <div class="form-group">

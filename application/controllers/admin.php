@@ -13,10 +13,10 @@ class Admin extends CI_Controller {
 		$this->load->helper('url');
 
 		$this->load->helper('fms_endpoint');
-		$this->load->library('Ion_auth');
+		$this->load->library('Saml_auth');
 		$this->load->library('grocery_CRUD');
 
-		if (!$this->ion_auth->logged_in()) {
+		if (!$this->saml_auth->logged_in()) {
 			redirect('auth/login');
 		}
 	}
@@ -56,7 +56,7 @@ class Admin extends CI_Controller {
 	// show a single report (anticipate this is for printing)
 	function report($id) {
 
-		if(!$this->ion_auth->is_admin()) {
+		if(!$this->saml_auth->is_admin()) {
 			$where_group = $this->filter_query_permissions();           
 		}
 
@@ -101,7 +101,7 @@ class Admin extends CI_Controller {
 	function reports_csv() {
 		$this->load->helper('csv');
 		
-		if(!$this->ion_auth->is_admin()) {
+		if(!$this->saml_auth->is_admin()) {
 			$where_group = $this->filter_query_permissions();   
 
 			if (!empty($where_group)) {
@@ -124,7 +124,7 @@ class Admin extends CI_Controller {
 		$crud->set_table('agencies');
 		$crud->required_fields('name');
 
-		if (!($this->ion_auth->is_admin() || is_config_true($this->config->item('can_edit_agencies')))) {
+		if (!($this->saml_auth->is_admin() || is_config_true($this->config->item('can_edit_agencies')))) {
 			$crud->unset_delete();
 			$crud->unset_add();
 			$crud->unset_edit();
@@ -139,7 +139,7 @@ class Admin extends CI_Controller {
 
 	function groups() {
 
-		if (!$this->ion_auth->is_admin()) {
+		if (!$this->saml_auth->is_admin()) {
 			redirect('admin/');
 		}
 
@@ -150,7 +150,7 @@ class Admin extends CI_Controller {
 		$crud->set_table('groups');
 		$crud->required_fields('name');
 
-		if (!($this->ion_auth->is_admin() || is_config_true($this->config->item('can_edit_groups')))) {
+		if (!($this->saml_auth->is_admin() || is_config_true($this->config->item('can_edit_groups')))) {
 			$crud->unset_delete();
 			$crud->unset_add();
 			$crud->unset_edit();
@@ -173,7 +173,7 @@ class Admin extends CI_Controller {
 		$crud->required_fields('category_id','category_name');
 		$crud->set_rules('category_id', 'Category Identifier', 'trim|alpha_numeric');
 
-		if (!($this->ion_auth->is_admin() || is_config_true($this->config->item('can_edit_categories')))) {
+		if (!($this->saml_auth->is_admin() || is_config_true($this->config->item('can_edit_categories')))) {
 			$crud->unset_delete();
 			$crud->unset_add();
 			$crud->unset_edit();
@@ -220,7 +220,7 @@ class Admin extends CI_Controller {
 		$crud->required_fields('category_id', 'attribute_id','variable', 'datatype', 'required', 'description', 'order', 'description');
 
 
-		if (!($this->ion_auth->is_admin() || is_config_true($this->config->item('can_edit_categories')))) {
+		if (!($this->saml_auth->is_admin() || is_config_true($this->config->item('can_edit_categories')))) {
 			$crud->unset_delete();
 			$crud->unset_add();
 			$crud->unset_edit();
@@ -238,7 +238,7 @@ class Admin extends CI_Controller {
 	
 	function request_updates() {
 
-		if (!$this->ion_auth->is_admin()) {
+		if (!$this->saml_auth->is_admin()) {
 			//redirect them to the home page because they must be an administrator to view this
 			redirect($this->config->item('base_url'), 'refresh');
 		}
@@ -247,7 +247,7 @@ class Admin extends CI_Controller {
 		$crud->set_theme('twitter-bootstrap');
 		$crud->set_table('request_updates');
 		$crud->unset_texteditor('update_desc');
-		if (!($this->ion_auth->is_admin())) {
+		if (!($this->saml_auth->is_admin())) {
 			$crud->unset_delete();
 			$crud->unset_edit();
 			$where_group = $this->filter_query_permissions();           
@@ -274,7 +274,7 @@ class Admin extends CI_Controller {
 	}
 
 	function settings() {
-		if (!$this->ion_auth->is_admin()) {
+		if (!$this->saml_auth->is_admin()) {
 			redirect('admin/');
 		} else {
 			$crud = new grocery_CRUD();
@@ -295,7 +295,7 @@ class Admin extends CI_Controller {
 	}
 
 	function statuses() {
-		if (!$this->ion_auth->is_admin()) {
+		if (!$this->saml_auth->is_admin()) {
 			redirect('admin/');
 		} else {
 			$crud = new grocery_CRUD();
@@ -309,7 +309,7 @@ class Admin extends CI_Controller {
 	}
 	
 	function api_keys() {
-		if (!$this->ion_auth->is_admin()) {
+		if (!$this->saml_auth->is_admin()) {
 			redirect('admin/');
 		} else {
 			$crud = new grocery_CRUD();
@@ -326,7 +326,7 @@ class Admin extends CI_Controller {
 	}
 
 	function open311_clients() {
-		if (!$this->ion_auth->is_admin()) {
+		if (!$this->saml_auth->is_admin()) {
 			redirect('admin/');
 		} else {
 			$crud = new grocery_CRUD();
@@ -342,7 +342,7 @@ class Admin extends CI_Controller {
 
 	function spam() {
 
-		if (!$this->ion_auth->is_admin()) {
+		if (!$this->saml_auth->is_admin()) {
 			redirect('admin/');
 		} else {
 			$this->load->file('./application/libraries/Akismet.php');
@@ -498,12 +498,12 @@ class Admin extends CI_Controller {
 		$crud->callback_before_update(array($this,'_fix_zero_prio_callback'));
 		$crud->callback_after_update(array($this, '_check_for_status_update_after'));
 		
-		if (!$this->ion_auth->is_admin()) {
+		if (!$this->saml_auth->is_admin()) {
 			$crud->unset_delete();
 		}
 
 		// If we're not an admin restrict list to reports we have permissions for
-		if(!$this->ion_auth->is_admin()) {
+		if(!$this->saml_auth->is_admin()) {
 			return $this->filter_query_permissions($crud);
 		} else {
 			return $crud;
@@ -512,7 +512,8 @@ class Admin extends CI_Controller {
 	}
 
 	function filter_query_permissions($crud = null) {
-		$user_groups = $this->ion_auth->get_users_groups()->result();
+		return $crud;
+		$user_groups = $this->saml_auth->get_users_groups()->result();
 		$where_group = array();
 		foreach ($user_groups as $user_group) {
 			if ($user_group->name !== 'members') {
@@ -523,12 +524,12 @@ class Admin extends CI_Controller {
 			if(!empty($crud)) {
 				$crud->where('agency_responsible', $where_group[0]);
 				return $crud;
-			} else {                
+			} else {
 				return $where_group;
-			}                       
+			}
 		} else {
 			if(!empty($crud)) {
-				$crud->where('agency_responsible', ''); 
+				$crud->where('agency_responsible', '');
 				return $crud;
 			}
 		}
