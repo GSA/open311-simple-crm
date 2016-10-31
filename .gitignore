@@ -2,6 +2,7 @@
 conf/general.yml
 codeigniter/logs/log*
 
+.idea
 
 application/config/database.php
 application/config/config.php
