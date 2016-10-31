@@ -4,7 +4,7 @@
 
 class Categories extends CI_Controller {
 
-	function Categories() {
+	function __construct() {
 		parent::__construct();
 		$this->load->database();
 		$this->load->library('Ion_auth');

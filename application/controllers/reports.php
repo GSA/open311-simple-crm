@@ -2,7 +2,7 @@
 
 class Reports extends CI_Controller {
 
-	function Reports() {
+	function __construct() {
 		parent::__construct();
 		$this->load->database();
 		$this->load->library('Ion_auth');

@@ -9,8 +9,11 @@ class Welcome extends CI_Controller {
    *  Once your installation is up and running, you may prefer to replace it with something
    *  more useful to your own situation.
    */
-	
-	function Welcome() {
+
+    /**
+     * Welcome constructor.
+     */
+    function __construct() {
 		parent::__construct();
 		$this->load->library('Ion_auth');
 		$this->load->helper('url');
