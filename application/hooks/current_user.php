@@ -11,8 +11,10 @@ function add_current_user_to_view_vars()
 //	  );
 //
 //    }
-    $data = array(
-        'current_user_data' => $CI->saml_auth->user_metadata()
-    );
-    $CI->load->vars($data);
+    if (property_exists($CI, 'saml_auth')) {
+        $data = array(
+            'current_user_data' => $CI->saml_auth->user_metadata()
+        );
+        $CI->load->vars($data);
+    }
 }
