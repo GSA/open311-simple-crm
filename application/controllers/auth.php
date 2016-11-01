@@ -1,27 +1,30 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Auth extends CI_Controller {
+class Auth extends CI_Controller
+{
 
-	function __construct()
-	{
-		parent::__construct();
-		$this->load->library('saml_auth');
-		$this->load->library('session');
-		$this->load->library('form_validation');
-		$this->load->database();
-		$this->load->helper('url');
-	}
+    function __construct()
+    {
+        parent::__construct();
+        $this->load->library('saml_auth');
+        $this->load->library('session');
+        $this->load->library('form_validation');
+        $this->load->database();
+        $this->load->helper('url');
+    }
 
     public function login()
     {
         $as = new SimpleSAML_Auth_Simple('max');
-        $as->requireAuth();
+        $as->requireAuth(array(
+            'saml:AuthnContextClassRef' => 'https://max.gov/icam/2015/10/securityLevels/securePlus2',
+        ));
 
         $attributes = $as->getAttributes();
 
         $userdata = array();
         $userdata['username'] = $attributes['maxEmail'][0];
-        $userdata['name_full'] = $attributes['maxFirstName'][0].' '.$attributes['maxLastName'][0];
+        $userdata['name_full'] = $attributes['maxFirstName'][0] . ' ' . $attributes['maxLastName'][0];
         $userdata['permissions'] = 'user';
         $admin_emails = array(
             'kishore.vuppala@gsa.gov'
