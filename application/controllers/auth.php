@@ -50,7 +50,7 @@ class Auth extends CI_Controller
     {
 
         $this->session->sess_destroy();
-        redirect('admin');
+        redirect('/');
     }
 
 //	//redirect if needed, otherwise display the user list
