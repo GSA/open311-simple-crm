@@ -118,7 +118,7 @@
                     <div class="btn-group">
                         <button type="button" class="btn btn-inverse">
                             <i class="glyphicon glyphicon-user glyphicon glyphicon-white"></i>
-                            <?php echo $current_user_data->email ?>
+                            <?php echo $current_user_data->username ?>
                         </button>
                         <button type="button" class="btn btn-inverse dropdown-toggle" data-toggle="dropdown">
                             <span class="caret"></span>

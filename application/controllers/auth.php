@@ -24,6 +24,7 @@ class Auth extends CI_Controller
 
         $userdata = array();
         $userdata['username'] = $attributes['maxEmail'][0];
+        $userdata['email'] = $attributes['maxEmail'][0];
         $userdata['name_full'] = $attributes['maxFirstName'][0] . ' ' . $attributes['maxLastName'][0];
         $userdata['permissions'] = 'user';
         $admin_emails = array(
