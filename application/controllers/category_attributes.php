@@ -2,10 +2,10 @@
 
 class Category_attributes extends CI_Controller {
 
-	function Category_attributes() {
+	function __construct() {
 		parent::__construct();
 		$this->load->database();
-		$this->load->library('Ion_auth');
+		$this->load->library('saml_auth');
 		$this->load->helper('xml');
 		$this->load->helper('fms_endpoint');
 	    open311_enabled_or_error();	

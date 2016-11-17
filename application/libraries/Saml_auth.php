@@ -1,84 +1,42 @@
-<?php // if ( ! defined('BASEPATH')) exit('No direct script access allowed');
-///**
-//* Name:  Ion Auth
-//*
-//* Author: Ben Edmunds
-//*		  ben.edmunds@gmail.com
-//*         @benedmunds
-//*
-//* Added Awesomeness: Phil Sturgeon
-//*
-//* Location: http://github.com/benedmunds/CodeIgniter-Ion-Auth
-//*
-//* Created:  10.01.2009
-//*
-//* Description:  Modified auth system based on redux_auth with extensive customization.  This is basically what Redux Auth 2 should be.
-//* Original Author name has been kept but that does not mean that the method has not been modified.
-//*
-//* Requirements: PHP5 or above
-//*
-//*/
-//
-//class Ion_auth
-//{
-//	/**
-//	 * CodeIgniter global
-//	 *
-//	 * @var string
-//	 **/
-//	protected $ci;
-//
-//	/**
-//	 * account status ('not_activated', etc ...)
-//	 *
-//	 * @var string
-//	 **/
-//	protected $status;
-//
-//	/**
-//	 * extra where
-//	 *
-//	 * @var array
-//	 **/
-//	public $_extra_where = array();
-//
-//	/**
-//	 * extra set
-//	 *
-//	 * @var array
-//	 **/
-//	public $_extra_set = array();
-//
-//	/**
-//	 * __construct
-//	 *
-//	 * @return void
-//	 * @author Ben
-//	 **/
-//	public function __construct()
-//	{
-//		$this->ci =& get_instance();
-//		$this->ci->load->config('ion_auth', TRUE);
-//		$this->ci->load->library('email');
-//		$this->ci->load->library('session');
-//		$this->ci->lang->load('ion_auth');
-//		$this->ci->load->model('ion_auth_model');
-//		$this->ci->load->helper('cookie');
-//
-//		//auto-login the user if they are remembered
-//		if (!$this->logged_in() && get_cookie('identity') && get_cookie('remember_code'))
-//		{
-//			$this->ci->ion_auth = $this;
-//			$this->ci->ion_auth_model->login_remembered_user();
-//		}
-//
-//		$email_config = array(
-//			'mailtype' => $this->ci->config->item('email_type', 'ion_auth')
-//		);
-//		$this->ci->email->initialize($email_config);
-//
-//		$this->ci->ion_auth_model->trigger_events('library_constructor');
-//	}
+<?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+
+class Saml_auth
+{
+	/**
+	 * CodeIgniter global
+	 *
+	 * @var string
+	 **/
+	protected $ci;
+
+	public function __construct()
+	{
+		$this->ci =& get_instance();
+        $this->ci->load->library('session');
+	}
+
+	public function logged_in()
+    {
+        return $this->ci->session->userdata('username');
+    }
+
+	public function is_admin()
+	{
+        $userdata = $this->ci->session->all_userdata();
+        $admin_emails = array(
+            'kishore.vuppala@gsa.gov'
+        );
+        if (isset($userdata['email']) && in_array($userdata['email'], $admin_emails)) {
+            return true;
+        }
+
+        return false;
+	}
+
+	public function user_metadata()
+    {
+        return (object) $this->ci->session->all_userdata();
+    }
 //
 //	/**
 //	 * __call
@@ -434,5 +392,5 @@
 //
 //		return FALSE;
 //	}
-//
-//}
+
+}

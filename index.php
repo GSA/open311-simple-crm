@@ -191,6 +191,11 @@ if (defined('ENVIRONMENT'))
 		define('APPPATH', BASEPATH.$application_folder.'/');
 	}
 
+/**
+ * Loading composer dependencies
+ */
+require_once ('vendor/autoload.php');
+
 /*
  * --------------------------------------------------------------------
  * LOAD THE BOOTSTRAP FILE

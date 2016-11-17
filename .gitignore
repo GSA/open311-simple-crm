@@ -2,6 +2,10 @@
 conf/general.yml
 codeigniter/logs/log*
 
+.idea
+vendor
+
+application/logs/*.php
 
 application/config/database.php
 application/config/config.php
