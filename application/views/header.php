@@ -157,6 +157,12 @@
 
     <div class="main">
 
+    <?php if(time()<strtotime("January 15 2017")): ?>
+        <a href="https://www.data.gov/migration-notification/" class="updates-tease">
+            Updates to Data.gov will be temporarily suspended between December 13, 9 PM EST and approximately December 27. <em>Learn More.</em>
+        </a>
+    <?php endif; ?>
+
     <div class="container">
       <!-- Example row of columns -->
       <div class="row">    
