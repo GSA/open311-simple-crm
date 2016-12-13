@@ -6,4 +6,4 @@ codeigniter/logs/log*
 application/config/database.php
 application/config/config.php
 
-
+.idea
