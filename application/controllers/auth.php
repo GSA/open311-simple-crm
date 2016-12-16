@@ -27,12 +27,14 @@ class Auth extends CI_Controller
         $userdata['email'] = $attributes['maxEmail'][0];
         $userdata['name_full'] = $attributes['maxFirstName'][0] . ' ' . $attributes['maxLastName'][0];
         $userdata['permissions'] = 'user';
-        $admin_emails = array(
-            'kishore.vuppala@gsa.gov'
-        );
-        if (in_array($userdata['username'], $admin_emails)) {
+
+
+        $pre_approved_admins = $this->config->item('pre_approved_admins');
+
+        if (in_array($userdata['username'], $pre_approved_admins)) {
             $userdata['permissions'] = 'admin';
         }
+
         $userdata['provider_url'] = 'max.gov';
         $this->session->set_userdata($userdata);
         $this->session->set_userdata($attributes);
