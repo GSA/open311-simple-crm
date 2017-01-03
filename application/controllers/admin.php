@@ -117,7 +117,7 @@ class Admin extends CI_Controller {
 	}
 
 	function agencies() {
-		$crud = new grocery_CRUD();
+		$crud = new CRM_Grocery_CRUD();
 
 		$crud->set_theme('twitter-bootstrap');
 		
@@ -143,7 +143,7 @@ class Admin extends CI_Controller {
 			redirect('admin/');
 		}
 
-		$crud = new grocery_CRUD();
+		$crud = new CRM_Grocery_CRUD();
 
 		$crud->set_theme('twitter-bootstrap');
 		
@@ -163,7 +163,7 @@ class Admin extends CI_Controller {
 	}   
 
 	function categories() {
-		$crud = new grocery_CRUD();
+		$crud = new CRM_Grocery_CRUD();
 
 		$crud->set_theme('twitter-bootstrap');
 		
@@ -188,7 +188,7 @@ class Admin extends CI_Controller {
 	}
 
 	function category_attributes() {
-		$crud = new grocery_CRUD();
+		$crud = new CRM_Grocery_CRUD();
 
 		$crud->set_theme('twitter-bootstrap');
 		$crud->set_table('category_attributes');
@@ -243,7 +243,7 @@ class Admin extends CI_Controller {
 			redirect($this->config->item('base_url'), 'refresh');
 		}
 
-		$crud = new grocery_CRUD();
+		$crud = new CRM_Grocery_CRUD();
 		$crud->set_theme('twitter-bootstrap');
 		$crud->set_table('request_updates');
 		$crud->unset_texteditor('update_desc');
@@ -277,7 +277,7 @@ class Admin extends CI_Controller {
 		if (!$this->saml_auth->is_admin()) {
 			redirect('admin/');
 		} else {
-			$crud = new grocery_CRUD();
+			$crud = new CRM_Grocery_CRUD();
 			$crud->set_theme('twitter-bootstrap'); /* text wraps for the long descriptions in databables, not flexigrid */
 			$crud->set_table('config_settings');
 			$crud->display_as('desc', 'Explanation');
@@ -298,7 +298,7 @@ class Admin extends CI_Controller {
 		if (!$this->saml_auth->is_admin()) {
 			redirect('admin/');
 		} else {
-			$crud = new grocery_CRUD();
+			$crud = new CRM_Grocery_CRUD();
 			$crud->set_theme('twitter-bootstrap'); 
 			$crud->set_table('statuses');
 			$crud->set_subject("problem status");
@@ -312,7 +312,7 @@ class Admin extends CI_Controller {
 		if (!$this->saml_auth->is_admin()) {
 			redirect('admin/');
 		} else {
-			$crud = new grocery_CRUD();
+			$crud = new CRM_Grocery_CRUD();
 			$crud->set_theme('twitter-bootstrap'); 
 			$crud->set_table('api_keys');
 			$crud->set_subject("API key");
@@ -329,7 +329,7 @@ class Admin extends CI_Controller {
 		if (!$this->saml_auth->is_admin()) {
 			redirect('admin/');
 		} else {
-			$crud = new grocery_CRUD();
+			$crud = new CRM_Grocery_CRUD();
 			$crud->set_theme('twitter-bootstrap'); 
 			$crud->set_table('open311_clients');
 			$crud->set_subject("Open311 client");
@@ -409,7 +409,7 @@ class Admin extends CI_Controller {
 	// There is some magic here: using xxx_report_id because running callback_column directly
 	// on report_id breaks other field renders (such as actions) that contain report_id.
 	function _set_common_report_crud($columns) {
-		$crud = new grocery_CRUD();
+		$crud = new CRM_Grocery_CRUD();
 
 		// default columns excludes: token address_id simply because FMS/FMS-endpoint doesn't use them
 		$default_columns = array('report_id', 
