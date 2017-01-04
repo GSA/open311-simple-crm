@@ -2957,6 +2957,8 @@ class grocery_CRUD_States extends grocery_CRUD_Layout
 			$state_url =  site_url(implode('/',$state_url_array).'/'.$url);
 		}
 
+        $state_url = str_replace('/crm/crm','/crm', $state_url);
+
 		return $state_url;
 	}
 
