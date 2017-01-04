@@ -5362,12 +5362,3 @@ class UploadHandler
     }
 
 }
-
-
-class CRM_Grocery_CRUD extends Grocery_CRUD
-{
-    public function __construct()
-    {
-        $this->set_crud_url_path(rtrim(base_url(),'/'));
-    }
-}
