@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 // set these values for your own installation
 
@@ -9,15 +9,15 @@
 //==================================================================
 
 
-$active_group = 'default'; 
+$active_group = 'default';
 $active_record = TRUE;
 
-$db['default']['hostname'] = "localhost";
-$db['default']['username'] = "YOUR_USER_NAME";
-$db['default']['password'] = "YOUR_PASSWORD";
-$db['default']['database'] = "YOUR_DATABASE";
+$db['default']['hostname'] = getenv('DB_HOSTNAME');
+$db['default']['username'] = getenv('DB_USER');
+$db['default']['password'] = getenv('DB_PASSWORD');
+$db['default']['database'] = getenv('DB_NAME');
 
-$db['default']['dbdriver'] = "mysql";
+$db['default']['dbdriver'] = "mysqli";
 
 $db['default']['dbprefix'] = "";
 
@@ -38,4 +38,3 @@ $db_array = load_general_config('db');
 foreach ($db_array as $key => $value) {
     $db['default'][$key] = $value;
 }
-?>
