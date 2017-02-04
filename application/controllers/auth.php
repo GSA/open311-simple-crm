@@ -77,7 +77,7 @@ class Auth extends CI_Controller
             $this->data['message'] = (validation_errors()) ? validation_errors() : $this->session->flashdata('message');
 
             //list the users
-            $this->data['users'] = $this->saml_auth->users()->result();
+            $this->data['users'] = $this->saml_auth->order_by('last_login')->users()->result();
             $admin_group = $this->saml_auth->where('name', 'admin')->group()->row();
             $users = $admins = array();
 
