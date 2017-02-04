@@ -803,6 +803,7 @@ class Ion_auth_model extends CI_Model
             'username' => $user->email,
             'first_name' => $user->first_name,
             'last_name' => $user->last_name,
+            'company' => $user->company,
             'email' => $user->email,
             'user_id' => $user->id, //everyone likes to overwrite id so we'll use user_id
             'old_last_login' => $user->last_login
