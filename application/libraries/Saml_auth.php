@@ -30,9 +30,7 @@ class Saml_auth
             return true;
         }
 
-        $admin_group = $this->ci->config->item('admin_group', 'ion_auth');
-
-		return $this->in_group($admin_group);
+		return $this->in_group('admin');
     }
 
     public function user_metadata()

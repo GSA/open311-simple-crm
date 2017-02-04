@@ -776,7 +776,14 @@ class Ion_auth_model extends CI_Model
                 'first_name' => $userdata['first_name'],
                 'last_name' => $userdata['last_name'],
             );
-            $new_user_id = $this->register($userdata['email'], $userdata['email'], $additional_data);
+
+            $groups = array();
+            if ('admin' == $userdata['permissions']) {
+                $admin_group = $this->where('name', 'admin')->group()->row();
+                $groups[] = $admin_group->id;
+            }
+
+            $new_user_id = $this->register($userdata['email'], $userdata['email'], $additional_data, $groups);
             $user = $this->user($new_user_id);
         } else {
             $this->trigger_events('post_login_unsuccessful');
