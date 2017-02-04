@@ -1,59 +1,89 @@
-<?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
 class Saml_auth
 {
-	/**
-	 * CodeIgniter global
-	 *
-	 * @var string
-	 **/
-	protected $ci;
+    /**
+     * CodeIgniter global
+     *
+     * @var string
+     **/
+    protected $ci;
 
-	public function __construct()
-	{
-		$this->ci =& get_instance();
+    public function __construct()
+    {
+        $this->ci =& get_instance();
         $this->ci->load->library('session');
-	}
+        $this->ci->load->model('ion_auth_model');
+    }
 
-	public function logged_in()
+    public function logged_in()
     {
         return $this->ci->session->userdata('username');
     }
 
-	public function is_admin()
-	{
+    public function is_admin()
+    {
         $userdata = $this->ci->session->all_userdata();
-        $admin_emails = array(
-            'kishore.vuppala@gsa.gov'
-        );
-        if (isset($userdata['email']) && in_array($userdata['email'], $admin_emails)) {
+
+//        Pre-approved
+        if ('admin' == $userdata['permissions']) {
             return true;
         }
 
-        return false;
-	}
-
-	public function user_metadata()
-    {
-        return (object) $this->ci->session->all_userdata();
+        return $this->in_group('admin');
     }
-//
-//	/**
-//	 * __call
-//	 *
-//	 * Acts as a simple way to call model methods without loads of stupid alias'
-//	 *
-//	 **/
-//	public function __call($method, $arguments)
-//	{
-//		if (!method_exists( $this->ci->ion_auth_model, $method) )
-//		{
-//			throw new Exception('Undefined method Ion_auth::' . $method . '() called');
-//		}
-//
-//		return call_user_func_array( array($this->ci->ion_auth_model, $method), $arguments);
-//	}
-//
+
+    /**
+     * in_group
+     *
+     * @return bool
+     * @author Phil Sturgeon
+     **/
+    public function in_group($check_group, $id = false)
+    {
+        $this->ci->ion_auth_model->trigger_events('in_group');
+
+        $users_groups = $this->ci->ion_auth_model->get_users_groups($id)->result();
+        $groups = array();
+        foreach ($users_groups as $group) {
+            $groups[] = $group->name;
+        }
+
+        if (is_array($check_group)) {
+            foreach ($check_group as $key => $value) {
+                if (in_array($value, $groups)) {
+                    return TRUE;
+                }
+            }
+        } else {
+            if (in_array($check_group, $groups)) {
+                return TRUE;
+            }
+        }
+
+        return FALSE;
+    }
+
+    public function user_metadata()
+    {
+        return (object)$this->ci->session->all_userdata();
+    }
+
+    /**
+     * __call
+     *
+     * Acts as a simple way to call model methods without loads of stupid alias'
+     *
+     **/
+    public function __call($method, $arguments)
+    {
+        if (!method_exists($this->ci->ion_auth_model, $method)) {
+            throw new Exception('Undefined method Ion_auth::' . $method . '() called');
+        }
+
+        return call_user_func_array(array($this->ci->ion_auth_model, $method), $arguments);
+    }
+
 //
 //	/**
 //	 * forgotten password feature
