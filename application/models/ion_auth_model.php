@@ -775,7 +775,7 @@ class Ion_auth_model extends CI_Model
             $welcome = sprintf('Welcome, <strong>%s %s</strong>! 
                                 Last time you logged in <em>%s</em> from IP: <em>%s</em> ',
                 html_escape($user->first_name), html_escape($user->last_name),
-                date('Y-m-d H:i:s'), long2ip($user->ip_address));
+                date('Y-m-d H:i:s', $user->last_login), long2ip($user->ip_address));
             $this->session->set_flashdata('welcome', $welcome);
 
         } elseif (!$user_found) {
