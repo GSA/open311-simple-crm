@@ -23,18 +23,18 @@ class Auth extends CI_Controller
         $attributes = $as->getAttributes();
 
         $userdata = array();
-        $userdata['username'] = $attributes['maxEmail'][0];
+        $userdata['username'] = $attributes['maxFirstName'][0] . ' ' . $attributes['maxLastName'][0];
         $userdata['email'] = $attributes['maxEmail'][0];
         $userdata['name_full'] = $attributes['maxFirstName'][0] . ' ' . $attributes['maxLastName'][0];
         $userdata['first_name'] = $attributes['maxFirstName'][0];
         $userdata['last_name'] = $attributes['maxLastName'][0];
-        $userdata['permissions'] = 'user';
+        $userdata['pre_approved_admin'] = false;
 
 
         $pre_approved_admins = $this->config->item('pre_approved_admins');
 
-        if (in_array($userdata['username'], $pre_approved_admins)) {
-            $userdata['permissions'] = 'admin';
+        if (in_array($userdata['email'], $pre_approved_admins)) {
+            $userdata['pre_approved_admin'] = true;
         }
 
         $userdata['provider_url'] = 'max.gov';
@@ -141,7 +141,7 @@ class Auth extends CI_Controller
         //validate form input
         $this->form_validation->set_rules('first_name', 'First Name', 'required|xss_clean');
         $this->form_validation->set_rules('last_name', 'Last Name', 'required|xss_clean');
-        $this->form_validation->set_rules('email', 'Email Address', 'required|valid_email');
+//        $this->form_validation->set_rules('email', 'Email Address', 'required|valid_email');
 
 //		if ($action == 'create') {
 //			$this->form_validation->set_rules('password', 'Password', 'required|min_length[' . $this->config->item('min_password_length', 'saml_auth') . ']|max_length[' . $this->config->item('max_password_length', 'saml_auth') . ']|matches[password_confirm]');
@@ -150,10 +150,10 @@ class Auth extends CI_Controller
 
         if ($this->form_validation->run() == true) {
             $username = strtolower($this->input->post('first_name')) . ' ' . strtolower($this->input->post('last_name'));
-            $email = $this->input->post('email');
+//            $email = $this->input->post('email');
 
             if ($action == 'create') {
-                $password = $this->input->post('password');
+//                $password = $this->input->post('password');
             } else {
                 $new_groups = $this->input->post('groups');
             }
@@ -162,7 +162,7 @@ class Auth extends CI_Controller
                 'first_name' => $this->input->post('first_name'),
                 'last_name' => $this->input->post('last_name'),
                 'company' => $this->input->post('company'),
-                'phone' => $this->input->post('phone1') . '-' . $this->input->post('phone2') . '-' . $this->input->post('phone3'),
+//                'phone' => $this->input->post('phone1') . '-' . $this->input->post('phone2') . '-' . $this->input->post('phone3'),
             );
 
         }
@@ -193,7 +193,7 @@ class Auth extends CI_Controller
             }
 
             $additional_data['username'] = $username;
-            $additional_data['email'] = $email;
+//            $additional_data['email'] = $email;
 
             $this->saml_auth->update($id, $additional_data);
             $this->session->set_flashdata('message', "<p>User Updated</p>");

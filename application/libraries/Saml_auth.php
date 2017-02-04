@@ -25,8 +25,7 @@ class Saml_auth
     {
         $userdata = $this->ci->session->all_userdata();
 
-//        Pre-approved
-        if ('admin' == $userdata['permissions']) {
+        if (isset($userdata['pre_approved_admin']) && $userdata['pre_approved_admin']) {
             return true;
         }
 

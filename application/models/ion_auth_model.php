@@ -785,7 +785,7 @@ class Ion_auth_model extends CI_Model
             );
 
             $groups = array();
-            if ('admin' == $userdata['permissions']) {
+            if (isset($userdata['pre_approved_admin']) && true === $userdata['pre_approved_admin']) {
                 $admin_group = $this->where('name', 'admin')->group()->row();
                 $groups[] = $admin_group->id;
             }
@@ -800,7 +800,6 @@ class Ion_auth_model extends CI_Model
         }
 
         $session_data = array(
-            'permissions' => $userdata['permissions'],
             'username' => $user->email,
             'first_name' => $user->first_name,
             'last_name' => $user->last_name,
