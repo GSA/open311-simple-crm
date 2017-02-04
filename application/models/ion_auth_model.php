@@ -756,7 +756,7 @@ class Ion_auth_model extends CI_Model
 
         $this->trigger_events('extra_where');
 
-        $query = $this->db->select($this->identity_column . ', username, email, id, password, active, last_login')
+        $query = $this->db->select('*')
             ->where(sprintf("(" . $this->identity_column . " = '%1\$s')", $this->db->escape_str($identity)))
             ->limit(1)
             ->get($this->tables['users']);
@@ -771,6 +771,13 @@ class Ion_auth_model extends CI_Model
 
                 return FALSE;
             }
+
+            $welcome = sprintf('Welcome, <strong>%s %s</strong>! 
+                                Last time you logged in <em>%s</em> from IP: <em>%s</em> ',
+                html_escape($user->first_name), html_escape($user->last_name),
+                date('Y-m-d H:i:s'), long2ip($user->ip_address));
+            $this->session->set_flashdata('welcome', $welcome);
+
         } elseif (!$user_found) {
             $additional_data = array(
                 'first_name' => $userdata['first_name'],
@@ -791,9 +798,12 @@ class Ion_auth_model extends CI_Model
 
             return FALSE;
         }
+
         $session_data = array(
             'permissions' => $userdata['permissions'],
             'username' => $user->email,
+            'first_name' => $user->first_name,
+            'last_name' => $user->last_name,
             'email' => $user->email,
             'user_id' => $user->id, //everyone likes to overwrite id so we'll use user_id
             'old_last_login' => $user->last_login
@@ -808,6 +818,77 @@ class Ion_auth_model extends CI_Model
         $this->set_message('login_successful');
 
         return TRUE;
+    }
+
+    /**
+     * group
+     *
+     * @return object
+     * @author Ben Edmunds
+     **/
+    public function group()
+    {
+        $this->trigger_events('group');
+
+        $this->limit(1);
+
+        return $this->groups();
+    }
+
+    public function limit($limit)
+    {
+        $this->trigger_events('limit');
+        $this->_ion_limit = $limit;
+
+        return $this;
+    }
+
+    /**
+     * groups
+     *
+     * @return object
+     * @author Ben Edmunds
+     **/
+    public function groups()
+    {
+        $this->trigger_events('groups');
+
+        //run each where that was passed
+        if (isset($this->_ion_where)) {
+            foreach ($this->_ion_where as $where) {
+                $this->db->where($where);
+            }
+            $this->_ion_where = array();
+        }
+
+        if (isset($this->_ion_limit) && isset($this->_ion_offset)) {
+            $this->db->limit($this->_ion_limit, $this->_ion_offset);
+
+            $this->_ion_limit = NULL;
+            $this->_ion_offset = NULL;
+        }
+
+        //set the order
+        if (isset($this->_ion_order_by) && isset($this->_ion_order)) {
+            $this->db->order_by($this->_ion_order_by, $this->_ion_order);
+        }
+
+        $this->response = $this->db->get($this->tables['groups']);
+
+        return $this;
+    }
+
+    public function where($where, $value = NULL)
+    {
+        $this->trigger_events('where');
+
+        if (!is_array($where)) {
+            $where = array($where => $value);
+        }
+
+        array_push($this->_ion_where, $where);
+
+        return $this;
     }
 
     /**
@@ -959,77 +1040,6 @@ class Ion_auth_model extends CI_Model
         $user_id || $user_id = $this->session->userdata('user_id');
 
         return $this->db->insert($this->tables['users_groups'], array($this->join['groups'] => (int)$group_id, $this->join['users'] => (int)$user_id));
-    }
-
-    /**
-     * group
-     *
-     * @return object
-     * @author Ben Edmunds
-     **/
-    public function group()
-    {
-        $this->trigger_events('group');
-
-        $this->limit(1);
-
-        return $this->groups();
-    }
-
-    public function limit($limit)
-    {
-        $this->trigger_events('limit');
-        $this->_ion_limit = $limit;
-
-        return $this;
-    }
-
-    /**
-     * groups
-     *
-     * @return object
-     * @author Ben Edmunds
-     **/
-    public function groups()
-    {
-        $this->trigger_events('groups');
-
-        //run each where that was passed
-        if (isset($this->_ion_where)) {
-            foreach ($this->_ion_where as $where) {
-                $this->db->where($where);
-            }
-            $this->_ion_where = array();
-        }
-
-        if (isset($this->_ion_limit) && isset($this->_ion_offset)) {
-            $this->db->limit($this->_ion_limit, $this->_ion_offset);
-
-            $this->_ion_limit = NULL;
-            $this->_ion_offset = NULL;
-        }
-
-        //set the order
-        if (isset($this->_ion_order_by) && isset($this->_ion_order)) {
-            $this->db->order_by($this->_ion_order_by, $this->_ion_order);
-        }
-
-        $this->response = $this->db->get($this->tables['groups']);
-
-        return $this;
-    }
-
-    public function where($where, $value = NULL)
-    {
-        $this->trigger_events('where');
-
-        if (!is_array($where)) {
-            $where = array($where => $value);
-        }
-
-        array_push($this->_ion_where, $where);
-
-        return $this;
     }
 
     /**

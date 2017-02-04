@@ -1,35 +1,34 @@
-
-
 /* ==========================================================================
    Author's custom styles
    ========================================================================== */
 
 body {
-    padding-top: 50px;
+  padding-top: 50px;
 }
 
 .navbar .btn-group {
-	padding : 10px 0 0 0;
+  padding: 10px 0 0 0;
 }
 
 body {
-	background-color: #EEEEEE;
+  background-color: #EEEEEE;
 }
 
 .main {
-	background-color: #fff;
-	padding-bottom : 2em;
-	padding-top : 2em;
+  background-color: #fff;
+  padding-bottom: 2em;
+  padding-top: 2em;
 }
 
 footer {
-	padding : 1em 0;
-	background-color: #EEEEEE;
-	margin-top : 2em;
+  padding: 1em 0;
+  background-color: #EEEEEE;
+  margin-top: 2em;
 }
 
-
-
+tr.admin {
+  color: darkgoldenrod;
+}
 
 
 

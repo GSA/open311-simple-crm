@@ -78,10 +78,21 @@ class Auth extends CI_Controller
 
             //list the users
             $this->data['users'] = $this->saml_auth->users()->result();
-            foreach ($this->data['users'] as $k => $user) {
-                $this->data['users'][$k]->groups = $this->saml_auth->get_users_groups($user->id)->result();
-            }
+            $admin_group = $this->saml_auth->where('name', 'admin')->group()->row();
+            $users = $admins = array();
 
+            foreach ($this->data['users'] as $k => $user) {
+//                $this->data['users'][$k]->groups = $this->saml_auth->get_users_groups($user->id)->result();
+                $user->groups = $this->saml_auth->get_users_groups($user->id)->result();
+                if (in_array($admin_group, $user->groups)) {
+                    $user->is_admin = true;
+                    $admins[] = $user;
+                } else {
+                    $user->is_admin = false;
+                    $users[] = $user;
+                }
+            }
+            $this->data['users'] = array_merge($admins, $users);
 
             $this->load->view('auth/index', $this->data);
         }

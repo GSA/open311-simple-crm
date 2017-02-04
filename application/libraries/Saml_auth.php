@@ -30,7 +30,38 @@ class Saml_auth
             return true;
         }
 
-		return $this->in_group('admin');
+        return $this->in_group('admin');
+    }
+
+    /**
+     * in_group
+     *
+     * @return bool
+     * @author Phil Sturgeon
+     **/
+    public function in_group($check_group, $id = false)
+    {
+        $this->ci->ion_auth_model->trigger_events('in_group');
+
+        $users_groups = $this->ci->ion_auth_model->get_users_groups($id)->result();
+        $groups = array();
+        foreach ($users_groups as $group) {
+            $groups[] = $group->name;
+        }
+
+        if (is_array($check_group)) {
+            foreach ($check_group as $key => $value) {
+                if (in_array($value, $groups)) {
+                    return TRUE;
+                }
+            }
+        } else {
+            if (in_array($check_group, $groups)) {
+                return TRUE;
+            }
+        }
+
+        return FALSE;
     }
 
     public function user_metadata()
@@ -52,45 +83,6 @@ class Saml_auth
 
         return call_user_func_array(array($this->ci->ion_auth_model, $method), $arguments);
     }
-
-
-	/**
-	 * in_group
-	 *
-	 * @return bool
-	 * @author Phil Sturgeon
-	 **/
-	public function in_group($check_group, $id=false)
-	{
-		$this->ci->ion_auth_model->trigger_events('in_group');
-
-		$users_groups = $this->ci->ion_auth_model->get_users_groups($id)->result();
-		$groups = array();
-		foreach ($users_groups as $group)
-		{
-			$groups[] = $group->name;
-		}
-
-		if (is_array($check_group))
-		{
-			foreach($check_group as $key => $value)
-			{
-				if (in_array($value, $groups))
-				{
-					return TRUE;
-				}
-			}
-		}
-		else
-		{
-			if (in_array($check_group, $groups))
-			{
-				return TRUE;
-			}
-		}
-
-		return FALSE;
-	}
 
 //
 //	/**
