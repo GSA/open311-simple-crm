@@ -15,7 +15,7 @@ $(function () {
 function delete_selected()
 {
 	var list = "";
-	$('input[type=checkbox]').each(function() {     
+	$('input[type=checkbox]').each(function() {
 		if (this.checked) {
 			//remove selection rows
 			$('#custom_tr_'+this.value).remove();
@@ -65,7 +65,10 @@ if(!empty($list)){ ?>
 				$temp_string = explode("/", $temp_string);
 				$row_num     = sizeof($temp_string)-1;
 				$rowID       = $temp_string[$row_num];
-			}
+			} else {
+			    $rowID = $row_num = 0;
+                $temp_string = '';
+            }
 			?>
 
 			<tr class="<?php echo ($num_row % 2 == 1) ? 'erow' : ''; ?>" id="custom_tr_<?php echo $rowID ?>">
@@ -81,7 +84,7 @@ if(!empty($list)){ ?>
 						<div class="btn-group">
 							<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
 							  <?php echo $this->l('list_actions'); ?> <span class="caret"></span>
-							</button>                           
+							</button>
 							<ul class="dropdown-menu" role="menu">
 								<?php
 								if(!$unset_edit){?>

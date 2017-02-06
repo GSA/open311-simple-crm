@@ -2,16 +2,16 @@
 	$this->set_css($this->default_theme_path.'/twitter-bootstrap/css/bootstrap.min.css');
 	$this->set_css($this->default_theme_path.'/twitter-bootstrap/css/bootstrap-responsive.min.css');
 	$this->set_css($this->default_theme_path.'/twitter-bootstrap/css/style.css');
-	
-	$this->set_css($this->default_theme_path.'/twitter-bootstrap/css/jquery-ui/flick/jquery-ui-1.9.2.custom.css');
-	
+
+	$this->set_css($this->default_theme_path.'/twitter-bootstrap/css/jquery-ui/flick/jquery-ui-1.10.2.css');
+
 	$this->set_js_lib($this->default_javascript_path.'/'.grocery_CRUD::JQUERY);
-	
+
 	//	JAVASCRIPTS - JQUERY-UI
-	$this->set_js($this->default_theme_path.'/twitter-bootstrap/js/jquery-ui/jquery-ui-1.9.2.custom.js');
+	$this->set_js($this->default_theme_path.'/twitter-bootstrap/js/jquery-ui/jquery-ui-1.10.2.js');
 	//	JAVASCRIPTS - JQUERY LAZY-LOAD
 	$this->set_js_lib($this->default_javascript_path.'/common/lazyload-min.js');
-	
+
 	if (!$this->is_IE7()) {
 		$this->set_js_lib($this->default_javascript_path.'/common/list.js');
 	}
@@ -34,7 +34,7 @@
 	$this->set_js($this->default_javascript_path.'/jquery_plugins/jquery.fancybox-1.3.4.js');
 	//	JAVASCRIPTS - JQUERY EASING
 	$this->set_js($this->default_javascript_path.'/jquery_plugins/jquery.easing-1.3.pack.js');
-	
+
 	//	JAVASCRIPTS - twitter-bootstrap - CONFIGURAÇÕES
 	$this->set_js($this->default_theme_path.'/twitter-bootstrap/js/app/twitter-bootstrap.js');
 	//	JAVASCRIPTS - JQUERY-FUNCTIONS
