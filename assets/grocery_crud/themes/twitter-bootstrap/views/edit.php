@@ -2,12 +2,12 @@
 $this->set_css($this->default_theme_path.'/twitter-bootstrap/css/bootstrap.min.css');
 $this->set_css($this->default_theme_path.'/twitter-bootstrap/css/bootstrap-responsive.min.css');
 $this->set_css($this->default_theme_path.'/twitter-bootstrap/css/style.css');
-$this->set_css($this->default_theme_path.'/twitter-bootstrap/css/jquery-ui/flick/jquery-ui-1.10.2.custom.css');
+$this->set_css($this->default_theme_path.'/twitter-bootstrap/css/jquery-ui/flick/jquery-ui-1.10.2.css');
 
 $this->set_js_lib($this->default_javascript_path.'/'.grocery_CRUD::JQUERY);
 
 //	JAVASCRIPTS - JQUERY-UI
-$this->set_js($this->default_theme_path.'/twitter-bootstrap/js/jquery-ui/jquery-ui-1.10.2.custom.js');
+$this->set_js($this->default_theme_path.'/twitter-bootstrap/js/jquery-ui/jquery-ui-1.10.2.js');
 
 //	JAVASCRIPTS - JQUERY LAZY-LOAD
 $this->set_js_lib($this->default_javascript_path.'/common/lazyload-min.js');
