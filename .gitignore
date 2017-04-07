@@ -7,3 +7,7 @@ application/config/database.php
 application/config/config.php
 
 .idea
+
+vendor
+application/logs
+application/config/development/
