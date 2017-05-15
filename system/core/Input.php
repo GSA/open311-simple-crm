@@ -228,64 +228,72 @@ class CI_Input {
 
 	// ------------------------------------------------------------------------
 
-	/**
-	* Set cookie
-	*
-	* Accepts six parameter, or you can submit an associative
-	* array in the first parameter containing all the values.
-	*
-	* @access	public
-	* @param	mixed
-	* @param	string	the value of the cookie
-	* @param	string	the number of seconds until expiration
-	* @param	string	the cookie domain.  Usually:  .yourdomain.com
-	* @param	string	the cookie path
-	* @param	string	the cookie prefix
-	* @param	bool	true makes the cookie secure
-	* @return	void
-	*/
-	function set_cookie($name = '', $value = '', $expire = '', $domain = '', $path = '/', $prefix = '', $secure = FALSE)
-	{
-		if (is_array($name))
-		{
-			// always leave 'name' in last place, as the loop will break otherwise, due to $$item
-			foreach (array('value', 'expire', 'domain', 'path', 'prefix', 'secure', 'name') as $item)
-			{
-				if (isset($name[$item]))
-				{
-					$$item = $name[$item];
-				}
-			}
-		}
+    /**
+     * Set cookie
+     *
+     * Accepts an arbitrary number of parameters (up to 7) or an associative
+     * array in the first parameter containing all the values.
+     *
+     * @param	string|mixed[]	$name		Cookie name or an array containing parameters
+     * @param	string		$value		Cookie value
+     * @param	int		$expire		Cookie expiration time in seconds
+     * @param	string		$domain		Cookie domain (e.g.: '.yourdomain.com')
+     * @param	string		$path		Cookie path (default: '/')
+     * @param	string		$prefix		Cookie name prefix
+     * @param	bool		$secure		Whether to only transfer cookies via SSL
+     * @param	bool		$httponly	Whether to only makes the cookie accessible via HTTP (no javascript)
+     * @return	void
+     */
+    public function set_cookie($name, $value = '', $expire = '', $domain = '', $path = '/', $prefix = '', $secure = FALSE, $httponly = FALSE)
+    {
+        if (is_array($name))
+        {
+            // always leave 'name' in last place, as the loop will break otherwise, due to $$item
+            foreach (array('value', 'expire', 'domain', 'path', 'prefix', 'secure', 'httponly', 'name') as $item)
+            {
+                if (isset($name[$item]))
+                {
+                    $$item = $name[$item];
+                }
+            }
+        }
 
-		if ($prefix == '' AND config_item('cookie_prefix') != '')
-		{
-			$prefix = config_item('cookie_prefix');
-		}
-		if ($domain == '' AND config_item('cookie_domain') != '')
-		{
-			$domain = config_item('cookie_domain');
-		}
-		if ($path == '/' AND config_item('cookie_path') != '/')
-		{
-			$path = config_item('cookie_path');
-		}
-		if ($secure == FALSE AND config_item('cookie_secure') != FALSE)
-		{
-			$secure = config_item('cookie_secure');
-		}
+        if ($prefix === '' && config_item('cookie_prefix') !== '')
+        {
+            $prefix = config_item('cookie_prefix');
+        }
 
-		if ( ! is_numeric($expire))
-		{
-			$expire = time() - 86500;
-		}
-		else
-		{
-			$expire = ($expire > 0) ? time() + $expire : 0;
-		}
+        if ($domain == '' && config_item('cookie_domain') != '')
+        {
+            $domain = config_item('cookie_domain');
+        }
 
-		setcookie($prefix.$name, $value, $expire, $path, $domain, $secure);
-	}
+        if ($path === '/' && config_item('cookie_path') !== '/')
+        {
+            $path = config_item('cookie_path');
+        }
+
+        if ($secure === FALSE && config_item('cookie_secure') !== FALSE)
+        {
+            $secure = config_item('cookie_secure');
+        }
+
+        if ($httponly === FALSE && config_item('cookie_httponly') !== FALSE)
+        {
+            $httponly = config_item('cookie_httponly');
+        }
+
+        if ( ! is_numeric($expire))
+        {
+            $expire = time() - 86500;
+        }
+        else
+        {
+            $expire = ($expire > 0) ? time() + $expire : 0;
+        }
+
+        setcookie($prefix.$name, $value, $expire, $path, $domain, $secure, $httponly);
+    }
 
 	// --------------------------------------------------------------------
 
