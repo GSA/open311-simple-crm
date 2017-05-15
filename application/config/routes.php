@@ -56,5 +56,13 @@ $route['open311/v2/requests'] = "reports/get_feed";
 
 $route['api/v2/servicerequestupdates.(:any)'] = "reports/service_request_updates/$1";
 
+$old_route = $route;
+
+foreach($old_route as $key => $value) {
+    $route['crm/'.$key] = $value;
+}
+$route['crm/(:any)'] = '$1';
+$route['crm'] = $route['default_controller'];
+
 /* End of file routes.php */
 /* Location: ./system/application/config/routes.php */

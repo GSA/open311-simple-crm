@@ -45,6 +45,8 @@
 
 <?php endif; ?>
 
+      <!-- Digital Analytics Program roll-up, see https://analytics.usa.gov for data -->
+      <script src="https://dap.digitalgov.gov/Universal-Federated-Analytics-Min.js?agency=GSA"></script>
 
 </body>
 </html>

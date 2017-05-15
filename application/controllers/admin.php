@@ -13,10 +13,10 @@ class Admin extends CI_Controller {
 		$this->load->helper('url');
 
 		$this->load->helper('fms_endpoint');
-		$this->load->library('Ion_auth');
+		$this->load->library('Saml_auth');
 		$this->load->library('grocery_CRUD');
 
-		if (!$this->ion_auth->logged_in()) {
+		if (!$this->saml_auth->logged_in()) {
 			redirect('auth/login');
 		}
 	}
@@ -56,7 +56,7 @@ class Admin extends CI_Controller {
 	// show a single report (anticipate this is for printing)
 	function report($id) {
 
-		if(!$this->ion_auth->is_admin()) {
+		if(!$this->saml_auth->is_admin()) {
 			$where_group = $this->filter_query_permissions();           
 		}
 
@@ -101,7 +101,7 @@ class Admin extends CI_Controller {
 	function reports_csv() {
 		$this->load->helper('csv');
 		
-		if(!$this->ion_auth->is_admin()) {
+		if(!$this->saml_auth->is_admin()) {
 			$where_group = $this->filter_query_permissions();   
 
 			if (!empty($where_group)) {
@@ -120,60 +120,60 @@ class Admin extends CI_Controller {
 		$crud = new grocery_CRUD();
 
 		$crud->set_theme('twitter-bootstrap');
-		
+
 		$crud->set_table('agencies');
 		$crud->required_fields('name');
 
-		if (!($this->ion_auth->is_admin() || is_config_true($this->config->item('can_edit_agencies')))) {
+		if (!($this->saml_auth->is_admin() || is_config_true($this->config->item('can_edit_agencies')))) {
 			$crud->unset_delete();
 			$crud->unset_add();
 			$crud->unset_edit();
-		} 
+		}
 
 		$crud->set_subject('Agency');
 		$output = $crud->render();
 
 		$this->_admin_output($output);
-	}   
+	}
 
 
 	function groups() {
 
-		if (!$this->ion_auth->is_admin()) {
+		if (!$this->saml_auth->is_admin()) {
 			redirect('admin/');
 		}
 
 		$crud = new grocery_CRUD();
 
 		$crud->set_theme('twitter-bootstrap');
-		
+
 		$crud->set_table('groups');
 		$crud->required_fields('name');
 
-		if (!($this->ion_auth->is_admin() || is_config_true($this->config->item('can_edit_groups')))) {
+		if (!($this->saml_auth->is_admin() || is_config_true($this->config->item('can_edit_groups')))) {
 			$crud->unset_delete();
 			$crud->unset_add();
 			$crud->unset_edit();
-		} 
+		}
 
 		$crud->set_subject('Group');
 		$output = $crud->render();
 
 		$this->_admin_output($output);
-	}   
+	}
 
 	function categories() {
 		$crud = new grocery_CRUD();
 
 		$crud->set_theme('twitter-bootstrap');
-		
+
 		$crud->set_table('categories');
 		$crud->unset_texteditor('description'); # maybe don't unset this one
 		$crud->unset_texteditor('status_notes','keywords');
 		$crud->required_fields('category_id','category_name');
 		$crud->set_rules('category_id', 'Category Identifier', 'trim|alpha_numeric');
 
-		if (!($this->ion_auth->is_admin() || is_config_true($this->config->item('can_edit_categories')))) {
+		if (!($this->saml_auth->is_admin() || is_config_true($this->config->item('can_edit_categories')))) {
 			$crud->unset_delete();
 			$crud->unset_add();
 			$crud->unset_edit();
@@ -196,31 +196,31 @@ class Admin extends CI_Controller {
 		$crud->set_relation('category_id','categories','category_name',null,'category_name ASC');
 		$crud->display_as ( 'category_id' , "Category");
 
-		$crud->unset_texteditor('datatype_description','description', 'values');    
+		$crud->unset_texteditor('datatype_description','description', 'values');
 
-		$crud->field_type('order','integer');   
-		$crud->field_type('description','string');  
-		$crud->field_type('datatype_description','string');         
-		
+		$crud->field_type('order','integer');
+		$crud->field_type('description','string');
+		$crud->field_type('datatype_description','string');
+
 		$crud->field_type('variable','dropdown',
-			array('true' => 'True', 'false' => 'False'));       
+			array('true' => 'True', 'false' => 'False'));
 		$crud->field_type('required','dropdown',
 			array('true' => 'True', 'false' => 'False'));
 
 
 		$crud->field_type('datatype','dropdown',
 			array(  'string' => 'Text',
-					'text' => 'Textbox',    
-					'number' => 'Number', 
-					'datetime' => 'Date Picker',                    
-					'singlevaluelist' => 'Dropdown Menu', 
+					'text' => 'Textbox',
+					'number' => 'Number',
+					'datetime' => 'Date Picker',
+					'singlevaluelist' => 'Dropdown Menu',
 					'multivaluelist' => 'Multi-select List'));
-		
+
 
 		$crud->required_fields('category_id', 'attribute_id','variable', 'datatype', 'required', 'description', 'order', 'description');
 
 
-		if (!($this->ion_auth->is_admin() || is_config_true($this->config->item('can_edit_categories')))) {
+		if (!($this->saml_auth->is_admin() || is_config_true($this->config->item('can_edit_categories')))) {
 			$crud->unset_delete();
 			$crud->unset_add();
 			$crud->unset_edit();
@@ -235,10 +235,10 @@ class Admin extends CI_Controller {
 	}
 
 
-	
+
 	function request_updates() {
 
-		if (!$this->ion_auth->is_admin()) {
+		if (!$this->saml_auth->is_admin()) {
 			//redirect them to the home page because they must be an administrator to view this
 			redirect($this->config->item('base_url'), 'refresh');
 		}
@@ -247,11 +247,11 @@ class Admin extends CI_Controller {
 		$crud->set_theme('twitter-bootstrap');
 		$crud->set_table('request_updates');
 		$crud->unset_texteditor('update_desc');
-		if (!($this->ion_auth->is_admin())) {
+		if (!($this->saml_auth->is_admin())) {
 			$crud->unset_delete();
 			$crud->unset_edit();
-			$where_group = $this->filter_query_permissions();           
-		}           
+			$where_group = $this->filter_query_permissions();
+		}
 
 		$crud->unset_add(); // disabled: should only be created by editing a report
 		$crud->columns('id', 'report_id', 'is_outbound', 'status_id', 'updated_at','update_desc', 'old_status_id', 'external_update_id');
@@ -267,14 +267,14 @@ class Admin extends CI_Controller {
 		$crud->display_as('update_desc', 'Description of update');
 		$crud->display_as('is_outbound', 'Outbound?');
 		$crud->display_as('remote_update_id', 'Remote<br/>update id');
-		
+
 		$output = $crud->render();
 
 		$this->_admin_output($output);
 	}
 
 	function settings() {
-		if (!$this->ion_auth->is_admin()) {
+		if (!$this->saml_auth->is_admin()) {
 			redirect('admin/');
 		} else {
 			$crud = new grocery_CRUD();
@@ -284,7 +284,7 @@ class Admin extends CI_Controller {
 			$crud->callback_column('desc', array($this, '_full_description'));
 			$crud->unset_texteditor('name','value');
 			$crud->edit_fields('name', 'desc', 'value');
-			$crud->callback_edit_field('value', array($this,'_text_value_field'));  // the default (textarea) is too big for any current setttings 
+			$crud->callback_edit_field('value', array($this,'_text_value_field'));  // the default (textarea) is too big for any current setttings
 			$crud->callback_edit_field('name', array($this,'_read_only_name_field'));  // read-only during edit
 			$crud->callback_edit_field('desc', array($this,'_read_only_desc_field'));  // read-only during edit
 			$crud->set_subject("configuration setting");
@@ -295,11 +295,11 @@ class Admin extends CI_Controller {
 	}
 
 	function statuses() {
-		if (!$this->ion_auth->is_admin()) {
+		if (!$this->saml_auth->is_admin()) {
 			redirect('admin/');
 		} else {
 			$crud = new grocery_CRUD();
-			$crud->set_theme('twitter-bootstrap'); 
+			$crud->set_theme('twitter-bootstrap');
 			$crud->set_table('statuses');
 			$crud->set_subject("problem status");
 			$crud->unset_texteditor('description');
@@ -307,16 +307,16 @@ class Admin extends CI_Controller {
 			$this->_admin_output($output);
 		}
 	}
-	
+
 	function api_keys() {
-		if (!$this->ion_auth->is_admin()) {
+		if (!$this->saml_auth->is_admin()) {
 			redirect('admin/');
 		} else {
 			$crud = new grocery_CRUD();
-			$crud->set_theme('twitter-bootstrap'); 
+			$crud->set_theme('twitter-bootstrap');
 			$crud->set_table('api_keys');
 			$crud->set_subject("API key");
-			$crud->set_relation('client_id','open311_clients', 
+			$crud->set_relation('client_id','open311_clients',
 				'<a href="/admin/open311_clients/{id}">{name}</a>', null,'name ASC');
 			$crud->display_as('client_id', 'Client');
 			$crud->unset_texteditor('notes');
@@ -326,15 +326,15 @@ class Admin extends CI_Controller {
 	}
 
 	function open311_clients() {
-		if (!$this->ion_auth->is_admin()) {
+		if (!$this->saml_auth->is_admin()) {
 			redirect('admin/');
 		} else {
 			$crud = new grocery_CRUD();
-			$crud->set_theme('twitter-bootstrap'); 
+			$crud->set_theme('twitter-bootstrap');
 			$crud->set_table('open311_clients');
 			$crud->set_subject("Open311 client");
 			$crud->unset_texteditor('notes','client_url');
-			$crud->callback_edit_field('client_url', array($this,'_text_client_url_field'));  
+			$crud->callback_edit_field('client_url', array($this,'_text_client_url_field'));
 			$output = $crud->render();
 			$this->_admin_output($output);
 		}
@@ -342,7 +342,7 @@ class Admin extends CI_Controller {
 
 	function spam() {
 
-		if (!$this->ion_auth->is_admin()) {
+		if (!$this->saml_auth->is_admin()) {
 			redirect('admin/');
 		} else {
 			$this->load->file('./application/libraries/Akismet.php');
@@ -360,42 +360,42 @@ class Admin extends CI_Controller {
 				$this->db->where('status_name', 'new');
 				$this->db->join('statuses', 'reports.status = statuses.status_id');
 
-				$query = $this->db->get('reports');	
+				$query = $this->db->get('reports');
 
 				foreach ($query->result() as $result) {
 
 					// Mark as spam
 					if($this->config->item('akismet_key')) {
-						
+
 						$wordPressAPIKey = $this->config->item('akismet_key');
 						$blogURL = $this->config->item('akismet_siteurl');
-						
+
 						$akismet = new Akismet($blogURL ,$wordPressAPIKey);
 						$akismet->setCommentAuthor($result->first_name . ' ' . $result->last_name);
 						$akismet->setCommentAuthorEmail($result->email);
 						$akismet->setCommentContent($result->description);
-						
-						$akismet->submitSpam(); 
+
+						$akismet->submitSpam();
 					}
 
 					// Delete the report
 					$this->db->delete('reports', array('report_id' => $result->report_id));
 					$count++;
-				}			
+				}
 
 				$output['count'] = $count;
 				$output['notice'] = $count . " new messages have been marked as spam";
-			} 
-			
+			}
+
 			$this->load->view('spam.php', $output);
 		}
-	} 		
+	}
 
 	function about() {
 		$output = array('output' => $this->load->view('about', '', true));
 		$this->load->view('admin_view.php', $output);
 	}
-	
+
 	function help() {
 		$output = array('output' => $this->load->view('help', '', true));
 		$this->load->view('admin_view.php', $output);
@@ -498,12 +498,12 @@ class Admin extends CI_Controller {
 		$crud->callback_before_update(array($this,'_fix_zero_prio_callback'));
 		$crud->callback_after_update(array($this, '_check_for_status_update_after'));
 		
-		if (!$this->ion_auth->is_admin()) {
+		if (!$this->saml_auth->is_admin()) {
 			$crud->unset_delete();
 		}
 
 		// If we're not an admin restrict list to reports we have permissions for
-		if(!$this->ion_auth->is_admin()) {
+		if(!$this->saml_auth->is_admin()) {
 			return $this->filter_query_permissions($crud);
 		} else {
 			return $crud;
@@ -512,7 +512,8 @@ class Admin extends CI_Controller {
 	}
 
 	function filter_query_permissions($crud = null) {
-		$user_groups = $this->ion_auth->get_users_groups()->result();
+		return $crud;
+		$user_groups = $this->saml_auth->get_users_groups()->result();
 		$where_group = array();
 		foreach ($user_groups as $user_group) {
 			if ($user_group->name !== 'members') {
@@ -523,12 +524,12 @@ class Admin extends CI_Controller {
 			if(!empty($crud)) {
 				$crud->where('agency_responsible', $where_group[0]);
 				return $crud;
-			} else {                
+			} else {
 				return $where_group;
-			}                       
+			}
 		} else {
 			if(!empty($crud)) {
-				$crud->where('agency_responsible', ''); 
+				$crud->where('agency_responsible', '');
 				return $crud;
 			}
 		}
