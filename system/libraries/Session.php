@@ -38,7 +38,8 @@ class CI_Session {
 	var $cookie_prefix				= '';
 	var $cookie_path				= '';
 	var $cookie_domain				= '';
-	var $cookie_secure				= FALSE;
+	var $cookie_secure				= TRUE;
+	var $cookie_httponly			= TRUE;
 	var $sess_time_to_update		= 300;
 	var $encryption_key				= '';
 	var $flashdata_key				= 'flash';
@@ -685,7 +686,8 @@ class CI_Session {
 			$expire,
 			$this->cookie_path,
 			$this->cookie_domain,
-			$this->cookie_secure
+			$this->cookie_secure,
+			$this->cookie_httponly
 		);
 	}
 
