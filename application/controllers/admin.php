@@ -1,6 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Admin extends CI_Controller { 
+class Admin extends CI_Controller {
 
 	function __construct() {
 
@@ -9,7 +9,7 @@ class Admin extends CI_Controller {
 		$this->config->load('fms_endpoint', FALSE, TRUE);
 		/* Standard Libraries */
 		$this->load->database();
-		
+
 		$this->load->helper('url');
 
 		$this->load->helper('fms_endpoint');
@@ -25,7 +25,7 @@ class Admin extends CI_Controller {
 	function index() {
 
 		try{
-			
+
 			if($this->config->item('default_report_columns')){
 				$default_columns = explode(',', $this->config->item('default_report_columns'));
 			} else {
@@ -40,7 +40,7 @@ class Admin extends CI_Controller {
 		}
 	}
 
-	function reports() {        
+	function reports() {
 		// explicitly list all fields (was missing out report-id)
 		$crud = $this->_set_common_report_crud(array());
 		//$crud->callback_before_update(array($this,'_set_modified_time'));
@@ -50,14 +50,14 @@ class Admin extends CI_Controller {
 
 	// show a single report (anticipate this is for printing)
 	function _set_modified_time($post_array, $primary_key) {
-		
+
 	}
 
 	// show a single report (anticipate this is for printing)
 	function report($id) {
 
 		if(!$this->saml_auth->is_admin()) {
-			$where_group = $this->filter_query_permissions();           
+			$where_group = $this->filter_query_permissions();
 		}
 
 		$this->db->select('reports.*,
@@ -76,7 +76,7 @@ class Admin extends CI_Controller {
 		if (!empty($where_group)) {
 			$this->db->where('agency_responsible', $where_group[0]);
 		}
-		
+
 		$query = $this->db->get();
 		if ($query->num_rows()==1) {
 			$image_url = $query->row()->media_url;
@@ -88,7 +88,7 @@ class Admin extends CI_Controller {
 			$report_record->description = stripcslashes($report_record->description);
 
 			$this->load->vars(array(
-				'report' => $report_record, 
+				'report' => $report_record,
 				'external_link' => $this->_get_external_url(null, $report_record),
 				'image_url' => $image_url));
 			$output = array('output' => $this->load->view('report', '', true));
@@ -100,14 +100,14 @@ class Admin extends CI_Controller {
 
 	function reports_csv() {
 		$this->load->helper('csv');
-		
+
 		if(!$this->saml_auth->is_admin()) {
-			$where_group = $this->filter_query_permissions();   
+			$where_group = $this->filter_query_permissions();
 
 			if (!empty($where_group)) {
 				$this->db->where('agency_responsible', $where_group[0]);
 			}
-					
+
 		}
 
 		$query = $this->db->get('reports');
@@ -412,27 +412,27 @@ class Admin extends CI_Controller {
 		$crud = new grocery_CRUD();
 
 		// default columns excludes: token address_id simply because FMS/FMS-endpoint doesn't use them
-		$default_columns = array('report_id', 
-								 'status', 
-								 'requested_datetime', 
-								 'updated_datetime', 
+		$default_columns = array('report_id',
+								 'status',
+								 'requested_datetime',
+								 'updated_datetime',
 								 'expected_datetime',
-								 'priority',  
+								 'priority',
 								 'category_id',
-								 'media_url', 
-								 'status_notes', 
-								 'description', 
-								 'agency_responsible', 
+								 'media_url',
+								 'status_notes',
+								 'description',
+								 'agency_responsible',
 								 'service_notice',
-								 'address', 
-								 'postal_code', 
-								 'lat', 'long',                              
-								 'device_id', 
-								 'source_client', 
-								 'account_id', 
-								 'first_name', 
-								 'last_name', 
-								 'email', 
+								 'address',
+								 'postal_code',
+								 'lat', 'long',
+								 'device_id',
+								 'source_client',
+								 'account_id',
+								 'first_name',
+								 'last_name',
+								 'email',
 								 'phone',
 								 'engineer');
 		$columns = $columns? $columns : $default_columns;
@@ -455,24 +455,24 @@ class Admin extends CI_Controller {
 		$crud->set_primary_key('url_slug','agencies');
 		$crud->set_relation('agency_responsible','agencies','name',null,'name ASC');
 
-		$crud->set_relation('source_client','open311_clients', 
+		$crud->set_relation('source_client','open311_clients',
 			'<a href="admin/open311_clients/{id}">{name}</a>', null,'name ASC');
 
 		$crud->display_as('client_id', 'Client');
 		$crud->callback_column('media_url',array($this,'_linkify'));
 		$crud->callback_column('external_id', array($this, '_get_external_url'));
-		$crud->callback_edit_field('media_url', array($this,'_text_media_url_field'));  
+		$crud->callback_edit_field('media_url', array($this,'_text_media_url_field'));
 
 		$crud->display_as('requested_datetime', 'Received')
-			->display_as('updated_datetime', 'Last Updated')        
-			->display_as('expected_datetime', 'Expected')       
+			->display_as('updated_datetime', 'Last Updated')
+			->display_as('expected_datetime', 'Expected')
 			->display_as('category_id', 'Category')
 			->display_as('media_url', 'Media URL');
 		$external_id_col_name = config_item('external_id_col_name');
 		$crud->display_as('external_id', empty($external_id_col_name)?'External ID':$external_id_col_name);
 		$crud->unset_texteditor('description', 'address', 'status_notes', 'service_notice');
 		$crud->add_action('View', site_url('assets/fms-endpoint/images/report.png'), 'admin/report');
-		
+
 		$crud->callback_column('xxx_report_id', array($this, '_report_id_link_field'));
 		$crud->callback_column('requested_datetime', array($this, '_report_datetime_field'));
 		$crud->callback_column('updated_datetime', array($this, '_report_datetime_field'));
@@ -497,7 +497,7 @@ class Admin extends CI_Controller {
 
 		$crud->callback_before_update(array($this,'_fix_zero_prio_callback'));
 		$crud->callback_after_update(array($this, '_check_for_status_update_after'));
-		
+
 		if (!$this->saml_auth->is_admin()) {
 			$crud->unset_delete();
 		}
@@ -543,7 +543,7 @@ class Admin extends CI_Controller {
 	   foreach($id_array as $item) {
 		  if($item != '') {
 			$this->db->where('report_id', $item);
-			$this->db->delete('reports');   
+			$this->db->delete('reports');
 		  }
 	   }
 	}
@@ -552,17 +552,17 @@ class Admin extends CI_Controller {
 		return 's'.substr(md5($field_name),0,8); //This s is because is better for a string to begin with a letter and not with a number
 	}
 
-	function _set_update_time($value, $primary_key){  
+	function _set_update_time($value, $primary_key){
 		$current_value   = (!empty($value)) ? date('l F j, Y \a\t g:i a', strtotime($value)) : 'No updates yet';
 		$timestamp_field = "<input id='updated_datetime' name='updated_datetime' type='hidden' value='".date('Y-m-d H:i:s')."' />" . $current_value;
 		return $timestamp_field;
 	}
 
-	function _set_requested_datetime($value, $primary_key){    
+	function _set_requested_datetime($value, $primary_key){
 		$timestamp_field = "<input id='$primary_key' name='$primary_key' type='hidden' value='$value' />" . date('l F j, Y \a\t g:i a', strtotime($value));
 		return $timestamp_field;
-	}   
-	
+	}
+
 	// force the default priority (0) since the groceryCRUD drop-down for priority doesn't
 	// seem to auto-select an option if it's zero... hence it's returned from the form as
 	// NULL
@@ -570,21 +570,21 @@ class Admin extends CI_Controller {
 		if ($post_array['priority'] == null) {
 			$post_array['priority'] = FMSE_DEFAULT_REPORT_PRIORITY;
 		}
-		
+
 		// get the current status (from the db) and store it in $post_array, cos we'll check it
 		// immediately after the save to see if it's changed
 		$this_record = $this->db->get_where('reports', array('report_id' => $primary_key))->row();
 		$post_array['old_status']=$this_record->status; // for detecting status changes
 		return $post_array;
 	}
-		
+
 	function _admin_output($output = null) {
 		$this->load->view('admin_view.php', $output);
 	}
 
 	// field button
 	function _report_status_button($value, $row) {
-		
+
 		if ($value == "new") {
 			$class = "btn-danger";
 		} else if ($value == "open") {
@@ -600,7 +600,7 @@ class Admin extends CI_Controller {
 
 	// category type
 	function _report_category_button($value, $row) {
-		
+
 		if ($value == "New Data Request") {
 			$class = "btn-info";
 		} else if ($value == "New Data Issue") {
@@ -610,7 +610,7 @@ class Admin extends CI_Controller {
 		}
 
 		return '<span class="btn ' . $class . '">' . $value . '</span>';
-	}   
+	}
 
 	// make the ID a link to the report
 	function _report_id_link_field($value, $row) {
@@ -622,25 +622,25 @@ class Admin extends CI_Controller {
 	function _report_datetime_field($value, $row) {
 		$datetime = $value;
 		if(!empty($value)) {
-			return date('M j - g:ia', strtotime($value));   
+			return date('M j - g:ia', strtotime($value));
 		} else {
 			return '';
 		}
-		
-	}   
+
+	}
 
 	// format description field
 	function _report_description_field($value, $row) {
 		if(!empty($value)) {
-			return stripcslashes($value);
+			return htmlentities(stripcslashes($value));
 		} else {
 			return '';
 		}
-		
+
 	}
 
-	
-	function _read_only_report_id_field($value, $primary_key) { 
+
+	function _read_only_report_id_field($value, $primary_key) {
 		return '<input type="hidden" value="' . $value . '" ' . ' name="' . $primary_key . '"/>' . $value;
 	}
 	function _read_only_name_field($value, $primary_key) { return $this->_read_only_field('name', $value); }
@@ -688,7 +688,7 @@ class Admin extends CI_Controller {
 		}
 		return $url;
 	}
-	
+
 	function _check_for_status_update_after($post_array,$primary_key) {
 		if ($post_array['old_status'] != $post_array['status']) {
 			// create a status change record
@@ -696,7 +696,7 @@ class Admin extends CI_Controller {
 			$status_lookup = $this->db->get_where("statuses", array('status_id' => $post_array['status']));
 			if ($status_lookup->num_rows()==1) {
 				$desc = "Marked as \"" . $status_lookup->row()->status_name . '"';
-			} // else fail silently? 
+			} // else fail silently?
 			$org = $this->config->item('organisation_name');
 			if  (! empty($org) ) {
 				$desc = "$desc by $org";
