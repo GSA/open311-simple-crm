@@ -15,6 +15,9 @@ class Auth extends CI_Controller
 
     public function login()
     {
+        if ('development' == ENVIRONMENT) {
+            return $this->loginDev();
+        }
         $as = new SimpleSAML_Auth_Simple('max');
         $as->requireAuth(array(
             'saml:AuthnContextClassRef' => 'https://max.gov/icam/2015/10/securityLevels/securePlus2',
@@ -38,10 +41,26 @@ class Auth extends CI_Controller
         }
 
         $userdata['provider_url'] = 'max.gov';
-//        $this->session->set_userdata($userdata);
-//        $this->session->set_userdata($attributes);
 
         if ($this->saml_auth->login(array_merge($userdata, $attributes))) {
+            redirect('admin');
+            return;
+        }
+
+        redirect('/');
+    }
+
+    public function loginDev()
+    {
+        $userdata = array(
+            'username' => 'Dev Smith',
+            'email' => 'dev@data.gov',
+            'first_name' => 'Dev',
+            'last_name' => 'Smith',
+            'pre_approved_admin' => true,
+            'provider_url' => 'dev'
+        );
+        if ($this->saml_auth->login($userdata)) {
             redirect('admin');
             return;
         }
