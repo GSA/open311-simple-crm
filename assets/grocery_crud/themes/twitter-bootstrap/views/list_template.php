@@ -79,7 +79,13 @@
 		 			</a>
 	 			<?php
 	 			}
-	 		} ?>
+        			if(!$unset_export) { ?>
+        		 			<a class="advexport-anchor btn" rel="external" data-toggle="collapse" data-target="#advexport">
+        		 				<i class="glyphicon glyphicon-wrench"></i> Advanced <?php echo $this->l('list_export');?>
+        		 			</a>
+        	 			<?php
+        	 			}
+        	 		} ?>
  			<button style="display:none" class="btn" data-toggle="modal" data-target="#filtering-form-search" >
  				<i class="glyphicon glyphicon-search"></i>
  				<?php echo $this->l('list_search');?>
