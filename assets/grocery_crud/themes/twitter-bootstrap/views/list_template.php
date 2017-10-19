@@ -94,7 +94,31 @@
 				<?php echo ($success_message !== null) ? $success_message : ''; ?>
 			</div>
 		</div>
-
+		<!-- Advanced Export -->
+		<div id="advexport" class="panel panel-default collapse">
+          <div class="panel-body">
+            <div class="row">
+              <div class="col-md-1"></div>
+              <div class="col-md-3">Agency Responsible</div>
+              <div class="col-md-3">CRM Request Type (Category)</div>
+              <div class="col-md-3">Sort By</div>
+              <div class="col-md-2"></div>
+            </div>
+            <div class="row">
+                <div class="col-md-1"><b>Export By</b></div>
+                <div id="agencieslist" class="col-md-3">
+                </div>
+                <div id="categorylist" class="col-md-3">
+                </div>
+                <div id="sortbylist" class="col-md-3">
+                </div>
+                <div class="col-md-2">
+                  <button type="button" id="advexportbtn" class="btn btn-success"><i class="glyphicon glyphicon-download"></i> <?php echo $this->l('list_export');?></button>
+                </div>
+            </div>
+          </div>
+    		</div>
+        <!-- Advanced Export Ends-->
 		<div id="ajax_list">
 			<?php echo $list_view; ?>
 		</div>
