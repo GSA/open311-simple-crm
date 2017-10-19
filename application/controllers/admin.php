@@ -125,31 +125,40 @@ class Admin extends CI_Controller {
 	function reports_dyn_csv() {
 	    $this->load->helper('csv');
 	    //$this->db->select('report_id AS ID, status AS Status, requested_datetime AS Received, agency_responsible AS Agency Responsible, category_id AS Category, description AS Description, updated_datetime AS Last Updated');
-	    $agency =  $this->input->post('agency');
-	    $category = $this->input->post('category');
-	    $orderby = $this->input->post('orderby');
-	    if((empty($agency))||($agency=="00")){
-	        $agency = null;
-	    }
+	    $agency =  strtolower($this->input->post('agency'));
+	    $category = strtolower($this->input->post('category'));
+	    $orderby = strtolower($this->input->post('orderby'));
 	    if(!$this->saml_auth->is_admin()) {
 	        $where_group = $this->filter_query_permissions();
 	        if (!empty($where_group)) {
 	            $agency = $where_group[0];
 	        }
 	    }
-	    if((empty($category))||($category=="00")){
-	        $category = null;
+	    
+	    if((empty($agency))||($agency=="all")){
+	        //$agency = null;
+	    }else{
+	        $this->db->where('agency_responsible', $agency);
 	    }
-	    if((empty($orderby))||($orderby=="00")){
+	    if((empty($category))||($category=="all")){
+	        //$category = null;
+	    }else{
+	        $this->db->where('category_id', $category);
+	    }
+	    
+	    //$array = array('agency_responsible' => $agency, 'category_id' => $category);
+	    //$this->db->where($array);
+	    
+	    if((empty($orderby))||($orderby=="na")){
 	        $orderby = "report_id";
 	    }
-	    $array = array('agency_responsible' => $agency, 'category_id' => $category);
-	    $this->db->where($array);
+	    
 	    $this->db->order_by($orderby, 'ASC');
 	    $query = $this->db->get('reports');
 	    $filename = date('Y-m-d_Hi') . '_dyn_reports.csv';
 	    query_to_csv($query, TRUE, $filename);
 	}
+
 	function agencies() {
 		$crud = new grocery_CRUD();
 

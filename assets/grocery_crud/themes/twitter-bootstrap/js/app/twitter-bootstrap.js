@@ -355,7 +355,7 @@ $(document).ready(function(){
 	        dataType : "text",
 	        success: function(data){
 	        	    var date = new Date();
-	            var filename = (date.getMonth() + 1) + '-' + date.getDate() + '-' +  date.getFullYear() +'-'+ date.getHours()+'-'+date.getMinutes()+".csv";
+	            var filename = (date.getMonth() + 1) + '-' + date.getDate() + '-' +  date.getFullYear() +'-'+ date.getHours()+'-'+date.getMinutes()+"_dyn_reports.csv";
 	            download(data, filename, "text/csv");
 	     }
 	    });
