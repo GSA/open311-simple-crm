@@ -33,9 +33,7 @@
 
 <script src="<?php echo site_url('assets/fms-endpoint/js/vendor/bootstrap.min.js')?>"></script>
 <script type="text/javascript">
-if("<?php echo $currmethod; ?>"!="index"){
-	$(".advexport-anchor").hide();
-}
+$(".advexport-anchor").hide();
 </script>
 
 <?php if (config_item('google_analytics_id')): ?>
