@@ -5,7 +5,7 @@
 /**
  * CSV Helpers
  * Inspiration from PHP Cookbook by David Sklar and Adam Trachtenberg
- * 
+ *
  * @author        Jérôme Jaglale
  * @link        http://maestric.com/en/doc/php/codeigniter_csv
  */
@@ -20,14 +20,14 @@
  */
 if ( ! function_exists('array_to_csv')) {
     function array_to_csv($array, $download = "") {
-        if ($download != "") {    
+        if ($download != "") {
             header('Content-Type: application/csv');
             header('Content-Disposition: attachment; filename="' . $download . '"');
-        }        
+        }
 
         ob_start();
         $f = fopen('php://output', 'w') or show_error("Can't open php://output");
-        $n = 0;        
+        $n = 0;
         foreach ($array as $line) {
             $n++;
             if ( ! fputcsv($f, $line)) {
@@ -39,10 +39,10 @@ if ( ! function_exists('array_to_csv')) {
         ob_end_clean();
 
         if ($download == "") {
-            return $str;    
-        } else {    
+            return $str;
+        } else {
             echo $str;
-        }        
+        }
     }
 }
 
@@ -59,9 +59,9 @@ if ( ! function_exists('query_to_csv')) {
         if ( ! is_object($query) OR ! method_exists($query, 'list_fields')) {
             show_error('invalid query');
         }
-        
+
         $array = array();
-        
+
         if ($headers) {
             $line = array();
             foreach ($query->list_fields() as $name) {
@@ -69,26 +69,46 @@ if ( ! function_exists('query_to_csv')) {
             }
             $array[] = $line;
         }
-        
-        /*foreach ($query->result_array() as $row) {
-            $line = array();
-            foreach ($row as $item) {
-                $line[] = $item;
-            }
-            $array[] = $line;
-        }*/
-        while ($row = $query->unbuffered_row())
-        {
+
+        foreach ($query->result_array() as $row) {
             $line = array();
             foreach ($row as $item) {
                 $line[] = $item;
             }
             $array[] = $line;
         }
+        //use the following if there is an issue with memory limit
+        /*while ($row = $query->unbuffered_row())
+        {
+            $line = array();
+            foreach ($row as $item) {
+                $line[] = $item;
+            }
+            $array[] = $line;
+        }*/
 
         echo array_to_csv($array, $download);
     }
 }
+// ------------------------------------------------------------------------
 
+/**
+ * Query to CSV using Codeigniter's own export feature
+ *
+ * download == "" -> return CSV string
+ * download == "toto.csv" -> download file toto.csv
+ */
+
+if ( ! function_exists('query_to_csv_ci')) {
+  function query_to_csv_ci($query, $headers = TRUE, $filename = "") {
+    if ( ! is_object($query) OR ! method_exists($query, 'list_fields')) {
+        show_error('invalid query');
+    }
+    $ci =& get_instance();
+    $ci->load->dbutil();
+    $ci->load->helper('download');
+    force_download($filename, $ci->dbutil->csv_from_result($query));
+  }
+}
 /* End of file csv_helper.php */
 /* Location: ./system/helpers/csv_helper.php */
