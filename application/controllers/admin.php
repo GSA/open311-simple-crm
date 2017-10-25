@@ -25,7 +25,11 @@ class Admin extends CI_Controller {
 	function index() {
 
 		try{
-
+		    //load agency list and category List
+		    $querya = $this->get_agencies();
+		    $queryb = $this->get_categories();
+		    $queryc = $this->get_report_columns();
+		    
 			if($this->config->item('default_report_columns')){
 				$default_columns = explode(',', $this->config->item('default_report_columns'));
 			} else {
@@ -34,6 +38,9 @@ class Admin extends CI_Controller {
 
 			$crud = $this->_set_common_report_crud($default_columns);
 			$output = $crud->render();
+			$output->agencieslist = $querya;
+			$output->categorieslist = $queryb;
+			$output->columnslist = $queryc;
 			$this->_admin_output($output);
 		} catch(Exception $e) {
 			show_error($e->getMessage().' --- '.$e->getTraceAsString());
@@ -114,6 +121,42 @@ class Admin extends CI_Controller {
 
 		$filename = date('Y-m-d_Hi') . '_reports.csv';
 		query_to_csv($query, TRUE, $filename);
+	}
+	function reports_dyn_csv() {
+	    $this->load->helper('csv');
+	    //$this->db->select('report_id AS ID, status AS Status, requested_datetime AS Received, agency_responsible AS Agency Responsible, category_id AS Category, description AS Description, updated_datetime AS Last Updated');
+	    $agency =  strtolower($this->input->post('agency'));
+	    $category = strtolower($this->input->post('category'));
+	    $orderby = strtolower($this->input->post('orderby'));
+	    if(!$this->saml_auth->is_admin()) {
+	        $where_group = $this->filter_query_permissions();
+	        if (!empty($where_group)) {
+	            $agency = $where_group[0];
+	        }
+	    }
+	    
+	    if((empty($agency))||($agency=="all")){
+	        //$agency = null;
+	    }else{
+	        $this->db->where('agency_responsible', $agency);
+	    }
+	    if((empty($category))||($category=="all")){
+	        //$category = null;
+	    }else{
+	        $this->db->where('category_id', $category);
+	    }
+	    
+	    //$array = array('agency_responsible' => $agency, 'category_id' => $category);
+	    //$this->db->where($array);
+	    
+	    if((empty($orderby))||($orderby=="na")){
+	        $orderby = "report_id";
+	    }
+	    
+	    $this->db->order_by($orderby, 'ASC');
+	    $query = $this->db->get('reports');
+	    $filename = date('Y-m-d_Hi') . '_dyn_reports.csv';
+	    query_to_csv($query, TRUE, $filename);
 	}
 
 	function agencies() {
@@ -551,7 +594,25 @@ class Admin extends CI_Controller {
 	function unique_field_name($field_name) {
 		return 's'.substr(md5($field_name),0,8); //This s is because is better for a string to begin with a letter and not with a number
 	}
-
+	
+	function get_agencies()
+	{
+	    $this->db->select('name, url_slug');
+	    $this->db->from('agencies');
+	    $query = $this->db->get();
+	    return $query;
+	}
+	function get_categories()
+	{
+	    $this->db->select('category_name, category_id');
+	    $this->db->from('categories');
+	    $query = $this->db->get();
+	    return $query;
+	}
+	function get_report_columns()
+	{
+	    return $this->db->list_fields('reports');
+	}
 	function _set_update_time($value, $primary_key){
 		$current_value   = (!empty($value)) ? date('l F j, Y \a\t g:i a', strtotime($value)) : 'No updates yet';
 		$timestamp_field = "<input id='updated_datetime' name='updated_datetime' type='hidden' value='".date('Y-m-d H:i:s')."' />" . $current_value;
@@ -579,6 +640,7 @@ class Admin extends CI_Controller {
 	}
 
 	function _admin_output($output = null) {
+	    $output->currmethod = $this->router->fetch_method();
 		$this->load->view('admin_view.php', $output);
 	}
 
