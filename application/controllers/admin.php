@@ -29,7 +29,7 @@ class Admin extends CI_Controller {
 		    $querya = $this->get_agencies();
 		    $queryb = $this->get_categories();
 		    $queryc = $this->get_report_columns();
-		    
+
 			if($this->config->item('default_report_columns')){
 				$default_columns = explode(',', $this->config->item('default_report_columns'));
 			} else {
@@ -48,11 +48,20 @@ class Admin extends CI_Controller {
 	}
 
 	function reports() {
-		// explicitly list all fields (was missing out report-id)
-		$crud = $this->_set_common_report_crud(array());
-		//$crud->callback_before_update(array($this,'_set_modified_time'));
-		$output = $crud->render();
-		$this->_admin_output($output);
+	  $crud = $this->_set_common_report_crud(array());
+	  // explicitly list all fields (was missing out report-id)
+	  $classname = $this->router->fetch_method();
+	  $state = $crud->getState();
+	  if($classname == "reports" && $state == "export"){
+	    $this->load->helper('csv');
+	    $query = $this->db->get('reports');
+	    $filename = date('Y-m-d_Hi') . '_detailed_report.csv';
+	    query_to_csv_ci($query, TRUE, $filename);
+	  }else{
+	    //$crud->callback_before_update(array($this,'_set_modified_time'));
+	    $output = $crud->render();
+	    $this->_admin_output($output);
+	  }
 	}
 
 	// show a single report (anticipate this is for printing)
@@ -119,8 +128,8 @@ class Admin extends CI_Controller {
 
 		$query = $this->db->get('reports');
 
-		$filename = date('Y-m-d_Hi') . '_reports.csv';
-		query_to_csv($query, TRUE, $filename);
+		$filename = date('Y-m-d_Hi') . '_report.csv';
+		query_to_csv_ci($query, TRUE, $filename);
 	}
 	function reports_dyn_csv() {
 	    $this->load->helper('csv');
@@ -134,7 +143,7 @@ class Admin extends CI_Controller {
 	            $agency = $where_group[0];
 	        }
 	    }
-	    
+
 	    if((empty($agency))||($agency=="all")){
 	        //$agency = null;
 	    }else{
@@ -145,18 +154,18 @@ class Admin extends CI_Controller {
 	    }else{
 	        $this->db->where('category_id', $category);
 	    }
-	    
+
 	    //$array = array('agency_responsible' => $agency, 'category_id' => $category);
 	    //$this->db->where($array);
-	    
+
 	    if((empty($orderby))||($orderby=="na")){
 	        $orderby = "report_id";
 	    }
-	    
+
 	    $this->db->order_by($orderby, 'ASC');
 	    $query = $this->db->get('reports');
-	    $filename = date('Y-m-d_Hi') . '_dyn_reports.csv';
-	    query_to_csv($query, TRUE, $filename);
+	    $filename = date('Y-m-d_Hi') . '_advanced_report.csv';
+	    query_to_csv_ci($query, TRUE, $filename);
 	}
 
 	function agencies() {
@@ -594,7 +603,7 @@ class Admin extends CI_Controller {
 	function unique_field_name($field_name) {
 		return 's'.substr(md5($field_name),0,8); //This s is because is better for a string to begin with a letter and not with a number
 	}
-	
+
 	function get_agencies()
 	{
 	    $this->db->select('name, url_slug');
