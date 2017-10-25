@@ -396,6 +396,28 @@ class CI_DB_result {
 	 * cached results.
 	 */
 	public function num_rows() { return $this->num_rows; }
+    // --------------------------------------------------------------------
+
+	/**
+	 * Returns an unbuffered row and move pointer to next row
+	 *
+	 * @param	string	$type	'array', 'object' or a custom class name
+	 * @return	mixed
+	 */
+	public function unbuffered_row($type = 'object')
+	{
+		if ($type === 'array')
+		{
+			return $this->_fetch_assoc();
+		}
+		elseif ($type === 'object')
+		{
+			return $this->_fetch_object();
+		}
+
+		return $this->_fetch_object($type);
+	}
+
 	public function num_fields() { return 0; }
 	public function list_fields() { return array(); }
 	public function field_data() { return array(); }

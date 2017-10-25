@@ -70,7 +70,15 @@ if ( ! function_exists('query_to_csv')) {
             $array[] = $line;
         }
         
-        foreach ($query->result_array() as $row) {
+        /*foreach ($query->result_array() as $row) {
+            $line = array();
+            foreach ($row as $item) {
+                $line[] = $item;
+            }
+            $array[] = $line;
+        }*/
+        while ($row = $query->unbuffered_row())
+        {
             $line = array();
             foreach ($row as $item) {
                 $line[] = $item;
