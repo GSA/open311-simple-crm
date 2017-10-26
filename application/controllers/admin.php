@@ -25,23 +25,33 @@ class Admin extends CI_Controller {
 	function index() {
 
 		try{
-		    //load agency list and category List
-		    $querya = $this->get_agencies();
-		    $queryb = $this->get_categories();
-		    $queryc = $this->get_report_columns();
-
 			if($this->config->item('default_report_columns')){
 				$default_columns = explode(',', $this->config->item('default_report_columns'));
 			} else {
 				$default_columns = array('report_id','status', 'requested_datetime','agency_responsible','category_id','description','updated_datetime');
 			}
-
 			$crud = $this->_set_common_report_crud($default_columns);
-			$output = $crud->render();
-			$output->agencieslist = $querya;
-			$output->categorieslist = $queryb;
-			$output->columnslist = $queryc;
-			$this->_admin_output($output);
+			$methodname = $this->router->fetch_method();
+		  $state = $crud->getState();
+			if($methodname == "index" && $state == "export"){
+				$this->load->helper('csv');
+				$this->db->select('report_id AS ID, status AS Status, requested_datetime AS Received, agency_responsible AS AgencyResponsible, category_id AS Category, description AS Description, updated_datetime AS LastUpdated');
+				$query = $this->db->get('reports');
+				$filename = 'export-'.date('Y-m-d_Hi') . '.csv';
+				query_to_csv_ci($query, TRUE, $filename);
+			}else{
+				//load agency list and category List
+				$querya = $this->get_agencies();
+				$queryb = $this->get_categories();
+				$queryc = $this->get_report_columns();
+
+				$output = $crud->render();
+				$output->agencieslist = $querya;
+				$output->categorieslist = $queryb;
+				$output->columnslist = $queryc;
+				$this->_admin_output($output);
+			}
+
 		} catch(Exception $e) {
 			show_error($e->getMessage().' --- '.$e->getTraceAsString());
 		}
@@ -50,9 +60,9 @@ class Admin extends CI_Controller {
 	function reports() {
 	  $crud = $this->_set_common_report_crud(array());
 	  // explicitly list all fields (was missing out report-id)
-	  $classname = $this->router->fetch_method();
+	  $methodname = $this->router->fetch_method();
 	  $state = $crud->getState();
-	  if($classname == "reports" && $state == "export"){
+	  if($methodname == "reports" && $state == "export"){
 	    $this->load->helper('csv');
 	    $query = $this->db->get('reports');
 	    $filename = date('Y-m-d_Hi') . '_detailed_report.csv';
