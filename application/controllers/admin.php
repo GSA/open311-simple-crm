@@ -35,8 +35,18 @@ class Admin extends CI_Controller {
 		  $state = $crud->getState();
 			if($methodname == "index" && $state == "export"){
 				$this->load->helper('csv');
-				$this->db->select('report_id AS ID, status AS Status, requested_datetime AS Received, agency_responsible AS AgencyResponsible, category_id AS Category, description AS Description, updated_datetime AS LastUpdated');
-				$query = $this->db->get('reports');
+				/*$this->db->select('report_id AS ID, status AS Status, requested_datetime AS Received, agency_responsible AS AgencyResponsible, category_id AS Category, description AS Description, updated_datetime AS LastUpdated');
+				$query = $this->db->get('reports');*/
+				$this->db->select('report_id AS ID, statuses.status_name AS Status');
+				$this->db->select('DATE_FORMAT(requested_datetime, "%W %M %e %Y %l:%i %p") AS Received', FALSE);
+				$this->db->select('agencies.name AS AgencyResponsible, categories.category_name AS Category, reports.description AS Description');
+				$this->db->select('DATE_FORMAT(updated_datetime, "%W %M %e %Y %l:%i %p") AS LastUpdated', FALSE);
+				$this->db->from('reports');
+				$this->db->join('statuses', 'reports.status = statuses.status_id', 'left');
+				$this->db->join('agencies', 'reports.agency_responsible = agencies.url_slug', 'left');
+				$this->db->join('categories', 'reports.category_id = categories.category_id', 'left');
+				$this->db->order_by('requested_datetime', 'DESC');
+				$query = $this->db->get();
 				$filename = 'export-'.date('Y-m-d_Hi') . '.csv';
 				query_to_csv_ci($query, TRUE, $filename);
 			}else{
