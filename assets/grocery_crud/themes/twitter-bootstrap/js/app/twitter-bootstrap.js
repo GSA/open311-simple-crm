@@ -339,54 +339,40 @@ function deteleGroceryCrudInformation(delete_url){
 	});
 }
 //when page is ready, prepare on click advanced export button
-$(document).ready(function(){  
+$(document).ready(function(){
 	$( "#advexportbtn" ).click(function() {
 		var agency = $("#agencieslistselect").val(),
 			category = $("#categorylistselect").val(),
 			orderby = $("#sortbylistselect").val();
-		$.ajax({
-	        url: "admin/reports_dyn_csv",
-	        method: "POST",
-	        data: {
-	            'agency': agency,
-	            'category': category,
-	            'orderby': orderby
-	        },
-	        dataType : "text",
-	        success: function(data){
-	        	    var date = new Date();
-	            var filename = (date.getMonth() + 1) + '-' + date.getDate() + '-' +  date.getFullYear() +'-'+ date.getHours()+'-'+date.getMinutes()+"_dyn_reports.csv";
-	            download(data, filename, "text/csv");
-	     }
-	    });
+			post('admin/reports_dyn_csv', {
+		             'agency': agency,
+		             'category': category,
+		             'orderby': orderby
+		         });
 	    return false;
 	});
 });
 
-//CSV Advanced export
-function download(strData, strFileName, strMimeType) {
-    var D = document,
-        a = D.createElement("a");
-        strMimeType= strMimeType || "application/octet-stream";
-    if (navigator.msSaveBlob) { // IE10
-        return navigator.msSaveBlob(new Blob([strData], {type: strMimeType}), strFileName);
+function post(path, params, method) {
+    method = method || "post"; // Set method to post by default if not specified.
+
+    // The rest of this code assumes you are not using a library.
+    // It can be made less wordy if you use one.
+    var form = document.createElement("form");
+    form.setAttribute("method", method);
+    form.setAttribute("action", path);
+
+    for(var key in params) {
+        if(params.hasOwnProperty(key)) {
+            var hiddenField = document.createElement("input");
+            hiddenField.setAttribute("type", "hidden");
+            hiddenField.setAttribute("name", key);
+            hiddenField.setAttribute("value", params[key]);
+
+            form.appendChild(hiddenField);
+        }
     }
-    if ('download' in a) { //html5 A[download]
-        a.href = "data:" + strMimeType + "," + encodeURIComponent(strData);
-        a.setAttribute("download", strFileName);
-        a.innerHTML = "downloading...";
-        D.body.appendChild(a);
-        setTimeout(function() {
-            a.click();
-            D.body.removeChild(a);
-        }, 66);
-        return true;
-    }
-    var f = D.createElement("iframe");
-    D.body.appendChild(f);
-    f.src = "data:" +  strMimeType   + "," + encodeURIComponent(strData);
-    setTimeout(function() {
-        D.body.removeChild(f);
-    }, 333);
-    return true;
+
+    document.body.appendChild(form);
+    form.submit();
 }
