@@ -157,31 +157,27 @@ class Admin extends CI_Controller {
 	    $agency =  strtolower($this->input->post('agency'));
 	    $category = strtolower($this->input->post('category'));
 	    $orderby = strtolower($this->input->post('orderby'));
+			$startdate = strtolower($this->input->post('startdate'). " 00:00:00");
+			$enddate = strtolower($this->input->post('enddate'). " 23:59:59");
 	    if(!$this->saml_auth->is_admin()) {
 	        $where_group = $this->filter_query_permissions();
 	        if (!empty($where_group)) {
 	            $agency = $where_group[0];
 	        }
 	    }
-
-	    if((empty($agency))||($agency=="all")){
-	        //$agency = null;
-	    }else{
+	    if((!empty($agency))&&($agency!="all")){
 	        $this->db->where('agency_responsible', $agency);
 	    }
-	    if((empty($category))||($category=="all")){
-	        //$category = null;
-	    }else{
+	    if((!empty($category))&&($category!="all")){
 	        $this->db->where('category_id', $category);
 	    }
-
-	    //$array = array('agency_responsible' => $agency, 'category_id' => $category);
-	    //$this->db->where($array);
-
+			if(((!empty($startdate))||($startdate!=""))&&((!empty($enddate))||($enddate!=""))){
+					$this->db->where('requested_datetime >=', $startdate);
+					$this->db->where('requested_datetime <=', $enddate);
+			}
 	    if((empty($orderby))||($orderby=="na")){
 	        $orderby = "report_id";
 	    }
-
 	    $this->db->order_by($orderby, 'ASC');
 	    $query = $this->db->get('reports');
 	    $filename = date('Y-m-d_Hi') . '_advanced_report.csv';

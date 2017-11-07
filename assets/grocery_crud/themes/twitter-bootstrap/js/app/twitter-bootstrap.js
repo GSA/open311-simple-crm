@@ -340,6 +340,18 @@ function deteleGroceryCrudInformation(delete_url){
 }
 //when page is ready, prepare on click advanced export button
 $(document).ready(function(){
+	var startDateTextBox = $('#startDate');
+	var endDateTextBox = $('#endDate');
+
+	$.timepicker.dateRange(
+		startDateTextBox,
+		endDateTextBox,
+		{
+			dateFormat: 'yy-mm-dd',
+			start: {}, // start picker options
+			end: {} // end picker options
+		},
+	);
 	$( "#advexportbtn" ).click(function() {
 		var agency = $("#agencieslistselect").val(),
 			category = $("#categorylistselect").val(),
