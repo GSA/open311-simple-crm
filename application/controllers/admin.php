@@ -35,8 +35,18 @@ class Admin extends CI_Controller {
 		  $state = $crud->getState();
 			if($methodname == "index" && $state == "export"){
 				$this->load->helper('csv');
-				$this->db->select('report_id AS ID, status AS Status, requested_datetime AS Received, agency_responsible AS AgencyResponsible, category_id AS Category, description AS Description, updated_datetime AS LastUpdated');
-				$query = $this->db->get('reports');
+				/*$this->db->select('report_id AS ID, status AS Status, requested_datetime AS Received, agency_responsible AS AgencyResponsible, category_id AS Category, description AS Description, updated_datetime AS LastUpdated');
+				$query = $this->db->get('reports');*/
+				$this->db->select('report_id AS ID, statuses.status_name AS Status');
+				$this->db->select('DATE_FORMAT(requested_datetime, "%W %M %e %Y %l:%i %p") AS Received', FALSE);
+				$this->db->select('agencies.name AS AgencyResponsible, categories.category_name AS Category, reports.description AS Description');
+				$this->db->select('DATE_FORMAT(updated_datetime, "%W %M %e %Y %l:%i %p") AS LastUpdated', FALSE);
+				$this->db->from('reports');
+				$this->db->join('statuses', 'reports.status = statuses.status_id', 'left');
+				$this->db->join('agencies', 'reports.agency_responsible = agencies.url_slug', 'left');
+				$this->db->join('categories', 'reports.category_id = categories.category_id', 'left');
+				$this->db->order_by('requested_datetime', 'DESC');
+				$query = $this->db->get();
 				$filename = 'export-'.date('Y-m-d_Hi') . '.csv';
 				query_to_csv_ci($query, TRUE, $filename);
 			}else{
@@ -147,31 +157,27 @@ class Admin extends CI_Controller {
 	    $agency =  strtolower($this->input->post('agency'));
 	    $category = strtolower($this->input->post('category'));
 	    $orderby = strtolower($this->input->post('orderby'));
+			$startdate = strtolower($this->input->post('startdate'). " 00:00:00");
+			$enddate = strtolower($this->input->post('enddate'). " 23:59:59");
 	    if(!$this->saml_auth->is_admin()) {
 	        $where_group = $this->filter_query_permissions();
 	        if (!empty($where_group)) {
 	            $agency = $where_group[0];
 	        }
 	    }
-
-	    if((empty($agency))||($agency=="all")){
-	        //$agency = null;
-	    }else{
+	    if((!empty($agency))&&($agency!="all")){
 	        $this->db->where('agency_responsible', $agency);
 	    }
-	    if((empty($category))||($category=="all")){
-	        //$category = null;
-	    }else{
+	    if((!empty($category))&&($category!="all")){
 	        $this->db->where('category_id', $category);
 	    }
-
-	    //$array = array('agency_responsible' => $agency, 'category_id' => $category);
-	    //$this->db->where($array);
-
+			if(((!empty($startdate))||($startdate!=""))&&((!empty($enddate))||($enddate!=""))){
+					$this->db->where('requested_datetime >=', $startdate);
+					$this->db->where('requested_datetime <=', $enddate);
+			}
 	    if((empty($orderby))||($orderby=="na")){
 	        $orderby = "report_id";
 	    }
-
 	    $this->db->order_by($orderby, 'ASC');
 	    $query = $this->db->get('reports');
 	    $filename = date('Y-m-d_Hi') . '_advanced_report.csv';
