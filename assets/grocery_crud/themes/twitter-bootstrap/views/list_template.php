@@ -34,6 +34,8 @@
 	$this->set_js($this->default_javascript_path.'/jquery_plugins/jquery.fancybox-1.3.4.js');
 	//	JAVASCRIPTS - JQUERY EASING
 	$this->set_js($this->default_javascript_path.'/jquery_plugins/jquery.easing-1.3.pack.js');
+	//	JAVASCRIPTS - JQUERY DATEPICKER
+	$this->set_js($this->default_javascript_path.'/jquery_plugins/jquery-ui-timepicker-addon.js');
 
 	//	JAVASCRIPTS - twitter-bootstrap - CONFIGURAÇÕES
 	$this->set_js($this->default_theme_path.'/twitter-bootstrap/js/app/twitter-bootstrap.js');
