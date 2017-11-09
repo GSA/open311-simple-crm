@@ -157,8 +157,8 @@ class Admin extends CI_Controller {
 	    $agency =  strtolower($this->input->post('agency'));
 	    $category = strtolower($this->input->post('category'));
 	    $orderby = strtolower($this->input->post('orderby'));
-			$startdate = strtolower($this->input->post('startdate'). " 00:00:00");
-			$enddate = strtolower($this->input->post('enddate'). " 23:59:59");
+			$startdate = strtolower($this->input->post('startdate'));
+			$enddate = strtolower($this->input->post('enddate'));
 	    if(!$this->saml_auth->is_admin()) {
 	        $where_group = $this->filter_query_permissions();
 	        if (!empty($where_group)) {
@@ -172,8 +172,8 @@ class Admin extends CI_Controller {
 	        $this->db->where('category_id', $category);
 	    }
 			if(((!empty($startdate))||($startdate!=""))&&((!empty($enddate))||($enddate!=""))){
-					$this->db->where('requested_datetime >=', $startdate);
-					$this->db->where('requested_datetime <=', $enddate);
+					$this->db->where('requested_datetime >=', $startdate." 00:00:00");
+					$this->db->where('requested_datetime <=', $enddate)." 23:59:59";
 			}
 	    if((empty($orderby))||($orderby=="na")){
 	        $orderby = "report_id";
