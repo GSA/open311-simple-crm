@@ -111,7 +111,7 @@
             <div class="row">
               <div class="col-md-3">Agency Responsible</div>
               <div class="col-md-2">Category</div>
-              <div class="col-md-3">Filter By Date</div>
+              <div class="col-md-3">Received</div>
 							<div class="col-md-2">Sort By</div>
 							<div class="col-md-2"></div>
             </div>
