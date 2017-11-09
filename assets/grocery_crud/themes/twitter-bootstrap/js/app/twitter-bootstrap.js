@@ -359,8 +359,10 @@ $(document).ready(function(){
 			post('admin/reports_dyn_csv', {
 		             'agency': agency,
 		             'category': category,
-		             'orderby': orderby
-		         });
+		             'orderby': orderby,
+                 'startdate':startdate,
+                 'enddate': enddate
+      });
 	    return false;
 	});
 });
