@@ -355,8 +355,10 @@ $(document).ready(function(){
 	$( "#advexportbtn" ).click(function() {
 		var agency = $("#agencieslistselect").val(),
 			category = $("#categorylistselect").val(),
-			orderby = $("#sortbylistselect").val();
-			post('admin/reports_dyn_csv', {
+			orderby = $("#sortbylistselect").val(),
+      startdate = $("#startDate").val(),
+      enddate = $("#endDate").val();
+    post('admin/reports_dyn_csv', {
 		             'agency': agency,
 		             'category': category,
 		             'orderby': orderby,
