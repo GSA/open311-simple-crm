@@ -173,7 +173,7 @@ class Admin extends CI_Controller {
 	    }
 			if(((!empty($startdate))||($startdate!=""))&&((!empty($enddate))||($enddate!=""))){
 					$this->db->where('requested_datetime >=', $startdate." 00:00:00");
-					$this->db->where('requested_datetime <=', $enddate)." 23:59:59";
+					$this->db->where('requested_datetime <=', $enddate." 23:59:59");
 			}
 	    if((empty($orderby))||($orderby=="na")){
 	        $orderby = "report_id";
