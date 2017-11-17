@@ -665,7 +665,9 @@ class Admin extends CI_Controller {
 	}
 
 	function _admin_output($output = null) {
-	    $output->currmethod = $this->router->fetch_method();
+		if(array_key_exists("agencieslist", $output)){
+			$output->currmethod = $this->router->fetch_method();
+		}
 		$this->load->view('admin_view.php', $output);
 	}
 
