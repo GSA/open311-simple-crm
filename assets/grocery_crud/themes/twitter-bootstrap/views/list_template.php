@@ -36,7 +36,8 @@
 	$this->set_js($this->default_javascript_path.'/jquery_plugins/jquery.easing-1.3.pack.js');
 	//	JAVASCRIPTS - JQUERY DATEPICKER
 	$this->set_js($this->default_javascript_path.'/jquery_plugins/jquery-ui-timepicker-addon.js');
-
+	//	JAVASCRIPTS - MOMENT JS
+	$this->set_js($this->default_javascript_path.'/jquery_plugins/moment.min.js');
 	//	JAVASCRIPTS - twitter-bootstrap - CONFIGURAÇÕES
 	$this->set_js($this->default_theme_path.'/twitter-bootstrap/js/app/twitter-bootstrap.js');
 	//	JAVASCRIPTS - JQUERY-FUNCTIONS
