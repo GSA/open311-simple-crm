@@ -1,18 +1,48 @@
- 	  </div> <!-- /row --> 
- 	  </div> <!-- /container -->  
- 	</div> <!-- /main -->  
+ 	  </div> <!-- /row -->
+ 	  </div> <!-- /container -->
+ 	</div> <!-- /main -->
 
       <footer>
 	 	  <div class="container">
-
-		<?php 
+        <div class="modal" id="secondsRemaining" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Session Expiration Warning</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>You've been inactive for a while. For your security, we'll log you out automatically. Click "Stay Online" to continue your session. </p>
+                        <p>Your session will expire in <span class="bold" id="sessionSecondsRemaining">60</span> seconds.</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button id="extendSession" type="button" class="btn btn-default btn-success" data-dismiss="modal">Stay Online</button>
+                        <button id="logoutSession" type="button" class="btn btn-default" data-dismiss="modal">Logout</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal" id="mdlLoggedOut" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">You have been logged out</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>Your session has expired.</p>
+                    </div>
+                    <div class="modal-footer">
+                    </div>
+                </div>
+            </div>
+        </div>
+		<?php
 			$org_url = config_item('organisation_url');
 			if (! empty($org_url)) { ?>
 				<div class="departmental-link">
-					<a href="<?php echo $org_url; ?>" 
+					<a href="<?php echo $org_url; ?>"
 						class="<?php echo (preg_match('/https?:\/\/(\\w*\\.)*fixmy/', $org_url))? 'fmse-web-link-fms':'fmse-web-link' ?>"
 						target="_blank"
-					><?php 
+					><?php
 					if (config_item('organisation_link_text')) {
 						echo config_item('organisation_link_text');
 					} else {
@@ -23,11 +53,11 @@
 		<?php } ?>
 
 
-		
-		</div> <!-- /container -->    
+
+		</div> <!-- /container -->
 
       </footer>
-    
+
 
 <script>window.jQuery || document.write('<script src="<?php echo site_url('assets/fms-endpoint/js/vendor/jquery-1.10.1.min.js')?>"><\/script>')</script>
 
@@ -35,9 +65,46 @@
 <script type="text/javascript">
 $(".advexport-anchor").hide();
 </script>
-
+<?php if (isset($auth) && $auth->logged_in()) : ?>
+    <script>
+    $(document).ready(function(){
+      setTimeout(function() {
+        setInterval(function(){
+          $.post( "/admin/lastActivity", function( data ) {
+              var jsonobj = $.parseJSON(data);
+              var currenttime = moment.unix(jsonobj.currenttime);
+              var lastactivity = moment.unix(jsonobj.lastactivity);
+              var lastaddminutes =  moment(lastactivity).add(14, 'm');
+              var timer = moment.duration(lastaddminutes.diff(currenttime)).seconds();
+              var manualtime = 60;
+              if((lastaddminutes).isSameOrBefore(currenttime)){
+                  $("#sessionSecondsRemaining").text(manualtime);
+                  $("#secondsRemaining").show();
+                  setInterval(function() {
+                    if(manualtime>0){
+                      $("#sessionSecondsRemaining").text(manualtime--);
+                    }
+                  }, 1000);
+                setTimeout(function() {
+                  window.location = "/auth/logout?exired=true";
+                }, 60000);
+              }
+          });
+        }, 240000);
+       }, 600000);
+    });
+    $("#logoutSession").on('click', function(){
+      $("#secondsRemaining").hide();
+      window.location = "/auth/logout?exired=true";
+    });
+    $("#extendSession").on('click', function(){
+      $("#secondsRemaining").hide();
+      location.reload();
+    });
+    </script>
+<?php endif; ?>
 <?php if (config_item('google_analytics_id')): ?>
-						
+
 	<script>
 	    var _gaq=[['_setAccount','<?php echo config_item('google_analytics_id'); ?>'],['_trackPageview']];
 	    (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];

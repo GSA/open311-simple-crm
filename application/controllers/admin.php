@@ -184,6 +184,18 @@ class Admin extends CI_Controller {
 	    query_to_csv_ci($query, TRUE, $filename);
 	}
 
+	function lastActivity(){
+		//$checksession = $this->session->userdata('session_id');
+		$lastactivity = $this->session->userdata('last_activity');
+		$now = time();
+		$activity = array(
+								'lastactivity'=>$lastactivity,
+								'currenttime'=>$now
+							);
+		$stringver = json_encode($activity);
+		echo $stringver;
+	}
+	
 	function agencies() {
 		$crud = new grocery_CRUD();
 
