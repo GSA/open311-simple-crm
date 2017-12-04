@@ -66,11 +66,20 @@
 $(".advexport-anchor").hide();
 </script>
 <?php if (isset($auth) && $auth->logged_in()) : ?>
-    <script>
-    $(document).ready(function(){
-      setTimeout(function() {
-        setInterval(function(){
-          $.post( "admin/lastActivity", function( data ) {
+  <script>
+  var loc = window.location;
+  var pathhost = loc.protocol + "//" + loc.hostname + (loc.port? ":"+loc.port : "") + "/";
+  var pathcheck = loc.pathname.split( '/' );
+  var fullpath="";
+  if(pathcheck[1]=="crm"){
+    fullpath = pathhost+pathcheck[1]+"/admin/lastActivity";
+  }else{
+    fullpath = pathhost+"admin/lastActivity";
+  }
+  $(document).ready(function(){
+    setTimeout(function() {
+      setInterval(function(){
+        $.post( fullpath, function( data ) {
               var jsonobj = $.parseJSON(data);
               var currenttime = moment.unix(jsonobj.currenttime);
               var lastactivity = moment.unix(jsonobj.lastactivity);
