@@ -70,7 +70,7 @@ $(".advexport-anchor").hide();
     $(document).ready(function(){
       setTimeout(function() {
         setInterval(function(){
-          $.post( "/admin/lastActivity", function( data ) {
+          $.post( "admin/lastActivity", function( data ) {
               var jsonobj = $.parseJSON(data);
               var currenttime = moment.unix(jsonobj.currenttime);
               var lastactivity = moment.unix(jsonobj.lastactivity);
