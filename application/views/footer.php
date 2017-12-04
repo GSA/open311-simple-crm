@@ -71,10 +71,13 @@ $(".advexport-anchor").hide();
   var pathhost = loc.protocol + "//" + loc.hostname + (loc.port? ":"+loc.port : "") + "/";
   var pathcheck = loc.pathname.split( '/' );
   var fullpath="";
+  var logoutpath="";
   if(pathcheck[1]=="crm"){
     fullpath = pathhost+pathcheck[1]+"/admin/lastActivity";
+    logoutpath = pathhost+pathcheck[1]+"/auth/logout";
   }else{
     fullpath = pathhost+"admin/lastActivity";
+    logoutpath = pathhost+"auth/logout";
   }
   $(document).ready(function(){
     setTimeout(function() {
@@ -95,7 +98,7 @@ $(".advexport-anchor").hide();
                     }
                   }, 1000);
                 setTimeout(function() {
-                  window.location = "/auth/logout?exired=true";
+                  window.location = logoutpath;
                 }, 60000);
               }
           });
@@ -104,7 +107,7 @@ $(".advexport-anchor").hide();
     });
     $("#logoutSession").on('click', function(){
       $("#secondsRemaining").hide();
-      window.location = "/auth/logout?exired=true";
+      window.location = logoutpath;
     });
     $("#extendSession").on('click', function(){
       $("#secondsRemaining").hide();
