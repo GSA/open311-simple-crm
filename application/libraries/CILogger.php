@@ -84,6 +84,12 @@ class CILogger {
      * If we are logging this run, write profiling results to DB.
      */
     function resolve_profiling() {
+        // Don't bother profiling when we are outside of a session since we're
+        // missing most of the relevant information.
+        if (!$this->CI->session) {
+            return;
+        }
+
         // If we should log this run
         if (rand(0, 99) < $this->log_frequency) {
             // Total consumed memory
