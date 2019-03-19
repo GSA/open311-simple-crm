@@ -1,3 +1,5 @@
+[![CircleCI](https://circleci.com/gh/GSA/open311-simple-crm.svg?style=svg)](https://circleci.com/gh/GSA/open311-simple-crm)
+
 Open311 Simple CRM
 ====================
 
