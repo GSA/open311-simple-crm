@@ -18,7 +18,9 @@
  * NOTE: If you change these, also change the error_reporting() code below
  *
  */
-define('ENVIRONMENT', 'development');
+
+$environment = getenv('APP_ENV', true) || 'development';
+define('ENVIRONMENT', $environment);
 /*
  *---------------------------------------------------------------
  * ERROR REPORTING
@@ -39,7 +41,7 @@ if (defined('ENVIRONMENT'))
 
         case 'testing':
         case 'production':
-            error_reporting(E_ALL & ~E_NOTICE);
+            error_reporting(0);
             ini_set('display_errors', 0);
             break;
 
@@ -196,6 +198,9 @@ else
 /**
  * Loading composer dependencies
  */
+if (!is_file('vendor/autoload.php') || !is_readable('vendor/autoload.php')) {
+    throw new Exception('Can not read \'vendor/autoload.php\'. Try running \'composer install\' first!');
+}
 require_once ('vendor/autoload.php');
 
 /*
