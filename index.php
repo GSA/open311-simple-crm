@@ -19,8 +19,9 @@
  *
  */
 
-$environment = getenv('APP_ENV', true) || 'development';
+$environment = getenv('APP_ENV') || 'development';
 define('ENVIRONMENT', $environment);
+
 /*
  *---------------------------------------------------------------
  * ERROR REPORTING

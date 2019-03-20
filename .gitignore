@@ -13,3 +13,5 @@ application/config/config.php
 
 application/config/*/
 composer.phar
+*.log
+.vagrant/
