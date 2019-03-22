@@ -24,8 +24,12 @@ $config['base_url'] = Environment::get('CRM_URL', 'http://localhost:8080');
 $cookie_path_prefix = Environment::get('CRM_COOKIE_PATH_PREFIX', '');
 
 
-$config['pre_approved_admins'] = Environment::get('CODEIGNITER_ADMINS', '');
-$config['pre_approved_admins'] = explode(',',$config['pre_approved_admins']);
+$pre_approved_admins = Environment::get('CODEIGNITER_ADMINS', []);
+// Convert comma-separated string to array
+if ($pre_approved_admins && is_string($pre_approved_admins)) {
+    $pre_approved_admins = explode(',', $pre_approved_admins);
+}
+$config['pre_approved_admins'] = $pre_approved_admins;
 
 $config['akismet_key'] = ''; // see https://akismet.com/development/
 $config['akismet_siteurl'] = '';
