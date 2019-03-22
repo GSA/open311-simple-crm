@@ -14,6 +14,10 @@
 |
 */
 
+# Load environment variables and secrets from .env
+$dotenv = Dotenv\Dotenv::create(__DIR__);
+$dotenv->load();
+
 use Cekurte\Environment\Environment;
 
 $config['base_url'] = Environment::get('CRM_URL', 'http://localhost:8080');
