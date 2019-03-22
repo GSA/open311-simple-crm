@@ -108,7 +108,10 @@ export DB_NAME=${db_name}
 export CRM_ENCRYPTION_KEY=${crm_encryption_key}
 EOF
 
-    service php7.2-fpm restart
-    service nginx restart
+    systemctl enable php7.2-fpm
+    systemctl enable nginx
+
+    systemctl restart php7.2-fpm
+    systemctl restart nginx
   SHELL
 end
