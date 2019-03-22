@@ -19,8 +19,9 @@
  *
  */
 
-$environment = getenv('APP_ENV') || 'development';
+$environment = getenv('APP_ENV') !== FALSE ? getenv('APP_ENV') : 'development';
 define('ENVIRONMENT', $environment);
+
 
 /*
  *---------------------------------------------------------------
@@ -42,7 +43,7 @@ if (defined('ENVIRONMENT'))
 
         case 'testing':
         case 'production':
-            error_reporting(0);
+            error_reporting(E_ALL & ~E_NOTICE);
             ini_set('display_errors', 0);
             break;
 
@@ -195,6 +196,9 @@ else
 
     define('APPPATH', BASEPATH.$application_folder.'/');
 }
+
+# Set the config directory for simplesamlphp
+putenv('SIMPLESAMLPHP_CONFIG_DIR=' . APPPATH . 'config/simplesamlphp');
 
 /**
  * Loading composer dependencies

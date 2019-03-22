@@ -7,7 +7,6 @@ vendor
 
 application/logs/*.php
 
-application/config/*/
 composer.phar
 *.log
 .vagrant/
