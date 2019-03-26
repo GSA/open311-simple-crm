@@ -68,12 +68,6 @@ class Auth extends CI_Controller
         redirect('/');
     }
 
-    public function acs()
-    {
-        $_SERVER['PATH_INFO'] = '/max';
-        include(dirname(dirname(__DIR__)) . '/vendor/simplesamlphp/simplesamlphp/modules/saml/www/sp/saml2-acs.php');
-    }
-
     public function logout()
     {
 
