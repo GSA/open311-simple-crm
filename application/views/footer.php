@@ -59,7 +59,7 @@
       </footer>
 
 
-<script>window.jQuery || document.write('<script src="<?php echo site_url('assets/fms-endpoint/js/vendor/jquery-1.10.1.min.js')?>"><\/script>')</script>
+<script>window.jQuery || document.write('<script src="<?php echo site_url('assets/fms-endpoint/js/vendor/jquery-1.12.4.min.js')?>"><\/script>')</script>
 
 <script src="<?php echo site_url('assets/fms-endpoint/js/vendor/bootstrap.min.js')?>"></script>
 <script type="text/javascript">
