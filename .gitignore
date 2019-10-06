@@ -3,7 +3,7 @@ conf/general.yml
 codeigniter/logs/log*
 
 .idea
-vendor
+/vendor
 
 index.php
 application/logs/*.php
