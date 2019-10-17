@@ -4,7 +4,7 @@ Open311 Simple CRM
 ====================
 
 Open311 Simple CRM is a basic open source web application for storing problem
-reports and tracking requests. It also provides an [Open311](http://wiki.open311.org/GeoReport_v2) 
+reports and tracking requests. It also provides an [Open311](http://wiki.open311.org/GeoReport_v2)
 API endpoint and should accept *any* report submitted over the Open311 API.
 
 
@@ -41,7 +41,7 @@ administrator:
   * username: `admin@example.com`
   * password: `password`
 
-You must to change these values as soon as you're logged in! The root page 
+You must to change these values as soon as you're logged in! The root page
 will tell you how (until you've done it).
 
 
@@ -49,12 +49,41 @@ Licensing
 ---------
 
 The original Open311 implementation code is nearly all from Philip Ashlock's raw
-implementation of Open311 GeoReport v2 while additional features have been developed by 
-[mySociety](http://www.mysociety.org/) under the name FMS-endpoint. 
+implementation of Open311 GeoReport v2 while additional features have been developed by
+[mySociety](http://www.mysociety.org/) under the name FMS-endpoint.
 
 See `LICENSE.txt` but also check in `documentation/` for component-specific
 licenses.
 
 
+## Development
 
+Prerequisites:
+
+- [Docker Engine](https://docs.docker.com/install/) v18+
+- [Docker Compose](https://docs.docker.com/compose/install/) v1.24+
+
+
+### Setup
+
+Setup docker containers.
+
+    $ docker-compose up
+
+Open your browser to [localhost:8000](http://localhost:8000/).
+
+_TODO how to populate initial data. The following notes are a work in progress._
+
+Run the migrations.
+
+    $ docker-compose exec app php index.php migrate
+
+
+### Updating composer dependencies
+
+Edit version constraints in [composer.json](./composer.json).
+
+    $ docker-compose exec app composer update
+
+Commit the updated composer.json and composer.lock.
 
