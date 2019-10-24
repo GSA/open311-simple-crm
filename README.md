@@ -70,14 +70,23 @@ Setup docker containers.
 
     $ docker-compose up
 
-Open your browser to [localhost:8000](http://localhost:8000/).
+Setup the schema needed by the application in the database
 
-_TODO how to populate initial data. The following notes are a work in progress._
+    $ cat db/fms-endpoint-initial.sql | docker container exec -i $(docker-compose ps -q db) mysql -uroot -pmysql-dev-password crm
 
-Run the migrations.
+Run the migrations (note: you will see PHP "errors", but they're all just notices)
 
     $ docker-compose exec app php index.php migrate
 
+Open your browser to [localhost:8000](http://localhost:8000/).
+
+At this point you should see a prompt from Open311 to adjust the admin's email address, and change the organization name. Let's do that:
+
+    $ docker-compose exec db mysql -uroot -pmysql-dev-password crm
+    mysql> update users set email="yourname@yourdomain" where username="administrator";
+    mysql> update config_settings set value="yourorgname" where name="organisation_name";
+
+Reload [localhost:8000](http://localhost:8000/) and you should see green text indicating that Open311 is enabled.
 
 ### Updating composer dependencies
 
