@@ -14,7 +14,7 @@
 |
 */
 
-$protocol = 'https';
+$protocol = 'http';
 
 //if (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off') {
 //    $protocol = 'https';
