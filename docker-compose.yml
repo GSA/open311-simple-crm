@@ -12,6 +12,7 @@ services:
       DB_PASSWORD: mysql-dev-password
       DB_HOST: db
       ENCRYPTION_KEY: not-secure-encryption-key
+      ENVIRONMENT: development
     ports:
       - "9000"
     volumes:
