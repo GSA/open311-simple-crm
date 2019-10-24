@@ -70,14 +70,14 @@ Check the root page
 -------------------
 
 You should already be able to see the Open311 Simple CRM root page in your browser
-(it will be reporting that you haven't set up the database yet). If you don't 
+(it will be reporting that you haven't set up the database yet). If you don't
 see such a page, double-check the setting for `$system_folder` -- if you're
 not  sure, use an absolute path.
 
 Depending on where you have installed `index.php`, the URL will be:
 
    * `http:YOUR_DOMAIN/` if you've set `web/` to be your server root, or put
-     `index.php` and `assets/` directly in the server root 
+     `index.php` and `assets/` directly in the server root
 
    * `http:YOUR_DOMAIN/path_to_web_dir/` otherwise
 
@@ -92,7 +92,7 @@ this dependency in the future.
 
 Populate that database with the initial values by importing
 
-    db/Open311 Simple CRM-initial.sql
+    db/fms-endpoint-initial.sql
 
 The SQL in that file is in mySQL dialect. You may need to translate it
 slightly if you're running with a different flavour of SQL.
@@ -134,7 +134,7 @@ The root page shows what's not working yet. If Open311 Simple CRM is not complai
 about the database connection, then it's working :-)
 
    * if you're getting a completely blank (empty) page, check that you didn't
-     break the PHP when you edited the configuration files 
+     break the PHP when you edited the configuration files
      (try `php -l filename` to check the syntax, for example)
 
    * look in `codeigniter/logs` to see if there is a report in the most
@@ -163,9 +163,9 @@ You can't tell if your URL rewriting is working until you try to access a
 page that is not the root page -- a good test is to try to log in. If you
 cannot log in, but always find yourself at the root page (and perhaps see
 the URL includes duplicate items such as `auth/auth/auth`), then CodeIgniter
-is failing to extract the segments from the URI. You may be able to 
+is failing to extract the segments from the URI. You may be able to
 workaround this by changing the `$config['uri_protocol']` value in
-`codeigniter/fms_endpoint/config/config.php`  
+`codeigniter/fms_endpoint/config/config.php`
 
 By default, `$config['uri_protocol']` is set to `PATH_INFO`, but if that's not
 working for you, `AUTO` may fix the problem.
@@ -183,9 +183,9 @@ change away from the defaults before your configuration is truly finished.
 ### Change the administrator username
 
 Go directly into your database and change the email address to a working email
-address, for example with: 
+address, for example with:
 
-    UPDATE `users` SET email='your_email@your_domain.com' 
+    UPDATE `users` SET email='your_email@your_domain.com'
       WHERE email='admin@example.com';
 
 
@@ -288,14 +288,14 @@ end:
       * it may be based on the category of the problem
    * FMS will need to know the specifics of your server, including the
      URL of the endpoint, and the API key it should send
-   * FMS must also be configured to send the FMS ID as an `external_id` 
+   * FMS must also be configured to send the FMS ID as an `external_id`
      attribute with every new problem report
 
 
 Keep in touch
 -------------
 
-Finally, if you're running Open311 Simple CRM, do let us know! 
+Finally, if you're running Open311 Simple CRM, do let us know!
 
 We maintain a site especially for helping people running FixMyStreet and
 related projects at [diy.mysociety.org](http://diy.mysociety.org)
