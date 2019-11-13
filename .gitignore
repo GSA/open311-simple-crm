@@ -5,12 +5,7 @@ codeigniter/logs/log*
 .idea
 /vendor
 
-index.php
 application/logs/*.php
-
-application/config/database.php
-application/config/config.php
-
 
 application/config/*/
 composer.phar
