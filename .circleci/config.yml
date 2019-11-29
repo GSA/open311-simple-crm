@@ -3,7 +3,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: circleci/php:7.1-jessie-node
+      - image: circleci/php:7.3.12-buster-node
     steps:
       - checkout
       - restore_cache:
